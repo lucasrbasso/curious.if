@@ -29,8 +29,7 @@ class RouterClass {
         return MaterialPageRoute(
           builder: (_) => Scaffold(
             body: Center(
-                child: Text(
-                    I18nConst.textErroSnackbar([routeSettings.name ?? ""]))),
+                child: Text("Erro ao achar a rota ${routeSettings.name}")),
           ),
         );
     }

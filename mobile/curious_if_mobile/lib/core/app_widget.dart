@@ -40,6 +40,12 @@ class _AppWidgetState extends State<AppWidget> {
             GlobalCupertinoLocalizations.delegate,
             LocalJsonLocalization.delegate,
           ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            if (supportedLocales.contains(locale)) {
+              return locale;
+            }
+            return const Locale('en', 'US');
+          },
           //DESABILITA O BANNER "DEBUG"
           debugShowCheckedModeBanner: false,
           title: "Curious.IF",

@@ -35,7 +35,7 @@ class _AppConfigPageState extends State<AppConfigPage> {
         body = Material(
           child: Center(
             child: Text(
-              I18nConst.erroConfigApp,
+              "Erro na configuração do APP",
               textDirection: TextDirection.ltr,
             ),
           ),

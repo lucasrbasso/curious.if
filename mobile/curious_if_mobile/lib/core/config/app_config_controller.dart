@@ -67,7 +67,7 @@ abstract class AppConfigControllerBase with Store {
       return _locale;
     } catch (e) {
       errorMessage = e.toString();
-      throw I18nConst.errorModifyLocale;
+      throw "Erro ao mudar a localização";
     }
   }
 
@@ -85,7 +85,7 @@ abstract class AppConfigControllerBase with Store {
       if (localeModify != null) {
         return await setLocale(localeModify);
       } else {
-        throw I18nConst.localeNotExist;
+        throw "Localização não existe";
       }
     } catch (e) {
       errorMessage = e.toString();
