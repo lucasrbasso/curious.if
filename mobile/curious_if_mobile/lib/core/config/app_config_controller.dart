@@ -18,7 +18,6 @@ class AppConfigController extends AppConfigControllerBase
     with _$AppConfigController {
   static final AppConfigController _instance = AppConfigController._internal();
 
-  // passes the instantiation to the _instance object
   factory AppConfigController() => _instance;
 
   //initialize variables in here
