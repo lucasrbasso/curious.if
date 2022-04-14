@@ -5,11 +5,11 @@ import {
   Req,
   Body,
 } from '@nestjs/common';
-import { PostsService } from "./posts.service";
+import { PostService } from "./post.service";
 
 @Controller()
-export class PostsController{
-  constructor(private readonly postService: PostsService) {}
+export class PostController{
+  constructor(private readonly postService: PostService) {}
 
   // Métodos HTTP - POST GET PUT
   // Chama os métodos do service dentro dos métodos HTTP
