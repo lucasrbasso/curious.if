@@ -28,7 +28,7 @@ abstract class _SettingsControllerBase with Store {
     try {
       await _modifySettingsState(SettingsStateLoading());
       await _modifySettingsState(SettingsStateSuccess(
-          message: I18nConst.logoutSuccess, result: 'isLogin'));
+          message: "Você deslogou com sucesso", result: 'isLogin'));
       navigationLogin();
     } catch (e) {
       await _modifySettingsState(SettingsStateFailure(message: e.toString()));
@@ -41,7 +41,7 @@ abstract class _SettingsControllerBase with Store {
       await _modifySettingsState(SettingsStateLoading());
       final setLocale = await _controllerConfig.setStringLocale(locale);
       await _modifySettingsState(SettingsStateSuccess(
-          message: I18nConst.localeModifySuccess, result: setLocale));
+          message: "Tradução modificada com sucesso", result: setLocale));
     } catch (e) {
       await _modifySettingsState(SettingsStateFailure(message: e.toString()));
     }
@@ -75,8 +75,7 @@ abstract class _SettingsControllerBase with Store {
   void autoRun(BuildContext context) {
     autorun((_) {
       if (state is SettingsStateFailure) {
-        String message = I18nConst.textErroSnackbar(
-            [(state as SettingsStateFailure).message]);
+        String message = (state as SettingsStateFailure).message;
         showSnackBar(context, message, Colors.red);
       } else if (state is SettingsStateSuccess) {
         String message = (state as SettingsStateSuccess).message;

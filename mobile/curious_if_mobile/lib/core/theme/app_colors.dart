@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  Color get novaCor;
   //COLORS SETTINGS
+  Color get border;
+  Color get divider;
+  Color get backgroundAlertDialogColor;
+  Color get backgroundAlertDialog;
+  Color get textSimple;
+  Color get textButton;
+  Color get textGradient;
+  Color get textSnackBar;
   Color get appBarIconSettings;
   Color get appBarTitleSettings;
   Color get bodyIconBackgroundSettings;
@@ -17,9 +24,31 @@ abstract class AppColors {
 }
 
 class AppColorsLight implements AppColors {
-  @override
-  Color get novaCor => const Color(0xFF32131);
   /*---------------COLORS SETTINGS---------------*/
+  @override
+  Color get border => const Color(0xFFDCE0E5);
+
+  @override
+  Color get divider => const Color(0x33666666);
+
+  @override
+  Color get backgroundAlertDialog => const Color(0xFFFFFFFF);
+
+  @override
+  Color get backgroundAlertDialogColor => const Color(0xFF4721B4);
+
+  @override
+  Color get textButton => const Color(0xFF666666);
+
+  @override
+  Color get textSimple => const Color(0xFF666666);
+
+  @override
+  Color get textGradient => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSnackBar => const Color(0xFFFFFFFF);
+
   @override
   Color get appBarIconSettings => const Color(0xFF4F4F4F);
 
@@ -56,6 +85,30 @@ class AppColorsLight implements AppColors {
 
 class AppColorsDark implements AppColors {
 /*---------------COLORS SETTINGS---------------*/
+  @override
+  Color get border => const Color(0xFF5C5C5C);
+
+  @override
+  Color get divider => const Color(0x33666666);
+
+  @override
+  Color get backgroundAlertDialog => const Color(0xFF333333);
+
+  @override
+  Color get backgroundAlertDialogColor => const Color(0xFF4721B4);
+
+  @override
+  Color get textGradient => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textButton => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSimple => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSnackBar => const Color(0xFFFFFFFF);
+
   @override
   Color get appBarIconSettings => const Color(0xFFFFFFFF);
 
