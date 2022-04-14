@@ -1,12 +1,13 @@
 version: '3.4'
 services:
   db_curiousIf:
-    container_name: db_curiousIf
     image: postgres:latest
     restart: always
     environment:
         POSTGRES_USER: admin
-        POSTGRES_DB: admin
+        POSTGRES_DB: curiousIf
         POSTGRES_PASSWORD: 123456
     ports:
-      - 5433:5433
+      - 5432:5432
+
+  
