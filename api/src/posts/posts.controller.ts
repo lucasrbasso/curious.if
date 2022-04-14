@@ -5,7 +5,6 @@ import {
   Req,
   Body,
 } from '@nestjs/common';
-import { Post as PostEntity } from './post.entity';
 import { PostsService } from "./posts.service";
 
 @Controller()
@@ -16,21 +15,8 @@ export class PostsController{
   // Chama os métodos do service dentro dos métodos HTTP
   @Get()
   getHello(): string {
-    return this.postService.getHello();
+    return 'Hello World';
   }
 
-  // @route  POST
-  // @desc   Cria um novo Post
-  // @access Private
-  @Post()
-  async createPost(@Req() req, @Body() body): Promise<PostEntity> {
-    try {
-      return await this.postService.createPost(
-        req.user.id,
-        body.text,
-      );
-    } catch (err) {
-      throw err;
-    }
-  }
+  // @
 }
