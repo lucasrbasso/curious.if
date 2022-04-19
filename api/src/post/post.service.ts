@@ -2,6 +2,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { Post as PostModel } from '@prisma/client';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class PostService {
@@ -18,7 +19,7 @@ export class PostService {
     }
 
     async getPostById(id: string): Promise<PostModel> {
-        const post = this.prisma.post.findUnique({ where: { id: Number(id) } });
+        const post = await this.prisma.post.findUnique({ where: { id: Number(id) } });
 
         if(post === null){
             throw new HttpException('Post not found.', HttpStatus.NOT_FOUND);
@@ -46,12 +47,20 @@ export class PostService {
     }
 
     async deletePost(id: string): Promise<PostModel> {
-        const post = this.prisma.post.findUnique({ where: { id: Number(id) }});
+        const post = await this.prisma.post.findUnique({ where: { id: Number(id) }});
 
         if(post === null) {
             throw new HttpException('Post not found.', HttpStatus.NOT_FOUND);
         }
 
         return this.prisma.post.delete({ where: { id: Number(id) }});
+    }
+
+    async criaUsuario(): Promise<User>{
+        return this.prisma.user.create({
+            data: {
+                name: 'Heriklys',
+            }
+        });
     }
 }
