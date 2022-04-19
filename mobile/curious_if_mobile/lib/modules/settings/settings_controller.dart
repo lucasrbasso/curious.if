@@ -41,7 +41,7 @@ abstract class _SettingsControllerBase with Store {
       await _modifySettingsState(SettingsStateLoading());
       final setLocale = await _controllerConfig.setStringLocale(locale);
       await _modifySettingsState(SettingsStateSuccess(
-          message: "Tradução modificada coom sucesssso", result: setLocale));
+          message: "Tradução modificada coom sucesso", result: setLocale));
     } catch (e) {
       await _modifySettingsState(SettingsStateFailure(message: e.toString()));
     }
