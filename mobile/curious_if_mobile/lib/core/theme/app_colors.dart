@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
+  Color get background;
+  Color get text;
+  Color get textField;
+  Color get textButtonApp;
   //COLORS SETTINGS
   Color get border;
   Color get divider;
@@ -24,6 +28,14 @@ abstract class AppColors {
 }
 
 class AppColorsLight implements AppColors {
+  @override
+  Color get background => const Color(0xFFF0F8FF);
+  @override
+  Color get text => const Color(0xFF000000);
+  @override
+  Color get textField => const Color(0xFF000000);
+  @override
+  Color get textButtonApp => const Color(0xFFFDFDFD);
   /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFFDCE0E5);
@@ -84,6 +96,14 @@ class AppColorsLight implements AppColors {
 }
 
 class AppColorsDark implements AppColors {
+  @override
+  Color get background => const Color(0xFF3E3B47);
+  @override
+  Color get text => const Color(0xFFF4EDE8);
+  @override
+  Color get textField => const Color(0xFF666360);
+  @override
+  Color get textButtonApp => const Color(0xFFFDFDFD);
 /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFF5C5C5C);
