@@ -22,7 +22,6 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     // SIZER É UM WIDGET QUE DEIXA FAZER TODOS OS TIPOS DE CONTROLE DE LAYOUT
-    AppConfigController().colorStatus(isWhite: true);
 
     return Sizer(builder: (context, orientation, deviceType) {
       // OBSERVER VAI FICAR OBSERVANDO AS ALTERAÇÕES DO TEMA

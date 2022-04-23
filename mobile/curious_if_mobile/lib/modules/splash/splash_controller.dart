@@ -7,7 +7,7 @@ class SplashController {
   // FUNÇÃO PARA REDIRECIONAR A SPLASH PARA LOGIN PAGE OU PARA NOTEPAGE
   void redirectSplash(BuildContext context) async {
     try {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 300));
       Navigator.pushNamedAndRemoveUntil(
         context,
         'RouterClass.notes',
@@ -15,7 +15,7 @@ class SplashController {
         arguments: 'user',
       );
     } catch (e) {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 300));
       Navigator.pushNamedAndRemoveUntil(
           context, 'RouterClass.login', (Route<dynamic> route) => false);
     }

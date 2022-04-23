@@ -122,19 +122,6 @@ abstract class AppConfigControllerBase with Store {
     }
   }
 
-  SystemUiOverlayStyle colorStatus({required bool isWhite}) {
-    if (controllerAppTheme.themeMode == ThemeMode.dark && !isWhite) {
-      isWhite = true;
-    }
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // cor da barra superior
-      statusBarIconBrightness: isWhite
-          ? Brightness.light
-          : Brightness.dark, // ícones da barra superior
-    ));
-    return isWhite ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
-  }
-
   Future<bool> initialConfiguration() async {
     try {
       await controllerAppTheme.currentThemeMode();

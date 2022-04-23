@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../core.dart';
 
@@ -32,5 +33,19 @@ class AppTheme {
     } else {
       return AppGradientsDark();
     }
+  }
+
+  static SystemUiOverlayStyle colorStatus({bool isWhite = false}) {
+    AppThemeController themeModeContext = AppThemeController();
+    if (themeModeContext.themeMode == ThemeMode.dark && !isWhite) {
+      isWhite = true;
+    }
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // cor da barra superior
+      statusBarIconBrightness: isWhite
+          ? Brightness.light
+          : Brightness.dark, // ícones da barra superior
+      statusBarBrightness: isWhite ? Brightness.dark : Brightness.light,
+    );
   }
 }
