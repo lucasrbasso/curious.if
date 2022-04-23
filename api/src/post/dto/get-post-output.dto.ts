@@ -1,7 +1,7 @@
-export class GetPostDTO {
+export class PostDTO {
   id: string;
   content: string;
-  published: string;
+  published: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { User } from '@prisma/client';
+import { PostDTO } from './dto/get-post-output.dto';
 
 interface CreatePostProps {
   authorId: string;
@@ -10,7 +11,7 @@ interface CreatePostProps {
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllPosts(): Promise<GetPostDTO[]> {
+  async getAllPosts(): Promise<PostDTO[]> {
     const posts = await this.prisma.post.findMany({
       select: {
         id: true,
@@ -24,7 +25,7 @@ export class PostService {
     return posts;
   }
 
-  async getPostById(id: string): Promise<PostModel> {
+  async getPostById(id: string): Promise<PostDTO> {
     const post = await this.prisma.post.findUnique({
       where: { id },
       select: {
@@ -33,7 +34,7 @@ export class PostService {
         updatedAt: true,
         content: true,
         published: true,
-      }
+      },
     });
 
     if (!post) {
@@ -42,7 +43,7 @@ export class PostService {
     return post;
   }
 
-  async createPost({ authorId, content }: CreatePostProps): Promise<PostModel> {
+  async createPost({ authorId, content }: CreatePostProps): Promise<PostDTO> {
     if (!authorId)
       throw new HttpException('AuthorId is required.', HttpStatus.BAD_REQUEST);
 
@@ -61,19 +62,19 @@ export class PostService {
     }
   }
 
-  async deletePost(id: string): Promise<PostModel> {
+  async deletePost(id: string): Promise<void> {
     const post = await this.prisma.post.findUnique({
-      where: { id: Number(id) },
+      where: { id },
     });
 
-    if (post === null) {
+    if (!post) {
       throw new HttpException('Post not found.', HttpStatus.NOT_FOUND);
     }
 
-    return this.prisma.post.delete({ where: { id: Number(id) } });
+    await this.prisma.post.delete({ where: { id } });
   }
 
-  async criaUsuario(): Promise<User> {
+  async createUser(): Promise<User> {
     return this.prisma.user.create({
       data: {
         name: 'Heriklys',
