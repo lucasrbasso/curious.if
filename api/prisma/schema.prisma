@@ -20,8 +20,12 @@ model Post {
 }
 
 model User {
-  id   String @id @default(uuid())
-  name String
+  id          String   @id @default(uuid())
+  email       String   @unique()
+  password    String
+  name        String
+  permissions String[]
+  roles       String[]
 
   posts Post[]
 

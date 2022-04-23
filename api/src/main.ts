@@ -3,6 +3,11 @@ import { AppModule } from './app.module';
 import { PrismaService } from './database/prisma/prisma.service';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ErrorHandlingFilter } from './errors/error-handling-filter';
+import {
+  BadRequestException,
+  ValidationError,
+  ValidationPipe,
+} from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +23,13 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const prismaService = app.get(PrismaService);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        return new BadRequestException(validationErrors);
+      },
+    }),
+  );
   await app.listen(3000);
   await prismaService.enableShutdownHooks(app);
 }
