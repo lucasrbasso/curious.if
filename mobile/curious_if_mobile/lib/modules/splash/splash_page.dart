@@ -30,6 +30,8 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     AppThemeController().setThemeMode(ThemeMode.dark);
+
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppTheme.colorStatus(),
       sized: false,

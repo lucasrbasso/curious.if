@@ -47,6 +47,7 @@ dependencies:
   share_plus: ^3.1.0
   font_awesome_flutter: ^9.2.0
   mocktail: ^0.0.1-dev.12
+  email_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,13 @@ import 'package:sizer/sizer.dart';
 import '../core.dart';
 
 abstract class AppTextStyles {
+  TextStyle get textHeadingThree;
+  TextStyle get textHeadingTwo;
+  TextStyle get textHintFieldInput;
+  TextStyle get textFieldInput;
+  TextStyle get textButtonInput;
+  TextStyle get textBottomNavigation;
+
   /*---------------TEXTSTYLE SETTINGS---------------*/
   TextStyle get textButton;
   TextStyle get textSnackBar;
@@ -18,6 +25,42 @@ abstract class AppTextStyles {
 }
 
 class AppTextStylesDefault implements AppTextStyles {
+  @override
+  TextStyle get textHintFieldInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: AppTheme.colors.textField,
+      );
+  @override
+  TextStyle get textFieldInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textButtonInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.textButtonApp,
+      );
+  @override
+  TextStyle get textHeadingThree => GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textHeadingTwo => GoogleFonts.poppins(
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textBottomNavigation => GoogleFonts.poppins(
+        fontSize: 13,
+        fontWeight: FontWeight.normal,
+        color: AppTheme.colors.text,
+      );
   /*---------------TEXTSTYLE SETTINGS---------------*/
   @override
   TextStyle get textButton => GoogleFonts.inter(

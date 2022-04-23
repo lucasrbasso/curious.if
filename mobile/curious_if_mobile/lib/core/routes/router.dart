@@ -1,5 +1,5 @@
+import 'package:curious_if_mobile/modules/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
-import '../../i18n/i18n_const.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
 
@@ -8,6 +8,10 @@ class RouterClass {
   // STRINGS DAS ROTAS
   static const String initial = "/";
   static const String splash = "/splash";
+  static const String signUp = "/sign-up";
+  static const String login = "/login";
+  static const String home = "/home";
+  static const String perfil = "/perfil";
 
   // FUNÇÃO DE GERAÇÃO DE ROTAS
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -23,6 +27,10 @@ class RouterClass {
       // ROTA COM INICIAL DE CONFIGURAÇÕES
       case initial:
         return MaterialPageRoute(builder: (_) => const AppConfigPage());
+
+      // ROTA COM INICIAL DE CONFIGURAÇÕES
+      case signUp:
+        return MaterialPageRoute(builder: (_) => const SignUpPage());
 
       // ROTA CASO NÃO ACHE ROTA
       default:

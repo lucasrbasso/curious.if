@@ -5,6 +5,9 @@ abstract class AppColors {
   Color get text;
   Color get textField;
   Color get textButtonApp;
+  Color get backgroundButton;
+  Color get backgroundTextForm;
+  Color get backgroundBottomNavigationText;
   //COLORS SETTINGS
   Color get border;
   Color get divider;
@@ -33,9 +36,18 @@ class AppColorsLight implements AppColors {
   @override
   Color get text => const Color(0xFF000000);
   @override
-  Color get textField => const Color(0xFF000000);
+  Color get textField => const Color(0xAF000000);
   @override
   Color get textButtonApp => const Color(0xFFFDFDFD);
+
+  @override
+  Color get backgroundButton => const Color(0xFF05A678);
+  @override
+  Color get backgroundTextForm => const Color(0xFFD4D4D4);
+
+  @override
+  Color get backgroundBottomNavigationText => const Color(0xFFD4D4D4);
+
   /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFFDCE0E5);
@@ -104,6 +116,15 @@ class AppColorsDark implements AppColors {
   Color get textField => const Color(0xFF666360);
   @override
   Color get textButtonApp => const Color(0xFFFDFDFD);
+
+  @override
+  Color get backgroundButton => const Color(0xFF05A678);
+
+  @override
+  Color get backgroundTextForm => const Color(0xFF232129);
+
+  @override
+  Color get backgroundBottomNavigationText => const Color(0xFF312E38);
 /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFF5C5C5C);
