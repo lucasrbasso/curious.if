@@ -1,4 +1,4 @@
-export class createPostInputDto {
-    content: string;
-    authorId: string;
-  }
+export class CreatePostInputDTO {
+  content: string;
+  authorId: string;
+}
