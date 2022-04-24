@@ -1,3 +1,7 @@
-export class GetAllPostsOutputDto {
-    content: string;
+export class PostDTO {
+  id: string;
+  content: string;
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  # Application
+
+  database:
+    image: 'bitnami/postgresql'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=admin
+      - POSTGRESQL_PASSWORD=123456
+      - POSTGRESQL_DATABASE=app
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+volumes:
+  postgresql_data:
+    driver: local

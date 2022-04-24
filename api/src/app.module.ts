@@ -11,11 +11,12 @@ import { ErrorHandlingFilter } from './errors/error-handling-filter';
   imports: [DatabaseModule],
   controllers: [AppController, PostController],
   providers: [
-    AppService, 
+    AppService,
     PostService,
     {
       provide: APP_FILTER,
       useClass: ErrorHandlingFilter,
-    }],
+    },
+  ],
 })
 export class AppModule {}

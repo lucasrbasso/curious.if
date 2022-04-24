@@ -10,10 +10,10 @@ async function bootstrap() {
   app.useGlobalFilters(new ErrorHandlingFilter());
 
   const config = new DocumentBuilder()
-  .setTitle('Curious.IF')
-  .setDescription('API para envio de spotted')
-  .setVersion('1.0')
-  .build();
+    .setTitle('Curious.IF')
+    .setDescription('API para envio de spotted')
+    .setVersion('1.0')
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
