@@ -23,6 +23,7 @@ const returnUserData = {
   id: true,
   name: true,
   email: true,
+  isValidated: true,
   permissions: true,
   roles: true,
   createdAt: true,
@@ -51,6 +52,17 @@ export class UsersService {
     if (!user) {
       throw new BadRequestException('User not found.');
     }
+    return user;
+  }
+
+  async getAllPendingUsers(): Promise<GetUserDTO[]> {
+    const user = await this.prisma.user.findMany({
+      where: { isValidated: false },
+      select: {
+        ...returnUserData,
+      },
+    });
+
     return user;
   }
 
@@ -165,7 +177,43 @@ export class UsersService {
           ...user,
         },
       });
-    } catch (err: any) {
+    } catch (err) {
+      throw new BadRequestException('There was an error when updating a user.');
+    }
+  }
+
+  async validateUser(id: string, isValid = false): Promise<GetUserDTO> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+
+    if (isValid) {
+      if (!user.permissions.includes('USER.CAN_POST')) {
+        user.permissions.push('USER.CAN_POST');
+      }
+    }
+
+    user.isValidated = true;
+
+    try {
+      return await this.prisma.user.update({
+        where: {
+          id,
+        },
+        select: {
+          ...returnUserData,
+        },
+        data: {
+          ...user,
+        },
+      });
+    } catch (err) {
       throw new BadRequestException('There was an error when updating a user.');
     }
   }

@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards,
   Request,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDTO } from './dto/createUserDTO';
@@ -27,15 +28,28 @@ interface RequestProps {
     email: string;
   };
 }
+
+interface ValidateUserParams {
+  isValid: boolean;
+  id: string;
+}
+
 @Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
+  @Roles(Role.Admin, Role.Mod)
   @Get()
   async getAllUsers(): Promise<GetUserDTO[]> {
     return this.usersService.getAllUsers();
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.Mod)
+  @Get('/pending')
+  async getAllPendingUsers(): Promise<GetUserDTO[]> {
+    return this.usersService.getAllPendingUsers();
   }
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -54,6 +68,15 @@ export class UsersController {
   @Put('/:id')
   async updateUser(@Body() updateUserDto: UpdateUserDTO): Promise<GetUserDTO> {
     return this.usersService.updateUser(updateUserDto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.Mod)
+  @Patch('/:id')
+  async validateUser(
+    @Body() { id, isValid }: ValidateUserParams,
+  ): Promise<GetUserDTO> {
+    return this.usersService.validateUser(id, isValid);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
