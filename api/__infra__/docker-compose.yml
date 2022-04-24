@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  db_curiousIf:
+    image: postgres:latest
+    restart: always
+    environment:
+        POSTGRES_USER: admin
+        POSTGRES_DB: curiousIf
+        POSTGRES_PASSWORD: 123456
+    ports:
+      - 5432:5432
+
+  
