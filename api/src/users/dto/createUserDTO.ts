@@ -12,7 +12,6 @@ export class CreateUserDTO {
 
   @ApiProperty()
   @IsNotEmpty()
-  @Exclude()
   @MinLength(6, {
     message: 'Password should have more than 5 characters',
   })
