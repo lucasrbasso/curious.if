@@ -6,8 +6,8 @@ import '../../../../shared/text_form_input/text_form_input.dart';
 import 'form_sign_up_controller.dart';
 
 class FormSignUpWidget extends StatefulWidget {
-  void Function(Object?) onSaved;
-  FormSignUpWidget({
+  final Future Function(Map<String, dynamic>) onSaved;
+  const FormSignUpWidget({
     Key? key,
     required this.onSaved,
   }) : super(key: key);
@@ -19,6 +19,7 @@ class FormSignUpWidget extends StatefulWidget {
 class _FormSignUpWidgetState extends State<FormSignUpWidget> {
   final _formKey = GlobalKey<FormState>();
   final FormSignUpController controller = FormSignUpController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
         children: [
           TextFormInput(
             text: '',
+            disable: isLoading,
             hintText: 'Nome',
             icon: Icon(Icons.person_outline,
                 size: 22, color: AppTheme.colors.textField),
@@ -37,6 +39,7 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
           const SizedBox(height: 8),
           TextFormInput(
             text: '',
+            disable: isLoading,
             hintText: 'E-mail',
             icon: Icon(Icons.email_outlined,
                 size: 22, color: AppTheme.colors.textField),
@@ -46,6 +49,7 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
           const SizedBox(height: 8),
           TextFormInput(
             text: '',
+            disable: isLoading,
             hintText: 'Senha',
             icon: Icon(Icons.lock_outline,
                 size: 22, color: AppTheme.colors.textField),
@@ -55,11 +59,20 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
           ),
           const SizedBox(height: 32),
           ButtonFormInput(
-            onTap: () {
+            isLoading: isLoading,
+            onTap: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                widget.onSaved(
-                    [controller.email, controller.nome, controller.password]);
+                isLoading = true;
+                setState(() {});
+                await widget.onSaved({
+                  "email": controller.email,
+                  "name": controller.name,
+                  "password": controller.password
+                });
+                isLoading = false;
+                setState(() {});
+                FocusScope.of(context).unfocus();
               }
             },
           ),

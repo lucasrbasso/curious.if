@@ -23,17 +23,18 @@ class SignUpApi implements ISignUpApi {
     try {
       final response = await client
           .post(
-            Uri.parse(server),
+            Uri.parse(server + "api/users/"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(<String, String>{
-              'name': signUpModel.nome,
+              'name': signUpModel.name,
               'password': signUpModel.password,
               'email': signUpModel.email
             }),
           )
           .timeout(const Duration(seconds: 10));
+      print(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         return response.body;
       } else if (response.statusCode == 400) {
@@ -42,7 +43,7 @@ class SignUpApi implements ISignUpApi {
         throw "Erro na conexão da API (Status: ${response.statusCode})";
       }
     } catch (e) {
-      throw "Erro na conexão da API";
+      rethrow;
     }
   }
 }

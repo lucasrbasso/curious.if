@@ -29,6 +29,7 @@ abstract class _SignUpControllerBase with Store {
   Future<void> signUp({required SignUpModel signUpModel}) async {
     try {
       await _modifySignUpState(SignUpStateLoading());
+      await Future.delayed(Duration(seconds: 4));
       String email = await _signUpUseCase.signUp(signUpModel);
       await _modifySignUpState(SignUpStateSuccess(email: email));
     } catch (e) {

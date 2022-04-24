@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 
 class FormSignUpController {
-  String? nome;
+  String? name;
   String? email;
   String? password;
 
@@ -26,14 +26,14 @@ class FormSignUpController {
     return null;
   }
 
-  void savedName(String? value) => nome = value;
+  void savedName(String? value) => name = value;
 
   void savedEmail(String? value) => email = value;
 
   void savedPassword(String? value) => password = value;
 
   void printDados() {
-    print(nome);
+    print(name);
     print(email);
     print(password);
   }

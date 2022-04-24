@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 class SignUpModel {
-  final String nome;
+  final String name;
   final String email;
   final String password;
   SignUpModel({
-    required this.nome,
+    required this.name,
     required this.email,
     required this.password,
   });
 
   SignUpModel copyWith({
-    String? nome,
+    String? name,
     String? email,
     String? password,
   }) {
     return SignUpModel(
-      nome: nome ?? this.nome,
+      name: name ?? this.name,
       email: email ?? this.email,
       password: password ?? this.password,
     );
@@ -24,7 +24,7 @@ class SignUpModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'nome': nome,
+      'name': name,
       'email': email,
       'password': password,
     };
@@ -32,7 +32,7 @@ class SignUpModel {
 
   factory SignUpModel.fromMap(Map<String, dynamic> map) {
     return SignUpModel(
-      nome: map['nome'] ?? '',
+      name: map['name'] ?? '',
       email: map['email'] ?? '',
       password: map['password'] ?? '',
     );
@@ -45,18 +45,18 @@ class SignUpModel {
 
   @override
   String toString() =>
-      'SignUpModel(nome: $nome, email: $email, password: $password)';
+      'SignUpModel(name: $name, email: $email, password: $password)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is SignUpModel &&
-        other.nome == nome &&
+        other.name == name &&
         other.email == email &&
         other.password == password;
   }
 
   @override
-  int get hashCode => nome.hashCode ^ email.hashCode ^ password.hashCode;
+  int get hashCode => name.hashCode ^ email.hashCode ^ password.hashCode;
 }

@@ -1,9 +1,13 @@
+import 'package:curious_if_mobile/domain/signup/model/sign_up_model.dart';
+import 'package:curious_if_mobile/modules/sign_up/sign_up_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/core.dart';
 import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import 'sign_up_state.dart';
 import 'widgets/form_sign_up/form_sign_up.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -14,6 +18,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  late SignUpController _controller;
+  @override
+  void initState() {
+    _controller = SignUpController();
+    _controller.autoRun(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
@@ -54,9 +66,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: AppTheme.textStyles.textHeadingThree),
                     const SizedBox(height: 24),
                     FormSignUpWidget(
-                      onSaved: (signUpModel) {
-                        print(signUpModel);
-                      },
+                      onSaved: (signUpMap) async => await _controller.signUp(
+                        signUpModel: SignUpModel.fromMap(signUpMap),
+                      ),
                     ),
                   ],
                 ),
