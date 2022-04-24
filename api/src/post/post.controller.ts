@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Delete, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Delete,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostInputDTO } from './dto/create-post-input.dto';
 import { PostDTO } from './dto/get-post-output.dto';
@@ -8,8 +16,14 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async getAllPosts(): Promise<PostDTO[]> {
-    return this.postService.getAllPosts();
+  async getAllPosts(
+    @Query('cursor') cursor?: string,
+    @Query('take') take?: string,
+  ): Promise<PostDTO[]> {
+    return this.postService.getAllPosts({
+      take: take ? Number(take) : 2,
+      cursor: cursor ? { id: cursor } : undefined,
+    });
   }
 
   @Get('/:id')
@@ -17,7 +31,6 @@ export class PostController {
     return this.postService.getPostById(id);
   }
 
-  // Adicionar mapeamentos para as DTOs
   @Post()
   async createPost(
     @Body() createPostInputDto: CreatePostInputDTO,
@@ -25,7 +38,6 @@ export class PostController {
     return this.postService.createPost(createPostInputDto);
   }
 
-  // Mudar para mensagem na criação e na deleção
   @Delete('/:id')
   async deletePost(@Param('id') id: string): Promise<void> {
     return this.postService.deletePost(id);
