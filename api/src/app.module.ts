@@ -1,22 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PostService } from './post/post.service';
 import { DatabaseModule } from './database/database.module';
-import { PostController } from './post/post.controller';
-import { APP_FILTER } from '@nestjs/core';
-import { ErrorHandlingFilter } from './errors/error-handling-filter';
+import { UsersModule } from './users/users.module';
+import { PostModule } from './post/post.module';
 
 @Module({
-  imports: [DatabaseModule],
-  controllers: [AppController, PostController],
-  providers: [
-    AppService,
-    PostService,
-    {
-      provide: APP_FILTER,
-      useClass: ErrorHandlingFilter,
-    },
-  ],
+  imports: [DatabaseModule, UsersModule, PostModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

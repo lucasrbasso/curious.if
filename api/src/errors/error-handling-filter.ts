@@ -1,5 +1,6 @@
 import {
   ArgumentsHost,
+  BadRequestException,
   Catch,
   ExceptionFilter,
   HttpException,
@@ -26,11 +27,16 @@ export class ErrorHandlingFilter implements ExceptionFilter {
         }`,
       });
     }
+    let message = 'Internal server error';
+    if (exception instanceof BadRequestException) {
+      const err: any = exception.getResponse();
 
-    const message =
-      exception instanceof HttpException
-        ? exception.message || exception.message
-        : 'Internal server error';
+      if (typeof err === 'string') {
+        message = err;
+      } else {
+        message = err.message;
+      }
+    }
     const errorResponse: any = {
       statusCode,
       message,

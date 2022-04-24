@@ -1,6 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../database/prisma/prisma.service';
-import { User } from '@prisma/client';
 import { PostDTO } from './dto/get-post-output.dto';
 
 interface CreatePostProps {
@@ -38,14 +37,13 @@ export class PostService {
     });
 
     if (!post) {
-      throw new HttpException('Post not found.', HttpStatus.NOT_FOUND);
+      throw new BadRequestException('Post not found.');
     }
     return post;
   }
 
   async createPost({ authorId, content }: CreatePostProps): Promise<PostDTO> {
-    if (!authorId)
-      throw new HttpException('AuthorId is required.', HttpStatus.BAD_REQUEST);
+    if (!authorId) throw new BadRequestException('AuthorId is required.');
 
     try {
       return this.prisma.post.create({
@@ -55,10 +53,7 @@ export class PostService {
         },
       });
     } catch (err: any) {
-      throw new HttpException(
-        'There was an error when creating a post.',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new BadRequestException('There was an error when creating a post.');
     }
   }
 
@@ -68,17 +63,9 @@ export class PostService {
     });
 
     if (!post) {
-      throw new HttpException('Post not found.', HttpStatus.NOT_FOUND);
+      throw new BadRequestException('Post not found.');
     }
 
     await this.prisma.post.delete({ where: { id } });
-  }
-
-  async createUser(): Promise<User> {
-    return this.prisma.user.create({
-      data: {
-        name: 'Heriklys',
-      },
-    });
   }
 }
