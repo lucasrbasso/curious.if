@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostInputDTO } from './dto/create-post-input.dto';
@@ -18,8 +19,14 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllPosts(): Promise<PostDTO[]> {
-    return this.postService.getAllPosts();
+  async getAllPosts(
+    @Query('cursor') cursor?: string,
+    @Query('take') take?: string,
+  ): Promise<PostDTO[]> {
+    return this.postService.getAllPosts({
+      take: take ? Number(take) : 2,
+      cursor: cursor ? { id: cursor } : undefined,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -28,8 +35,6 @@ export class PostController {
     return this.postService.getPostById(id);
   }
 
-  // Adicionar mapeamentos para as DTOs
-
   @UseGuards(JwtAuthGuard)
   @Post()
   async createPost(
@@ -37,8 +42,6 @@ export class PostController {
   ): Promise<PostDTO> {
     return this.postService.createPost(createPostInputDto);
   }
-
-  // Mudar para mensagem na criação e na deleção
 
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')

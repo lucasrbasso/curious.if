@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { PostDTO } from './dto/get-post-output.dto';
 
@@ -6,12 +7,25 @@ interface CreatePostProps {
   authorId: string;
   content: string;
 }
+
+interface PaginationProps {
+  take?: number;
+  cursor?: Prisma.PostWhereUniqueInput;
+}
+
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllPosts(): Promise<PostDTO[]> {
+  async getAllPosts({ take, cursor }: PaginationProps): Promise<PostDTO[]> {
+    console.log(cursor);
     const posts = await this.prisma.post.findMany({
+      take,
+      skip: cursor ? 1 : 0,
+      cursor,
+      orderBy: {
+        createdAt: 'desc',
+      },
       select: {
         id: true,
         createdAt: true,
