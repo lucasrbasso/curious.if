@@ -8,6 +8,8 @@ abstract class AppColors {
   Color get backgroundButton;
   Color get backgroundTextForm;
   Color get backgroundBottomNavigationText;
+  Color get subtitleOpacity;
+  Color get subtitleButton;
   //COLORS SETTINGS
   Color get border;
   Color get divider;
@@ -47,6 +49,12 @@ class AppColorsLight implements AppColors {
 
   @override
   Color get backgroundBottomNavigationText => const Color(0xFFD4D4D4);
+
+  @override
+  Color get subtitleOpacity => const Color(0xFF696969);
+
+  @override
+  Color get subtitleButton => const Color(0xFF007A78);
 
   /*---------------COLORS SETTINGS---------------*/
   @override
@@ -125,6 +133,12 @@ class AppColorsDark implements AppColors {
 
   @override
   Color get backgroundBottomNavigationText => const Color(0xFF312E38);
+
+  @override
+  Color get subtitleOpacity => const Color(0xFF999591);
+
+  @override
+  Color get subtitleButton => const Color(0xFF007A78);
 /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFF5C5C5C);

@@ -1,31 +1,29 @@
-import 'package:curious_if_mobile/domain/signup/model/sign_up_model.dart';
-import 'package:curious_if_mobile/modules/sign_up/sign_up_controller.dart';
+import 'package:curious_if_mobile/domain/login/model/login_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/core.dart';
 import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
-import 'widgets/form_sign_up/form_sign_up.dart';
+import 'login_controller.dart';
+import 'widgets/form_login/form_login.dart';
 
-class SignUpPage extends StatefulWidget {
-  final String initialEmail;
-  final String initialPassword;
-  const SignUpPage({
+class LoginPage extends StatefulWidget {
+  final String email;
+  const LoginPage({
     Key? key,
-    this.initialEmail = '',
-    this.initialPassword = '',
+    this.email = '',
   }) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  late SignUpController _controller;
+class _LoginPageState extends State<LoginPage> {
+  late LoginController _controller;
   @override
   void initState() {
-    _controller = SignUpController();
+    _controller = LoginController();
     _controller.autoRun(context);
     super.initState();
   }
@@ -56,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Image.asset(AppTheme.images.logo),
               ),
               AnimatedContainer(
-                height: isKeyboard ? 35 : 95,
+                height: isKeyboard ? 32 : 95,
                 constraints: BoxConstraints(maxHeight: 5.h * 100.h / 100.w),
                 duration: const Duration(milliseconds: 150),
                 // Provide an optional curve to make the animation feel smoother.
@@ -66,15 +64,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: EdgeInsets.symmetric(horizontal: 11.w),
                 child: Column(
                   children: [
-                    Text("Crie sua conta",
-                        style: AppTheme.textStyles.textHeadingThree),
-                    const SizedBox(height: 24),
-                    FormSignUpWidget(
-                      initialEmail: widget.initialEmail,
-                      initialPassword: widget.initialPassword,
-                      onSaved: (signUpMap) async => await _controller.signUp(
-                        signUpModel: SignUpModel.fromMap(signUpMap),
-                      ),
+                    Text("Login", style: AppTheme.textStyles.textHeadingThree),
+                    AnimatedContainer(
+                      height: isKeyboard ? 24 : 48,
+                      constraints:
+                          BoxConstraints(maxHeight: 5.h * 100.h / 100.w),
+                      duration: const Duration(milliseconds: 150),
+                      // Provide an optional curve to make the animation feel smoother.
+                      curve: Curves.linear,
+                    ),
+                    FormLoginWidget(
+                      initialEmail: widget.email,
+                      onSaved: (loginMap) async => await _controller.login(
+                          loginModel: LoginModel.fromMap(loginMap)),
                     ),
                   ],
                 ),
@@ -85,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
         bottomNavigationBar: BottomTextNavigationBar(
           icon: Icon(Icons.arrow_back, color: AppTheme.colors.text, size: 18),
           onTap: () => Navigator.pop(context),
-          text: "Voltar para o login",
+          text: "Voltar para a home",
         ),
       ),
     );
@@ -93,7 +95,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }

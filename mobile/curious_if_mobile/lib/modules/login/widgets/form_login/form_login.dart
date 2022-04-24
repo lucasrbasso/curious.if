@@ -3,26 +3,24 @@ import 'package:flutter/material.dart';
 import '../../../../core/core.dart';
 import '../../../../shared/button_form_input/button_form_input.dart';
 import '../../../../shared/text_form_input/text_form_input.dart';
-import 'form_sign_up_controller.dart';
+import 'form_login_controller.dart';
 
-class FormSignUpWidget extends StatefulWidget {
-  final Future Function(Map<String, dynamic>) onSaved;
+class FormLoginWidget extends StatefulWidget {
   final String initialEmail;
-  final String initialPassword;
-  const FormSignUpWidget({
+  final Future Function(Map<String, dynamic>) onSaved;
+  const FormLoginWidget({
     Key? key,
-    required this.onSaved,
     required this.initialEmail,
-    required this.initialPassword,
+    required this.onSaved,
   }) : super(key: key);
 
   @override
-  State<FormSignUpWidget> createState() => _FormSignUpWidgetState();
+  State<FormLoginWidget> createState() => _FormLoginWidgetState();
 }
 
-class _FormSignUpWidgetState extends State<FormSignUpWidget> {
+class _FormLoginWidgetState extends State<FormLoginWidget> {
   final _formKey = GlobalKey<FormState>();
-  final FormSignUpController controller = FormSignUpController();
+  final FormLoginController controller = FormLoginController();
   bool isLoading = false;
 
   @override
@@ -31,16 +29,6 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormInput(
-            text: '',
-            disable: isLoading,
-            hintText: 'Nome',
-            icon: Icon(Icons.person_outline,
-                size: 22, color: AppTheme.colors.textField),
-            validate: controller.validateName,
-            onSaved: controller.savedName,
-          ),
-          const SizedBox(height: 8),
           TextFormInput(
             text: widget.initialEmail,
             disable: isLoading,
@@ -52,7 +40,7 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
           ),
           const SizedBox(height: 8),
           TextFormInput(
-            text: widget.initialPassword,
+            text: '',
             disable: isLoading,
             hintText: 'Senha',
             icon: Icon(Icons.lock_outline,
@@ -61,10 +49,10 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
             onSaved: controller.savedPassword,
             password: true,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 48),
           ButtonFormInput(
             isLoading: isLoading,
-            text: "Cadastrar",
+            text: "Login",
             onTap: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
@@ -72,7 +60,6 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
                 setState(() {});
                 await widget.onSaved({
                   "email": controller.email,
-                  "name": controller.name,
                   "password": controller.password
                 });
                 isLoading = false;
@@ -80,6 +67,28 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
                 FocusScope.of(context).unfocus();
               }
             },
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Ainda não possui uma conta?",
+            style: AppTheme.textStyles.subtitleOpacity,
+            textAlign: TextAlign.center,
+          ),
+          InkWell(
+            onTap: () {
+              _formKey.currentState!.save();
+              Navigator.pushNamed(context, RouterClass.signUp, arguments: {
+                "email": controller.email,
+                "password": controller.password
+              });
+              controller.email = null;
+              controller.password = null;
+            },
+            child: Text(
+              "Cadastre-se",
+              style: AppTheme.textStyles.subtitleButton,
+              textAlign: TextAlign.center,
+            ),
           ),
         ],
       ),

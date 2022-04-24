@@ -18,6 +18,8 @@ class SignUpController extends _SignUpControllerBase with _$SignUpController {
 abstract class _SignUpControllerBase with Store {
   late ISignUpUseCase _signUpUseCase;
 
+  late ReactionDisposer disposer;
+
   @observable
   SignUpState state = SignUpStateEmpty();
 
@@ -55,18 +57,19 @@ abstract class _SignUpControllerBase with Store {
 
   // FUNÇÃO PARA EXECUTAR SEMPRE QUE TIVER UMA ALTERAÇÃO NO SignUpState
   void autoRun(BuildContext context) {
-    autorun((_) {
+    disposer = autorun((_) {
       if (state is SignUpStateFailure) {
         String message = (state as SignUpStateFailure).message;
+        _modifySignUpState(SignUpStateEmpty());
         showSnackBar(context, message, Colors.red);
       } else if (state is SignUpStateSuccess) {
         String email = (state as SignUpStateSuccess).email;
+        _modifySignUpState(SignUpStateEmpty());
         showSnackBar(context, "Conta criada com sucesso!!!", Colors.green);
-        Navigator.pushNamedAndRemoveUntil(
+        Navigator.pushNamed(
           context,
           RouterClass.signUpSuccess,
-          (Route<dynamic> route) => false,
-          arguments: {"email": (SignUpState as SignUpStateSuccess).email},
+          arguments: {"email": email},
         );
       }
     });
@@ -74,5 +77,6 @@ abstract class _SignUpControllerBase with Store {
 
   void dispose() {
     _signUpUseCase.dispose();
+    disposer.reaction.dispose();
   }
 }

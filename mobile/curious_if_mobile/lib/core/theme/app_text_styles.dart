@@ -11,6 +11,8 @@ abstract class AppTextStyles {
   TextStyle get textFieldInput;
   TextStyle get textButtonInput;
   TextStyle get textBottomNavigation;
+  TextStyle get subtitleOpacity;
+  TextStyle get subtitleButton;
 
   /*---------------TEXTSTYLE SETTINGS---------------*/
   TextStyle get textButton;
@@ -46,13 +48,13 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get textHeadingThree => GoogleFonts.poppins(
         fontSize: 24,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         color: AppTheme.colors.text,
       );
   @override
   TextStyle get textHeadingTwo => GoogleFonts.poppins(
         fontSize: 30,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         color: AppTheme.colors.text,
       );
   @override
@@ -60,6 +62,19 @@ class AppTextStylesDefault implements AppTextStyles {
         fontSize: 13,
         fontWeight: FontWeight.normal,
         color: AppTheme.colors.text,
+      );
+
+  @override
+  TextStyle get subtitleOpacity => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleOpacity,
+      );
+  @override
+  TextStyle get subtitleButton => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleButton,
       );
   /*---------------TEXTSTYLE SETTINGS---------------*/
   @override
