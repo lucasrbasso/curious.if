@@ -9,6 +9,11 @@ interface AuthProps {
   pass: string;
 }
 
+interface RequestUserProps {
+  id: string;
+  email: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -36,8 +41,9 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User) {
-    const payload = { username: user.email, sub: user.id };
+  async login(user: RequestUserProps) {
+    console.log(user);
+    const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
     };

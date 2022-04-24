@@ -15,6 +15,12 @@ import { GetUserDTO } from './dto/getUserDTO';
 import { UpdateUserDTO } from './dto/updateUserDTO';
 import { UsersService } from './users.service';
 
+interface RequestProps {
+  user: {
+    userId: string;
+    email: string;
+  };
+}
 @Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -27,7 +33,8 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  async getUserById(@Request() req): Promise<GetUserDTO> {
+  async getUserById(@Request() req: RequestProps): Promise<GetUserDTO> {
+    console.log(req);
     return this.usersService.getUserById(req.user.userId);
   }
 
