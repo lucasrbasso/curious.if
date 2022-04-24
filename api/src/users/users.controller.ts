@@ -31,13 +31,15 @@ interface RequestProps {
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
   @Get()
   async getAllUsers(): Promise<GetUserDTO[]> {
     return this.usersService.getAllUsers();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Read)
   @Get('/me')
   async getUserById(@Request() req: RequestProps): Promise<GetUserDTO> {
     return this.usersService.getUserById(req.user.userId);
@@ -54,8 +56,7 @@ export class UsersController {
     return this.usersService.updateUser(updateUserDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
-  @Permissions(Permission.Post)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Delete('/:id')
   async deletePost(@Param('id') id: string): Promise<void> {
