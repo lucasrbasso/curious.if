@@ -125,6 +125,8 @@ abstract class AppConfigControllerBase with Store {
   Future<bool> initialConfiguration() async {
     try {
       await controllerAppTheme.currentThemeMode();
+
+      print(controllerAppTheme.themeMode);
       controllerAppTheme.listenBrightnessSystem();
       await currentLocale();
       return true;

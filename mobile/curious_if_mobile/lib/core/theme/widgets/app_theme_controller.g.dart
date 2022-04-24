@@ -30,6 +30,13 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
       (_$isDarkModeComputed ??= Computed<bool>(() => super.isDarkMode,
               name: '_AppThemeControllerBase.isDarkMode'))
           .value;
+  Computed<SystemUiOverlayStyle>? _$colorStatusComputed;
+
+  @override
+  SystemUiOverlayStyle get colorStatus => (_$colorStatusComputed ??=
+          Computed<SystemUiOverlayStyle>(() => super.colorStatus,
+              name: '_AppThemeControllerBase.colorStatus'))
+      .value;
 
   final _$_themeModeAtom = Atom(name: '_AppThemeControllerBase._themeMode');
 
@@ -105,7 +112,8 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
 errorMessage: ${errorMessage},
 themeMode: ${themeMode},
 brightness: ${brightness},
-isDarkMode: ${isDarkMode}
+isDarkMode: ${isDarkMode},
+colorStatus: ${colorStatus}
     ''';
   }
 }

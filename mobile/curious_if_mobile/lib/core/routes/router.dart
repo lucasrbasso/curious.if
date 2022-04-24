@@ -1,5 +1,6 @@
 import 'package:curious_if_mobile/modules/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
+import '../../modules/sign_up/sign_up_success/sign_up_success_page.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
 
@@ -9,6 +10,7 @@ class RouterClass {
   static const String initial = "/";
   static const String splash = "/splash";
   static const String signUp = "/sign-up";
+  static const String signUpSuccess = "/sign-up-success";
   static const String login = "/login";
   static const String home = "/home";
   static const String perfil = "/perfil";
@@ -31,6 +33,14 @@ class RouterClass {
       // ROTA COM INICIAL DE CONFIGURAÇÕES
       case signUp:
         return MaterialPageRoute(builder: (_) => const SignUpPage());
+
+      // ROTA DA SPLASH
+      case signUpSuccess:
+        Map<String, dynamic> arguments =
+            routeSettings.arguments as Map<String, dynamic>;
+        String email = arguments["email"];
+        return MaterialPageRoute(
+            builder: (_) => SignUpSuccessPage(email: email, key: UniqueKey()));
 
       // ROTA CASO NÃO ACHE ROTA
       default:
