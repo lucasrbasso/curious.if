@@ -13,6 +13,12 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDTO } from './dto/createUserDTO';
 import { GetUserDTO } from './dto/getUserDTO';
 import { UpdateUserDTO } from './dto/updateUserDTO';
+import { Permission } from './permissions/permission.enum';
+import { Permissions } from './permissions/permissions.decorator';
+import { PermissionsGuard } from './permissions/permissions.guard';
+import { Role } from './roles/role.enum';
+import { RolesGuard } from './roles/role.guard';
+import { Roles } from './roles/roles.decorator';
 import { UsersService } from './users.service';
 
 interface RequestProps {
@@ -34,7 +40,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   async getUserById(@Request() req: RequestProps): Promise<GetUserDTO> {
-    console.log(req);
     return this.usersService.getUserById(req.user.userId);
   }
 
@@ -49,7 +54,9 @@ export class UsersController {
     return this.usersService.updateUser(updateUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
+  @Roles(Role.Admin)
   @Delete('/:id')
   async deletePost(@Param('id') id: string): Promise<void> {
     return this.usersService.deleteUser(id);

@@ -6,6 +6,8 @@ interface RequestProps {
   user: {
     id: string;
     email: string;
+    roles: string[];
+    permissions: string[];
   };
 }
 @Controller('/auth')

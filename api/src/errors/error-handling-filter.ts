@@ -3,6 +3,7 @@ import {
   BadRequestException,
   Catch,
   ExceptionFilter,
+  ForbiddenException,
   HttpException,
   HttpStatus,
   UnauthorizedException,
@@ -12,6 +13,8 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 @Catch()
 export class ErrorHandlingFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost): any {
+    console.log(exception);
+
     const context = host.switchToHttp();
     const response = context.getResponse();
 
@@ -43,6 +46,9 @@ export class ErrorHandlingFilter implements ExceptionFilter {
           }
           break;
         case UnauthorizedException:
+          message = err.message;
+          break;
+        case ForbiddenException:
           message = err.message;
           break;
         default:
