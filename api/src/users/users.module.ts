@@ -15,5 +15,6 @@ import { UsersService } from './users.service';
       useClass: ErrorHandlingFilter,
     },
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}
