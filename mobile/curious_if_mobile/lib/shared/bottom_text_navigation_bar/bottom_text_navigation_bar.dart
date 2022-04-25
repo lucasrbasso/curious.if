@@ -15,12 +15,16 @@ class BottomTextNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding.bottom / 2;
     return Container(
       width: double.maxFinite,
-      height: 46,
+      height: padding + 60,
       color: AppTheme.colors.backgroundBottomNavigationText,
       child: TextButton.icon(
         onPressed: () => onTap(),
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(EdgeInsets.only(bottom: padding)),
+        ),
         icon: icon,
         label: Text(
           text,

@@ -24,6 +24,13 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
   final _formKey = GlobalKey<FormState>();
   final FormSignUpController controller = FormSignUpController();
   bool isLoading = false;
+  Future? onTapCancel;
+
+  @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +76,19 @@ class _FormSignUpWidgetState extends State<FormSignUpWidget> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 isLoading = true;
-                setState(() {});
-                await widget.onSaved({
+                if (mounted) setState(() {});
+                onTapCancel = await widget.onSaved({
                   "email": controller.email,
                   "name": controller.name,
                   "password": controller.password
                 });
                 isLoading = false;
-                setState(() {});
-                FocusScope.of(context).unfocus();
+
+                if (mounted) {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                  });
+                }
               }
             },
           ),

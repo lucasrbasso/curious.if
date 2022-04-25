@@ -24,6 +24,12 @@ class _FormLoginWidgetState extends State<FormLoginWidget> {
   bool isLoading = false;
 
   @override
+  void dispose() {
+    _formKey.currentState?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
@@ -57,14 +63,17 @@ class _FormLoginWidgetState extends State<FormLoginWidget> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 isLoading = true;
-                setState(() {});
+                if (mounted) setState(() {});
                 await widget.onSaved({
                   "email": controller.email,
                   "password": controller.password
                 });
                 isLoading = false;
-                setState(() {});
-                FocusScope.of(context).unfocus();
+                if (mounted) {
+                  setState(() {
+                    FocusScope.of(context).unfocus();
+                  });
+                }
               }
             },
           ),

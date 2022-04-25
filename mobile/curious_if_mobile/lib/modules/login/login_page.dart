@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               AnimatedContainer(
                 height: isKeyboard ? 20 : 70,
-                constraints: BoxConstraints(maxHeight: 5.h),
+                constraints: BoxConstraints(maxHeight: 7.h),
                 duration: const Duration(milliseconds: 150),
                 // Provide an optional curve to make the animation feel smoother.
                 curve: Curves.linear,
@@ -95,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 }

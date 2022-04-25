@@ -46,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               AnimatedContainer(
                 height: isKeyboard ? 20 : 70,
-                constraints: BoxConstraints(maxHeight: 5.h),
+                constraints: BoxConstraints(maxHeight: 7.h),
                 duration: const Duration(milliseconds: 150),
                 // Provide an optional curve to make the animation feel smoother.
                 curve: Curves.linear,
