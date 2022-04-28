@@ -2,48 +2,55 @@ import 'dart:convert';
 
 class PostModel {
   final String id;
-  final String body;
+  final String content;
   final String forPeople;
   final DateTime createdAt;
   PostModel({
     required this.id,
-    required this.body,
+    required this.content,
     required this.forPeople,
     required this.createdAt,
   });
 
   PostModel copyWith({
     String? id,
-    String? body,
+    String? content,
     String? forPeople,
     DateTime? createdAt,
   }) {
     return PostModel(
       id: id ?? this.id,
-      body: body ?? this.body,
+      content: content ?? this.content,
       forPeople: forPeople ?? this.forPeople,
       createdAt: createdAt ?? this.createdAt,
     );
   }
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'id': id});
-    result.addAll({'body': body});
-    result.addAll({'forPeople': forPeople});
-    result.addAll({'createdAt': createdAt.millisecondsSinceEpoch});
-
-    return result;
+    return {
+      'id': id,
+      'content': content,
+      'forPeople': forPeople,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+    };
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
     return PostModel(
       id: map['id'] ?? '',
-      body: map['body'] ?? '',
+      content: map['content'] ?? '',
       forPeople: map['forPeople'] ?? '',
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      createdAt: DateTime.parse(map['createdAt']),
     );
+  }
+
+  static List<PostModel> fromJsonList(String source) {
+    List postsMap = json.decode(source);
+    List<PostModel> posts = [];
+    for (Map<String, dynamic> map in postsMap) {
+      posts.add(PostModel.fromMap(map));
+    }
+    return posts;
   }
 
   String toJson() => json.encode(toMap());
@@ -53,7 +60,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(id: $id, body: $body, forPeople: $forPeople, createdAt: $createdAt)';
+    return 'PostModel(id: $id, content: $content, forPeople: $forPeople, createdAt: $createdAt)';
   }
 
   @override
@@ -62,7 +69,7 @@ class PostModel {
 
     return other is PostModel &&
         other.id == id &&
-        other.body == body &&
+        other.content == content &&
         other.forPeople == forPeople &&
         other.createdAt == createdAt;
   }
@@ -70,7 +77,7 @@ class PostModel {
   @override
   int get hashCode {
     return id.hashCode ^
-        body.hashCode ^
+        content.hashCode ^
         forPeople.hashCode ^
         createdAt.hashCode;
   }

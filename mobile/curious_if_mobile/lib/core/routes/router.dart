@@ -1,6 +1,8 @@
+import 'package:curious_if_mobile/modules/home/home_page.dart';
 import 'package:curious_if_mobile/modules/login/login_page.dart';
 import 'package:curious_if_mobile/modules/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
+import '../../domain/login/model/user_model.dart';
 import '../../modules/sign_up/sign_up_success/sign_up_success_page.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
@@ -63,6 +65,12 @@ class RouterClass {
         String? email = arguments?["email"];
         return MaterialPageRoute(
             builder: (_) => LoginPage(email: email ?? '', key: UniqueKey()));
+      case home:
+        Map<String, dynamic>? arguments =
+            routeSettings.arguments as Map<String, dynamic>;
+
+        UserModel user = arguments["user"];
+        return MaterialPageRoute(builder: (_) => HomePage(user: user));
 
       // ROTA CASO NÃO ACHE ROTA
       default:

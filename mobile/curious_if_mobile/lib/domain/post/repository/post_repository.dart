@@ -1,24 +1,33 @@
-import '../datasource/login_api.dart';
-import '../model/login_model.dart';
-import '../model/user_model.dart';
+import '../datasource/post_api.dart';
+import '../model/post_model.dart';
 
-abstract class ILoginRepository {
-  Future<UserModel> login(LoginModel loginModel);
+abstract class IPostRepository {
+  Future<List<PostModel>> listPosts({
+    required String token,
+    required String cursorID,
+    required String takeValue,
+  });
   void dispose();
 }
 
-class LoginRepository implements ILoginRepository {
-  final ILoginApi _datasource;
+class PostRepository implements IPostRepository {
+  final IPostApi _datasource;
 
-  LoginRepository({ILoginApi? datasource})
-      : _datasource = datasource ?? LoginApi();
+  PostRepository({IPostApi? datasource})
+      : _datasource = datasource ?? PostApi();
 
   @override
-  Future<UserModel> login(LoginModel loginModel) async {
+  Future<List<PostModel>> listPosts({
+    required String token,
+    required String cursorID,
+    required String takeValue,
+  }) async {
     try {
-      String response = await _datasource.login(loginModel);
-      UserModel userModel = UserModel.fromJson(response);
-      return userModel;
+      String response = await _datasource.listPosts(
+          cursorID: cursorID, takeValue: takeValue, token: token);
+
+      List<PostModel> posts = PostModel.fromJsonList(response);
+      return posts;
     } catch (e) {
       throw handleErrorReturn(e);
     }

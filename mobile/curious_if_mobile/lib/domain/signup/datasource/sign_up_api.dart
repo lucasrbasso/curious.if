@@ -37,7 +37,7 @@ class SignUpApi implements ISignUpApi {
       print(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         return response.body;
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
         throw json.decode(response.body);
       } else {
         throw "Erro na conexão da API (Status: ${response.statusCode})";
