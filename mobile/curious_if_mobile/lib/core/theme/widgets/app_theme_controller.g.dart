@@ -83,6 +83,14 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
     });
   }
 
+  final _$toggleThemeModeAsyncAction =
+      AsyncAction('_AppThemeControllerBase.toggleThemeMode');
+
+  @override
+  Future<void> toggleThemeMode() {
+    return _$toggleThemeModeAsyncAction.run(() => super.toggleThemeMode());
+  }
+
   final _$setThemeModeAsyncAction =
       AsyncAction('_AppThemeControllerBase.setThemeMode');
 

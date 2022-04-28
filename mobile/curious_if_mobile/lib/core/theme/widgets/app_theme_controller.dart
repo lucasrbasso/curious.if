@@ -51,6 +51,17 @@ abstract class _AppThemeControllerBase with Store {
     }
   }
 
+  @action
+  Future<void> toggleThemeMode() async {
+    if (themeMode == ThemeMode.system) {
+      await setThemeMode(ThemeMode.dark);
+    } else if (themeMode == ThemeMode.dark) {
+      await setThemeMode(ThemeMode.light);
+    } else {
+      await setThemeMode(ThemeMode.system);
+    }
+  }
+
   // SETA O TEMA NOVO QUANDO O USUARIO MUDAR
   // CASO TENHA ALGUM PROBLEMA SETA O TEMA COMO LIGHT
   @action
