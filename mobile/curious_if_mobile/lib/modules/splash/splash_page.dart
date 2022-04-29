@@ -19,65 +19,30 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   final SplashController splashController = SplashController();
   final AppConfigController configController = AppConfigController();
-  late AnimationController animationControllerScale;
-  late AnimationController animationControllerTranslate;
 
   @override
   void initState() {
-    animationControllerScale = AnimationController(
-      duration: const Duration(milliseconds: 900),
-      vsync: this,
-    )..repeat(reverse: true);
-    animationControllerTranslate = AnimationController(
-      duration: const Duration(milliseconds: 1800),
-      vsync: this,
-    )..forward();
-
     // REDIRECIONAMENTO PARA LOGIN-PAGE
     if (widget.redirect) splashController.redirectSplash(context);
     super.initState();
   }
 
   @override
-  void dispose() {
-    animationControllerScale.dispose();
-    animationControllerTranslate.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    AppConfigController().colorStatus(isWhite: true);
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: AppConfigController().colorStatus(isWhite: true),
+      value: AppThemeController().colorStatus,
       sized: false,
       child: Container(
-        decoration: BoxDecoration(gradient: AppTheme.gradients.background),
+        decoration: BoxDecoration(color: AppTheme.colors.background),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: ScaleTransition(
-            scale: Tween<double>(begin: .85, end: 1).animate(
-              CurvedAnimation(
-                parent: animationControllerScale,
-                curve: const Interval(0, 1, curve: Curves.linear),
-              ),
-            ),
-            child: RotationTransition(
-              turns: Tween<double>(
-                begin: 0,
-                end: 1,
-              ).animate(CurvedAnimation(
-                parent: animationControllerTranslate,
-                curve: const Interval(0.1, 1, curve: Curves.bounceOut),
-              )),
-              child: Center(
-                child: Container(
-                  width: double.maxFinite,
-                  height: double.maxFinite,
-                  padding: EdgeInsets.symmetric(horizontal: 35.w),
-                  child: Icon(Icons.add),
-                ),
-              ),
+          body: Center(
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              padding: EdgeInsets.symmetric(horizontal: 21.w),
+              child: Image.asset(AppTheme.images.logo),
             ),
           ),
         ),

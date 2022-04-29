@@ -122,22 +122,11 @@ abstract class AppConfigControllerBase with Store {
     }
   }
 
-  SystemUiOverlayStyle colorStatus({required bool isWhite}) {
-    if (controllerAppTheme.themeMode == ThemeMode.dark && !isWhite) {
-      isWhite = true;
-    }
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // cor da barra superior
-      statusBarIconBrightness: isWhite
-          ? Brightness.light
-          : Brightness.dark, // ícones da barra superior
-    ));
-    return isWhite ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark;
-  }
-
   Future<bool> initialConfiguration() async {
     try {
       await controllerAppTheme.currentThemeMode();
+
+      print(controllerAppTheme.themeMode);
       controllerAppTheme.listenBrightnessSystem();
       await currentLocale();
       return true;
@@ -149,7 +138,10 @@ abstract class AppConfigControllerBase with Store {
 
 class UtilsConst {
   //SERVIDOR
-  static String server = "http://10.0.2.2/";
+  //static String server = "http://192.168.1.3:3000/";
+  //static String server = "http://10.0.2.2:3000/";
+  //static String server = "http://localhost:3000/";
+  static String server = "http://192.168.0.103:3000/";
 }
 
 class VersionInfo {

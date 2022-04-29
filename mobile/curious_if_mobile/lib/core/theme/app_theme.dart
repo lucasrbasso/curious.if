@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../core.dart';
 
 class AppTheme {
   static AppColors get colors {
-    AppThemeController controllerTheme = AppThemeController();
-    ThemeMode themeModeContext = controllerTheme.themeMode;
-    if (themeModeContext != ThemeMode.dark) {
+    AppThemeController themeModeContext = AppThemeController();
+    bool isDarkMode = themeModeContext.brightness == Brightness.dark;
+
+    if (!isDarkMode) {
       return AppColorsLight();
     } else {
       return AppColorsDark();
@@ -15,9 +17,9 @@ class AppTheme {
 
   static AppTextStyles get textStyles => AppTextStylesDefault();
   static AppImages get images {
-    AppThemeController controllerTheme = AppThemeController();
-    ThemeMode themeModeContext = controllerTheme.themeMode;
-    if (themeModeContext != ThemeMode.dark) {
+    AppThemeController themeModeContext = AppThemeController();
+    bool isDarkMode = themeModeContext.brightness == Brightness.dark;
+    if (!isDarkMode) {
       return AppImagesLight();
     } else {
       return AppImagesDark();
@@ -25,9 +27,9 @@ class AppTheme {
   }
 
   static AppGradients get gradients {
-    AppThemeController controllerTheme = AppThemeController();
-    ThemeMode themeModeContext = controllerTheme.themeMode;
-    if (themeModeContext != ThemeMode.dark) {
+    AppThemeController themeModeContext = AppThemeController();
+    bool isDarkMode = themeModeContext.brightness == Brightness.dark;
+    if (!isDarkMode) {
       return AppGradientsLight();
     } else {
       return AppGradientsDark();

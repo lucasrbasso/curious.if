@@ -5,38 +5,108 @@ import 'package:sizer/sizer.dart';
 import '../core.dart';
 
 abstract class AppTextStyles {
-  TextStyle get textGradient;
-  TextStyle get textAppBar;
-  TextStyle get textTooltip;
-  TextStyle get textSimple;
-  TextStyle get textTitle;
-  TextStyle get textSubtitle;
-  TextStyle get textButton;
-  TextStyle get textSubtitleOpacity;
-  TextStyle get buttonColor;
-  TextStyle get textSelect;
-  TextStyle get textSnackBar;
-  TextStyle get textAlertDialog;
-  TextStyle get textSlidableButton;
-  TextStyle get errorTextForm;
+  TextStyle get textHeadingThree;
+  TextStyle get textHeadingTwo;
+  TextStyle get textHintFieldInput;
+  TextStyle get textFieldInput;
+  TextStyle get textButtonInput;
+  TextStyle get textBottomNavigation;
+  TextStyle get subtitleOpacity;
+  TextStyle get subtitleButton;
+
+  TextStyle get titlePost;
+  TextStyle get subtitleTextPost;
+  TextStyle get titleTextPost;
 
   /*---------------TEXTSTYLE SETTINGS---------------*/
+  TextStyle get textButton;
+  TextStyle get textSnackBar;
+  TextStyle get textAlertDialog;
+  TextStyle get titleAlertDialog;
   TextStyle get appBarTitleSettings;
   TextStyle get bodyCardTitleSettings;
   TextStyle get bodyCardSubtitleSettings;
   TextStyle get bodyButtomTitleSettings;
   TextStyle get bodyTitleSettings;
-  TextStyle get titleAlertDialog;
 }
 
 class AppTextStylesDefault implements AppTextStyles {
   @override
-  TextStyle get textGradient => GoogleFonts.montserrat(
-        fontSize: 32.sp,
-        fontWeight: FontWeight.w700,
-        foreground: Paint()
-          ..shader = AppTheme.gradients.textGradient
-              .createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+  TextStyle get textHintFieldInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: AppTheme.colors.textField,
+      );
+  @override
+  TextStyle get textFieldInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textButtonInput => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.textButtonApp,
+      );
+  @override
+  TextStyle get textHeadingThree => GoogleFonts.poppins(
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textHeadingTwo => GoogleFonts.poppins(
+        fontSize: 30,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+  @override
+  TextStyle get textBottomNavigation => GoogleFonts.poppins(
+        fontSize: 13,
+        fontWeight: FontWeight.normal,
+        color: AppTheme.colors.text,
+      );
+
+  @override
+  TextStyle get subtitleOpacity => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleOpacity,
+      );
+  @override
+  TextStyle get subtitleButton => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleButton,
+      );
+
+  @override
+  TextStyle get titlePost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppTheme.colors.titlePost,
+      );
+
+  @override
+  TextStyle get subtitleTextPost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppTheme.colors.titlePost,
+      );
+
+  @override
+  TextStyle get titleTextPost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppTheme.colors.subtitlePost,
+      );
+  /*---------------TEXTSTYLE SETTINGS---------------*/
+  @override
+  TextStyle get textButton => GoogleFonts.inter(
+        fontSize: 10.sp,
+        fontWeight: FontWeight.w400,
+        color: AppTheme.colors.textButton,
       );
 
   @override
@@ -47,41 +117,6 @@ class AppTextStylesDefault implements AppTextStyles {
       );
 
   @override
-  TextStyle get errorTextForm => GoogleFonts.inter(
-        fontSize: 10.sp,
-        fontWeight: FontWeight.w700,
-        color: AppTheme.colors.textError,
-      );
-
-  @override
-  TextStyle get textSimple => GoogleFonts.inter(
-        fontSize: 12.sp,
-        fontWeight: FontWeight.w400,
-        color: AppTheme.colors.textSimple,
-      );
-
-  @override
-  TextStyle get textTooltip => GoogleFonts.inter(
-        fontSize: 12.sp,
-        fontWeight: FontWeight.w400,
-        color: Colors.white,
-      );
-
-  @override
-  TextStyle get textSlidableButton => GoogleFonts.inter(
-        fontSize: 8.5.sp,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      );
-
-  @override
-  TextStyle get textAppBar => GoogleFonts.montserrat(
-        fontSize: 18.sp,
-        fontWeight: FontWeight.w700,
-        color: AppTheme.colors.textGradient,
-      );
-
-  @override
   TextStyle get titleAlertDialog => GoogleFonts.montserrat(
         fontSize: 16.sp,
         fontWeight: FontWeight.w700,
@@ -89,55 +124,12 @@ class AppTextStylesDefault implements AppTextStyles {
       );
 
   @override
-  TextStyle get textTitle => GoogleFonts.inter(
-        fontSize: 12.sp,
-        fontWeight: FontWeight.w700,
-        color: AppTheme.colors.textTitle,
-      );
-
-  @override
-  TextStyle get textSubtitle => GoogleFonts.inter(
-        fontSize: 10.sp,
-        fontWeight: FontWeight.w400,
-        color: AppTheme.colors.textSubtitle,
-      );
-
-  @override
-  TextStyle get textButton => GoogleFonts.inter(
-        fontSize: 10.sp,
-        fontWeight: FontWeight.w400,
-        color: AppTheme.colors.textButton,
-      );
-
-  @override
-  TextStyle get textSubtitleOpacity => GoogleFonts.inter(
-        fontSize: 9.sp,
-        fontWeight: FontWeight.w400,
-        color: AppTheme.colors.textSubtitleOpacity,
-      );
-
-  @override
-  TextStyle get buttonColor => GoogleFonts.inter(
-        fontSize: 12.sp,
-        fontWeight: FontWeight.w400,
-        color: AppTheme.colors.textTitle,
-      );
-
-  @override
-  TextStyle get textSelect => GoogleFonts.inter(
-        fontSize: 8.5.sp,
-        fontWeight: FontWeight.w600,
-        color: AppTheme.colors.textSimple,
-      );
-
-  @override
   TextStyle get textSnackBar => GoogleFonts.inter(
         fontSize: 10.sp,
         fontWeight: FontWeight.w600,
-        color: Colors.white,
+        color: AppTheme.colors.textSnackBar,
       );
 
-  /*---------------TEXTSTYLE SETTINGS---------------*/
   @override
   TextStyle get appBarTitleSettings {
     return GoogleFonts.notoSans(
