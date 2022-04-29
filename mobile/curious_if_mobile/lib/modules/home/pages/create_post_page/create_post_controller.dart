@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
 import '../../../../domain/login/model/user_model.dart';
 import '../../../../domain/post/model/post_model.dart';
@@ -40,7 +39,6 @@ abstract class _CreatePostControllerBase with Store {
     try {
       await _modifyCreatePostState(CreatePostStateLoading());
       List<PostModel> posts = await _postUsecase.listPosts(
-        token: user.token,
         cursorID: cursorID ?? '',
       );
       if (cursorID == null) {

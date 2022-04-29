@@ -3,9 +3,13 @@ import '../model/post_model.dart';
 
 abstract class IPostRepository {
   Future<List<PostModel>> listPosts({
-    required String token,
     required String cursorID,
     required String takeValue,
+  });
+  Future<PostModel> createPost({
+    required String token,
+    required String authorID,
+    required String content,
   });
   void dispose();
 }
@@ -18,16 +22,32 @@ class PostRepository implements IPostRepository {
 
   @override
   Future<List<PostModel>> listPosts({
-    required String token,
     required String cursorID,
     required String takeValue,
   }) async {
     try {
-      String response = await _datasource.listPosts(
-          cursorID: cursorID, takeValue: takeValue, token: token);
+      String response =
+          await _datasource.listPosts(cursorID: cursorID, takeValue: takeValue);
 
       List<PostModel> posts = PostModel.fromJsonList(response);
       return posts;
+    } catch (e) {
+      throw handleErrorReturn(e);
+    }
+  }
+
+  @override
+  Future<PostModel> createPost({
+    required String token,
+    required String authorID,
+    required String content,
+  }) async {
+    try {
+      String response = await _datasource.createPost(
+          authorID: authorID, content: content, token: token);
+
+      PostModel post = PostModel.fromJson(response);
+      return post;
     } catch (e) {
       throw handleErrorReturn(e);
     }

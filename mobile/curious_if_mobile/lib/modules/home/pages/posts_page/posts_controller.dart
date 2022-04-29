@@ -38,13 +38,11 @@ abstract class _PostsControllerBase with Store {
       state = stateModify;
 
   @action
-  Future<void> listPosts({required UserModel user, String? cursorID}) async {
+  Future<void> listPosts({String? cursorID}) async {
     try {
       await _modifyPostsState(PostsStateLoading());
-      List<PostModel> posts = await _postUsecase.listPosts(
-        token: user.token,
-        cursorID: cursorID ?? '',
-      );
+      List<PostModel> posts =
+          await _postUsecase.listPosts(cursorID: cursorID ?? '');
       if (cursorID == null) {
         last = false;
         this.posts.removeWhere((element) => true);
@@ -59,18 +57,18 @@ abstract class _PostsControllerBase with Store {
     }
   }
 
-  Future<void> refreshScroll(UserModel user) async {
+  Future<void> refreshScroll() async {
     if ((state is! PostsStateLoading) || posts.isNotEmpty) {
-      await listPosts(user: user);
+      await listPosts();
     }
   }
 
-  bool scrollInfo(ScrollNotification scrollInfo, UserModel user) {
+  bool scrollInfo(ScrollNotification scrollInfo) {
     if ((scrollInfo.metrics.pixels >
             (scrollInfo.metrics.maxScrollExtent - 10.h)) &&
         state is! PostsStateLoading &&
         !last) {
-      listPosts(user: user, cursorID: posts.last.id);
+      listPosts(cursorID: posts.last.id);
     }
     return true;
   }

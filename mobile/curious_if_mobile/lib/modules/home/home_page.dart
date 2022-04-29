@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
-import '../../domain/post/model/post_model.dart';
-import '../../domain/post/repository/post_repository.dart';
-import '../../domain/post/usecase/post_usecase.dart';
 import 'pages/create_post_page/create_post_page.dart';
 import 'pages/posts_page/posts_page.dart';
 import 'widgets/app_bar_home/app_bar_home.dart';
 import 'widgets/bottom_navigation_bar_home/bottom_navigation_bar_home.dart';
 
 class HomePage extends StatefulWidget {
-  final UserModel user;
+  final UserModel? user;
   const HomePage({
     Key? key,
-    required this.user,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -27,10 +24,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     pages = [
-      PostsPage(user: widget.user),
-      PostsPage(user: widget.user),
-      PostsPage(user: widget.user),
-      PostsPage(user: widget.user),
+      PostsPage(),
+      PostsPage(),
+      PostsPage(),
+      PostsPage(),
       CreatePostPage(),
     ];
     super.initState();

@@ -67,9 +67,9 @@ mixin _$PostsController on _PostsControllerBase, Store {
   final _$listPostsAsyncAction = AsyncAction('_PostsControllerBase.listPosts');
 
   @override
-  Future<void> listPosts({required UserModel user, String? cursorID}) {
+  Future<void> listPosts({String? cursorID}) {
     return _$listPostsAsyncAction
-        .run(() => super.listPosts(user: user, cursorID: cursorID));
+        .run(() => super.listPosts(cursorID: cursorID));
   }
 
   final _$_PostsControllerBaseActionController =

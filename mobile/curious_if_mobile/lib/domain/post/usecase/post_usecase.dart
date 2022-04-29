@@ -3,9 +3,13 @@ import '../repository/post_repository.dart';
 
 abstract class IPostUseCase {
   Future<List<PostModel>> listPosts({
-    required String token,
     String cursorID,
     String takeValue,
+  });
+  Future<PostModel> createPost({
+    required String token,
+    required String authorID,
+    required String content,
   });
   void dispose();
 }
@@ -18,17 +22,33 @@ class PostUseCase implements IPostUseCase {
 
   @override
   Future<List<PostModel>> listPosts({
-    required String token,
     String cursorID = '',
     String takeValue = '10',
   }) async {
     try {
-      List<PostModel> user = await _repository.listPosts(
+      List<PostModel> posts = await _repository.listPosts(
         cursorID: cursorID,
         takeValue: takeValue,
+      );
+      return posts;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostModel> createPost({
+    required String token,
+    required String authorID,
+    required String content,
+  }) async {
+    try {
+      PostModel post = await _repository.createPost(
+        authorID: authorID,
+        content: content,
         token: token,
       );
-      return user;
+      return post;
     } catch (e) {
       rethrow;
     }

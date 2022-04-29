@@ -8,7 +8,7 @@ class SplashController {
       await Future.delayed(const Duration(seconds: 2));
       Navigator.pushNamedAndRemoveUntil(
         context,
-        RouterClass.login,
+        RouterClass.home,
         (Route<dynamic> route) => false,
       );
     } catch (e) {
