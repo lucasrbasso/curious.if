@@ -11,6 +11,10 @@ abstract class AppColors {
   Color get subtitleOpacity;
   Color get subtitleButton;
   Color get backgroundAppBar;
+  Color get titlePost;
+  Color get subtitlePost;
+  Color get colorShimmer;
+  Color get colorSecondaryShimmer;
 
   //COLORS SETTINGS
   Color get border;
@@ -60,6 +64,18 @@ class AppColorsLight implements AppColors {
 
   @override
   Color get backgroundAppBar => const Color(0xFFD4D4D4);
+
+  @override
+  Color get titlePost => const Color(0xFF000000);
+
+  @override
+  Color get subtitlePost => const Color(0xFF05A678);
+
+  @override
+  Color get colorShimmer => const Color(0x5f3f3f3f);
+
+  @override
+  Color get colorSecondaryShimmer => const Color(0xffaaa4a4);
 
   /*---------------COLORS SETTINGS---------------*/
   @override
@@ -147,6 +163,18 @@ class AppColorsDark implements AppColors {
 
   @override
   Color get backgroundAppBar => const Color(0xFF312E38);
+
+  @override
+  Color get titlePost => const Color(0xFFFFFFFF);
+
+  @override
+  Color get subtitlePost => const Color(0xFF05A678);
+
+  @override
+  Color get colorShimmer => const Color(0x3ff3f3f3);
+
+  @override
+  Color get colorSecondaryShimmer => const Color(0x0f4a4a4a);
 /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFF5C5C5C);

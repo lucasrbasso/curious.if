@@ -14,6 +14,10 @@ abstract class AppTextStyles {
   TextStyle get subtitleOpacity;
   TextStyle get subtitleButton;
 
+  TextStyle get titlePost;
+  TextStyle get subtitleTextPost;
+  TextStyle get titleTextPost;
+
   /*---------------TEXTSTYLE SETTINGS---------------*/
   TextStyle get textButton;
   TextStyle get textSnackBar;
@@ -75,6 +79,27 @@ class AppTextStylesDefault implements AppTextStyles {
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppTheme.colors.subtitleButton,
+      );
+
+  @override
+  TextStyle get titlePost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppTheme.colors.titlePost,
+      );
+
+  @override
+  TextStyle get subtitleTextPost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppTheme.colors.titlePost,
+      );
+
+  @override
+  TextStyle get titleTextPost => GoogleFonts.poppins(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppTheme.colors.subtitlePost,
       );
   /*---------------TEXTSTYLE SETTINGS---------------*/
   @override

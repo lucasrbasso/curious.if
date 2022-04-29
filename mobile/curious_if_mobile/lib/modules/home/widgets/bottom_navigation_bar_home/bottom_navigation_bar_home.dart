@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../../core/core.dart';
 
 class BottomNavigationBarHome extends StatefulWidget {
-  const BottomNavigationBarHome({Key? key}) : super(key: key);
+  final Function(int) onTap;
+  const BottomNavigationBarHome({
+    Key? key,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   State<BottomNavigationBarHome> createState() =>
@@ -15,9 +19,9 @@ class _BottomNavigationBarHomeState extends State<BottomNavigationBarHome> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       backgroundColor: AppTheme.colors.backgroundAppBar,
-      currentIndex: 0,
       showSelectedLabels: false,
       showUnselectedLabels: false,
+      onTap: (index) => widget.onTap(index),
       type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(

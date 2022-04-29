@@ -44,6 +44,15 @@ class PostModel {
     );
   }
 
+  factory PostModel.mock() {
+    return PostModel(
+      id: '',
+      content: '',
+      forPeople: '',
+      createdAt: DateTime.now(),
+    );
+  }
+
   static List<PostModel> fromJsonList(String source) {
     List postsMap = json.decode(source);
     List<PostModel> posts = [];

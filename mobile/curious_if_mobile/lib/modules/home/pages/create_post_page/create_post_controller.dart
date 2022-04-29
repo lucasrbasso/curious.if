@@ -5,25 +5,23 @@ import '../../../../core/core.dart';
 import '../../../../domain/login/model/user_model.dart';
 import '../../../../domain/post/model/post_model.dart';
 import '../../../../domain/post/usecase/post_usecase.dart';
-import 'posts_state.dart';
-part 'posts_controller.g.dart';
+import 'create_post_state.dart';
+part 'create_post_controller.g.dart';
 
-class PostsController extends _PostsControllerBase with _$PostsController {
-  PostsController({IPostUseCase? postUsecase}) {
+class CreatePostController extends _CreatePostControllerBase
+    with _$CreatePostController {
+  CreatePostController({IPostUseCase? postUsecase}) {
     _postUsecase = postUsecase ?? PostUseCase();
   }
 }
 
-abstract class _PostsControllerBase with Store {
+abstract class _CreatePostControllerBase with Store {
   late IPostUseCase _postUsecase;
 
   late ReactionDisposer reactionDisposer;
 
   @observable
-  PostsState state = PostsStateEmpty();
-
-  @observable
-  ObservableList<PostModel> posts = ObservableList.of([]);
+  CreatePostState state = CreatePostStateEmpty();
 
   @observable
   int loadingShimmer = 5;
@@ -34,45 +32,28 @@ abstract class _PostsControllerBase with Store {
   void modifyShimmer(int length) => loadingShimmer = length;
 
   @action
-  Future<void> _modifyPostsState(PostsState stateModify) async =>
+  Future<void> _modifyCreatePostState(CreatePostState stateModify) async =>
       state = stateModify;
 
   @action
   Future<void> listPosts({required UserModel user, String? cursorID}) async {
     try {
-      await _modifyPostsState(PostsStateLoading());
+      await _modifyCreatePostState(CreatePostStateLoading());
       List<PostModel> posts = await _postUsecase.listPosts(
         token: user.token,
         cursorID: cursorID ?? '',
       );
       if (cursorID == null) {
         last = false;
-        this.posts.removeWhere((element) => true);
       }
       await Future.delayed(const Duration(seconds: 5));
-      this.posts.addAll(posts);
-      if (posts.isEmpty || posts.length < 10) last = true;
-      await _modifyPostsState(PostsStateSuccess(
-          message: "Posts buscados com sucesso", posts: posts));
+      // if (posts.isEmpty || posts.length < 10) last = true;
+      // await _modifyCreatePostState(CreatePostStateSuccess(
+      //     message: "Posts buscados com sucesso", posts: []));
     } catch (e) {
-      await _modifyPostsState(PostsStateFailure(message: e.toString()));
+      await _modifyCreatePostState(
+          CreatePostStateFailure(message: e.toString()));
     }
-  }
-
-  Future<void> refreshScroll(UserModel user) async {
-    if ((state is! PostsStateLoading) || posts.isNotEmpty) {
-      await listPosts(user: user);
-    }
-  }
-
-  bool scrollInfo(ScrollNotification scrollInfo, UserModel user) {
-    if ((scrollInfo.metrics.pixels >
-            (scrollInfo.metrics.maxScrollExtent - 10.h)) &&
-        state is! PostsStateLoading &&
-        !last) {
-      listPosts(user: user, cursorID: posts.last.id);
-    }
-    return true;
   }
 
   // FUNÇÃO PARA ABRIR O SNACKBAR
@@ -92,17 +73,17 @@ abstract class _PostsControllerBase with Store {
 
   void autoRun(BuildContext context) {
     reactionDisposer = autorun((_) async {
-      if (state is PostsStateFailure) {
+      if (state is CreatePostStateFailure) {
         modifyShimmer(0);
-        String message = (state as PostsStateFailure).message;
-        await _modifyPostsState(PostsStateEmpty());
+        String message = (state as CreatePostStateFailure).message;
+        await _modifyCreatePostState(CreatePostStateEmpty());
         showSnackBar(context, message, Colors.red);
-      } else if (state is PostsStateSuccess) {
+      } else if (state is CreatePostStateSuccess) {
         modifyShimmer(0);
-        String message = (state as PostsStateSuccess).message;
-        await _modifyPostsState(PostsStateEmpty());
+        String message = (state as CreatePostStateSuccess).message;
+        await _modifyCreatePostState(CreatePostStateEmpty());
         showSnackBar(context, message, Colors.green);
-      } else if (state is PostsStateLoading) {
+      } else if (state is CreatePostStateLoading) {
         modifyShimmer(5);
       }
     });

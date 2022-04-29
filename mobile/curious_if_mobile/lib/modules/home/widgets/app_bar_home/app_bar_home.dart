@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/core.dart';
 
 class AppBarHome extends StatelessWidget with PreferredSizeWidget {
   final double statusBarHeight;
+  final Function createPost;
   const AppBarHome({
     Key? key,
     required this.statusBarHeight,
+    required this.createPost,
   }) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(statusBarHeight + 20);
+  Size get preferredSize => Size.fromHeight(statusBarHeight / 2 + 2.h);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class AppBarHome extends StatelessWidget with PreferredSizeWidget {
         width: double.maxFinite,
         height: double.maxFinite,
         color: AppTheme.colors.backgroundAppBar,
-        padding: EdgeInsets.only(top: statusBarHeight, left: 20, right: 20),
+        padding: EdgeInsets.only(top: statusBarHeight / 2, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +38,7 @@ class AppBarHome extends StatelessWidget with PreferredSizeWidget {
                 Material(
                   color: Colors.transparent,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () => createPost(),
                     icon: Icon(
                       Icons.add_box,
                       color: AppTheme.colors.backgroundButton,
