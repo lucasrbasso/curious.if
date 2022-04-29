@@ -28,7 +28,15 @@ class _HomePageState extends State<HomePage> {
       PostsPage(),
       PostsPage(),
       PostsPage(),
-      CreatePostPage(),
+      widget.user != null
+          ? CreatePostPage(
+              user: widget.user!,
+              onSuccess: () {
+                indexPage = 0;
+                setState(() {});
+              },
+            )
+          : Container(),
     ];
     super.initState();
   }
@@ -43,21 +51,29 @@ class _HomePageState extends State<HomePage> {
         statusBarHeight: statusBarHeight,
         createPost: () {
           indexPage = 4;
+          if (indexPage > 2 && (widget.user == null)) {
+            indexPage = 0;
+            Navigator.pushNamed(context, RouterClass.accountNotLogged);
+          }
           setState(() {});
         },
       ),
       bottomNavigationBar: BottomNavigationBarHome(
         onTap: (index) {
           indexPage = index;
+          if (indexPage > 2 && (widget.user == null)) {
+            indexPage = 0;
+            Navigator.pushNamed(context, RouterClass.accountNotLogged);
+          }
           setState(() {});
         },
       ),
       body: pages[indexPage],
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        try {
-          await AppThemeController().toggleThemeMode();
-        } catch (e) {}
-      }),
+      // floatingActionButton: FloatingActionButton(onPressed: () async {
+      //   try {
+      //     await AppThemeController().toggleThemeMode();
+      //   } catch (e) {}
+      // }),
     );
   }
 }

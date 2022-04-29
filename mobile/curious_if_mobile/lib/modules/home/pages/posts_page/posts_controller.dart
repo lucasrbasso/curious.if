@@ -47,7 +47,7 @@ abstract class _PostsControllerBase with Store {
         last = false;
         this.posts.removeWhere((element) => true);
       }
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 1));
       this.posts.addAll(posts);
       if (posts.isEmpty || posts.length < 10) last = true;
       await _modifyPostsState(PostsStateSuccess(
@@ -97,9 +97,7 @@ abstract class _PostsControllerBase with Store {
         showSnackBar(context, message, Colors.red);
       } else if (state is PostsStateSuccess) {
         modifyShimmer(0);
-        String message = (state as PostsStateSuccess).message;
         await _modifyPostsState(PostsStateEmpty());
-        showSnackBar(context, message, Colors.green);
       } else if (state is PostsStateLoading) {
         modifyShimmer(5);
       }

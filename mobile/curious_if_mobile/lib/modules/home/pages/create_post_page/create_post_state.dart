@@ -15,9 +15,9 @@ class CreatePostStateFailure extends CreatePostState {
 
 class CreatePostStateSuccess extends CreatePostState {
   final String message;
-  final PostModel posts;
+  final PostModel post;
   CreatePostStateSuccess({
     required this.message,
-    required this.posts,
+    required this.post,
   });
 }

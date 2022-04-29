@@ -24,22 +24,6 @@ mixin _$CreatePostController on _CreatePostControllerBase, Store {
     });
   }
 
-  final _$loadingShimmerAtom =
-      Atom(name: '_CreatePostControllerBase.loadingShimmer');
-
-  @override
-  int get loadingShimmer {
-    _$loadingShimmerAtom.reportRead();
-    return super.loadingShimmer;
-  }
-
-  @override
-  set loadingShimmer(int value) {
-    _$loadingShimmerAtom.reportWrite(value, super.loadingShimmer, () {
-      super.loadingShimmer = value;
-    });
-  }
-
   final _$_modifyCreatePostStateAsyncAction =
       AsyncAction('_CreatePostControllerBase._modifyCreatePostState');
 
@@ -49,34 +33,19 @@ mixin _$CreatePostController on _CreatePostControllerBase, Store {
         .run(() => super._modifyCreatePostState(stateModify));
   }
 
-  final _$listPostsAsyncAction =
-      AsyncAction('_CreatePostControllerBase.listPosts');
+  final _$createPostAsyncAction =
+      AsyncAction('_CreatePostControllerBase.createPost');
 
   @override
-  Future<void> listPosts({required UserModel user, String? cursorID}) {
-    return _$listPostsAsyncAction
-        .run(() => super.listPosts(user: user, cursorID: cursorID));
-  }
-
-  final _$_CreatePostControllerBaseActionController =
-      ActionController(name: '_CreatePostControllerBase');
-
-  @override
-  void modifyShimmer(int length) {
-    final _$actionInfo = _$_CreatePostControllerBaseActionController
-        .startAction(name: '_CreatePostControllerBase.modifyShimmer');
-    try {
-      return super.modifyShimmer(length);
-    } finally {
-      _$_CreatePostControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future<bool> createPost({required UserModel user, required String content}) {
+    return _$createPostAsyncAction
+        .run(() => super.createPost(user: user, content: content));
   }
 
   @override
   String toString() {
     return '''
-state: ${state},
-loadingShimmer: ${loadingShimmer}
+state: ${state}
     ''';
   }
 }

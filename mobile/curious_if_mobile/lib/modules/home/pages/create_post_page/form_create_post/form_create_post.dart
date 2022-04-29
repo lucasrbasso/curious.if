@@ -6,7 +6,7 @@ import '../../../../../shared/text_form_input/text_form_input.dart';
 import 'form_create_post_controller.dart';
 
 class FormCreatePostWidget extends StatefulWidget {
-  final Future Function(Map<String, dynamic>) onSaved;
+  final Future<bool> Function(Map<String, dynamic>) onSaved;
   const FormCreatePostWidget({
     Key? key,
     required this.onSaved,
@@ -57,14 +57,17 @@ class _FormCreatePostWidgetState extends State<FormCreatePostWidget> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 isLoading = true;
-                if (mounted) setState(() {});
-                await widget.onSaved(
-                    {"name": controller.name, "message": controller.message});
-                isLoading = false;
                 if (mounted) {
                   setState(() {
                     FocusScope.of(context).unfocus();
                   });
+                }
+                bool isSaved = await widget.onSaved(
+                    {"name": controller.name, "message": controller.message});
+                print(isSaved);
+                isLoading = false;
+                if (mounted) {
+                  setState(() {});
                 }
               }
             },

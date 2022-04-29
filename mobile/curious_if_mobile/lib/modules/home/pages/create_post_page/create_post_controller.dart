@@ -22,35 +22,29 @@ abstract class _CreatePostControllerBase with Store {
   @observable
   CreatePostState state = CreatePostStateEmpty();
 
-  @observable
-  int loadingShimmer = 5;
-
-  bool last = false;
-
-  @action
-  void modifyShimmer(int length) => loadingShimmer = length;
-
   @action
   Future<void> _modifyCreatePostState(CreatePostState stateModify) async =>
       state = stateModify;
 
   @action
-  Future<void> listPosts({required UserModel user, String? cursorID}) async {
+  Future<bool> createPost(
+      {required UserModel user, required String content}) async {
     try {
       await _modifyCreatePostState(CreatePostStateLoading());
-      List<PostModel> posts = await _postUsecase.listPosts(
-        cursorID: cursorID ?? '',
-      );
-      if (cursorID == null) {
-        last = false;
-      }
       await Future.delayed(const Duration(seconds: 5));
+      PostModel post = await _postUsecase.createPost(
+        token: user.token,
+        authorID: "74b9ae4e-fc29-4c8a-a9f8-794dae692fe3",
+        content: content,
+      );
       // if (posts.isEmpty || posts.length < 10) last = true;
-      // await _modifyCreatePostState(CreatePostStateSuccess(
-      //     message: "Posts buscados com sucesso", posts: []));
+      await _modifyCreatePostState(CreatePostStateSuccess(
+          message: "Post criado com sucesso!!!", post: post));
+      return true;
     } catch (e) {
       await _modifyCreatePostState(
           CreatePostStateFailure(message: e.toString()));
+      return false;
     }
   }
 
@@ -69,20 +63,17 @@ abstract class _CreatePostControllerBase with Store {
       ..showSnackBar(snackBar);
   }
 
-  void autoRun(BuildContext context) {
+  void autoRun(BuildContext context, VoidCallback onSuccess) {
     reactionDisposer = autorun((_) async {
       if (state is CreatePostStateFailure) {
-        modifyShimmer(0);
         String message = (state as CreatePostStateFailure).message;
         await _modifyCreatePostState(CreatePostStateEmpty());
         showSnackBar(context, message, Colors.red);
       } else if (state is CreatePostStateSuccess) {
-        modifyShimmer(0);
         String message = (state as CreatePostStateSuccess).message;
         await _modifyCreatePostState(CreatePostStateEmpty());
+        onSuccess();
         showSnackBar(context, message, Colors.green);
-      } else if (state is CreatePostStateLoading) {
-        modifyShimmer(5);
       }
     });
   }
