@@ -5,6 +5,7 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
@@ -27,16 +28,29 @@ export class ErrorHandlingFilter implements ExceptionFilter {
         }`,
       });
     }
+
     let message = 'Internal server error';
-    if (exception instanceof BadRequestException) {
+
+    if (exception instanceof HttpException) {
       const err: any = exception.getResponse();
 
-      if (typeof err === 'string') {
-        message = err;
-      } else {
-        message = err.message;
+      switch (exception.constructor) {
+        case BadRequestException:
+          if (typeof err === 'string') {
+            message = err;
+          } else {
+            message = err.message;
+          }
+          break;
+        case UnauthorizedException:
+          message = err.message;
+          break;
+        default:
+          message = 'Internal server error';
+          break;
       }
     }
+
     const errorResponse: any = {
       statusCode,
       message,
