@@ -34,7 +34,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   async getUserById(@Request() req: RequestProps): Promise<GetUserDTO> {
-    console.log(req);
     return this.usersService.getUserById(req.user.userId);
   }
 

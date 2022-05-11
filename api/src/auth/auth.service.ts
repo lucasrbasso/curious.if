@@ -27,8 +27,6 @@ export class AuthService {
   }: AuthProps): Promise<Omit<User, 'password'> | null> {
     const user = await this.usersService.getUserByEmail(email);
 
-    console.log(user);
-
     if (user) {
       const checkCredentials = await bcrypt.compare(pass, user.password);
 
@@ -42,7 +40,6 @@ export class AuthService {
   }
 
   async login(user: RequestUserProps) {
-    console.log(user);
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),

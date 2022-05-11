@@ -18,7 +18,6 @@ export class PostService {
   constructor(private prisma: PrismaService) {}
 
   async getAllPosts({ take, cursor }: PaginationProps): Promise<PostDTO[]> {
-    console.log(cursor);
     const posts = await this.prisma.post.findMany({
       take,
       skip: cursor ? 1 : 0,
