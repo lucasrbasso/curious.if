@@ -49,6 +49,13 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('/:id/UnauthorizedPost')
+  @ApiOperation({summary: 'Retorna Post não aprovados'})
+  async getUnauthorizedPost(): Promise<PostDTO[]> {
+    return this.postService.getUnauthorizedPost();
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   @ApiOperation({summary: 'Atualiza status do Post'})
   async updatePostStatus(@Body() updatePostStatusDTO: UpdatePostStatusDTO): Promise<PostDTO> {

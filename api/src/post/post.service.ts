@@ -64,6 +64,26 @@ export class PostService {
     return post;
   }
 
+  async getUnauthorizedPost(): Promise<PostDTO[]> {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        published: false,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        published: true,
+      },
+    });
+
+    return posts;
+  }
+
   async createPost({ authorId, content }: CreatePostProps): Promise<PostDTO> {
     if (!authorId) throw new BadRequestException('AuthorId is required.');
 
@@ -104,7 +124,7 @@ export class PostService {
         },
       });
     } catch (err: any) {
-      throw new BadRequestException('There was an error when creating a post.');
+      throw new BadRequestException('There was an error when editing a post.');
     }
   }
 
