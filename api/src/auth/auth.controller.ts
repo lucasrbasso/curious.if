@@ -1,6 +1,7 @@
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
+import { ApiTags } from '@nestjs/swagger';
 
 interface RequestProps {
   user: {
@@ -8,6 +9,8 @@ interface RequestProps {
     email: string;
   };
 }
+
+@ApiTags('Login')
 @Controller('/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

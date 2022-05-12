@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { PostDTO } from './dto/get-post-output.dto';
@@ -6,6 +10,11 @@ import { PostDTO } from './dto/get-post-output.dto';
 interface CreatePostProps {
   authorId: string;
   content: string;
+}
+
+interface UpdatePostProps {
+  id: string;
+  published: boolean;
 }
 
 interface PaginationProps {
@@ -63,6 +72,35 @@ export class PostService {
         data: {
           content,
           authorId,
+        },
+      });
+    } catch (err: any) {
+      throw new BadRequestException('There was an error when creating a post.');
+    }
+  }
+
+  async updatePostStatus({ id, published }: UpdatePostProps): Promise<PostDTO> {
+    if (!id) {
+      throw new BadRequestException('Post Id is required.');
+    }
+
+    const postInDB = await this.prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!postInDB) {
+      throw new NotFoundException('Post Id not found.');
+    }
+
+    try {
+      return await this.prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          published,
         },
       });
     } catch (err: any) {
