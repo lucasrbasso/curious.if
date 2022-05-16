@@ -46,7 +46,6 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Post)
-  @UseGuards(JwtAuthGuard)
   @Post()
   async createPost(
     @Body() createPostInputDto: CreatePostInputDTO,
@@ -61,7 +60,6 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async deletePost(@Param('id') id: string): Promise<void> {
     return this.postService.deletePost(id);
