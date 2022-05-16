@@ -16,6 +16,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "isValidated" BOOLEAN NOT NULL DEFAULT false,
     "permissions" TEXT[],
     "roles" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
