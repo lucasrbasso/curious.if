@@ -34,6 +34,11 @@ interface ValidateUserParams {
   id: string;
 }
 
+interface UpdateRolesAndPermissions {
+  roles: string[];
+  permissions: string[];
+}
+
 @Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -52,6 +57,13 @@ export class UsersController {
     return this.usersService.getAllPendingUsers();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.Mod)
+  @Get('/roles-and-permissions')
+  async getAllRolesAndPermissions(): Promise<UpdateRolesAndPermissions> {
+    return this.usersService.getAllRolesAndPermissions();
+  }
+
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Read)
   @Get('/me')
@@ -64,9 +76,20 @@ export class UsersController {
     return this.usersService.createUser(createUserDTO);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @Put('/allowing/:id')
+  async updateRolesAndPermissions(
+    @Body() updateUserDto: UpdateRolesAndPermissions,
+    @Param('id') id: string,
+  ): Promise<GetUserDTO> {
+    const { roles, permissions } = updateUserDto;
+    return this.usersService.updateRolesAndPermissions(id, roles, permissions);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Put('/:id')
-  async updateUser(@Body() updateUserDto: UpdateUserDTO): Promise<GetUserDTO> {
+  async update(@Body() updateUserDto: UpdateUserDTO): Promise<GetUserDTO> {
     return this.usersService.updateUser(updateUserDto);
   }
 

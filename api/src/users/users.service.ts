@@ -5,6 +5,9 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { GetUserDTO } from './dto/getUserDTO';
 
+import { Role } from './roles/role.enum';
+import { Permission } from './permissions/permission.enum';
+
 interface CreateUserProps {
   name: string;
   email: string;
@@ -17,6 +20,11 @@ interface UpdateUserProps {
   email: string;
   old_password?: string;
   password?: string;
+}
+
+interface UpdateRolesAndPermissions {
+  roles: string[];
+  permissions: string[];
 }
 
 const returnUserData = {
@@ -64,6 +72,18 @@ export class UsersService {
     });
 
     return user;
+  }
+
+  async getAllRolesAndPermissions(): Promise<UpdateRolesAndPermissions> {
+    const rolesArray = Object.keys(Role).map((key) => Role[key]);
+    const permissionsArray = Object.keys(Permission).map(
+      (key) => Permission[key],
+    );
+
+    return {
+      roles: rolesArray,
+      permissions: permissionsArray,
+    };
   }
 
   async getUserById(id: string): Promise<GetUserDTO> {
@@ -164,6 +184,63 @@ export class UsersService {
 
     user.email = email;
     user.name = name;
+
+    try {
+      return await this.prisma.user.update({
+        where: {
+          id,
+        },
+        select: {
+          ...returnUserData,
+        },
+        data: {
+          ...user,
+        },
+      });
+    } catch (err) {
+      throw new BadRequestException('There was an error when updating a user.');
+    }
+  }
+
+  async updateRolesAndPermissions(
+    id: string,
+    roles?: string[],
+    permissions?: string[],
+  ): Promise<GetUserDTO> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+
+    const validRoles = ['USER.ADMIN', 'USER.MOD'];
+    const validPermissions = ['USER.CAN_READ', 'USER.CAN_POST'];
+
+    if (roles) {
+      if (roles.length > 0) {
+        roles.forEach((role) => {
+          if (!validRoles.includes(role)) {
+            throw new BadRequestException('Invalid role.');
+          }
+        });
+      }
+      user.roles = roles;
+    }
+
+    if (permissions) {
+      if (permissions.length > 0) {
+        permissions.forEach((permission) => {
+          if (!validPermissions.includes(permission)) {
+            throw new BadRequestException('Invalid role.');
+          }
+        });
+      }
+      user.permissions = permissions;
+    }
 
     try {
       return await this.prisma.user.update({

@@ -5,9 +5,11 @@ import { AuthService } from './auth.service';
 interface RequestProps {
   user: {
     id: string;
+    name: string;
     email: string;
     roles: string[];
     permissions: string[];
+    isValidated: boolean;
   };
 }
 @Controller('/auth')

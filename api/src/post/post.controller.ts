@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Query,
+  Request,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostInputDTO } from './dto/create-post-input.dto';
@@ -49,8 +50,13 @@ export class PostController {
   @Post()
   async createPost(
     @Body() createPostInputDto: CreatePostInputDTO,
+    @Request() req,
   ): Promise<PostDTO> {
-    return this.postService.createPost(createPostInputDto);
+    const postData = {
+      ...createPostInputDto,
+      authorId: req.user.userId,
+    };
+    return this.postService.createPost(postData);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

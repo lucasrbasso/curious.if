@@ -11,6 +11,7 @@ model Post {
   id        String  @id @default(uuid())
   published Boolean @default(false)
   content   String
+  to        String?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
@@ -24,7 +25,7 @@ model User {
   email       String   @unique()
   password    String
   name        String
-  isValidated Boolean
+  isValidated Boolean  @default(false)
   permissions String[]
   roles       String[]
 

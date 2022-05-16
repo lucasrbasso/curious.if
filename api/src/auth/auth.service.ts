@@ -11,9 +11,11 @@ interface AuthProps {
 
 interface RequestUserProps {
   id: string;
+  name: string;
   email: string;
   roles: string[];
   permissions: string[];
+  isValidated: boolean;
 }
 
 @Injectable()
@@ -33,7 +35,7 @@ export class AuthService {
       const checkCredentials = await bcrypt.compare(pass, user.password);
 
       if (checkCredentials) {
-        const { password, ...result } = user;
+        const { ...result } = user;
 
         return result;
       }
@@ -48,7 +50,19 @@ export class AuthService {
       roles: user.roles,
       permissions: user.permissions,
     };
+
+    const userReturn = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      sub: user.id,
+      roles: user.roles,
+      permissions: user.permissions,
+      isValidated: user.isValidated,
+    };
+
     return {
+      ...userReturn,
       access_token: this.jwtService.sign(payload),
     };
   }
