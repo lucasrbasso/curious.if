@@ -9,6 +9,7 @@ import { PostDTO } from './dto/get-post-output.dto';
 
 interface CreatePostProps {
   authorId: string;
+  to?: string;
   content: string;
 }
 
@@ -39,6 +40,7 @@ export class PostService {
         createdAt: true,
         updatedAt: true,
         content: true,
+        to: true,
         published: true,
       },
     });
@@ -54,6 +56,7 @@ export class PostService {
         createdAt: true,
         updatedAt: true,
         content: true,
+        to: true,
         published: true,
       },
     });
@@ -84,13 +87,28 @@ export class PostService {
     return posts;
   }
 
-  async createPost({ authorId, content }: CreatePostProps): Promise<PostDTO> {
+  async createPost({
+    authorId,
+    content,
+    to,
+  }: CreatePostProps): Promise<PostDTO> {
     if (!authorId) throw new BadRequestException('AuthorId is required.');
 
+    const checkIfAuthorExists = await this.prisma.user.findUnique({
+      where: {
+        id: authorId,
+      },
+    });
+
+    if (!checkIfAuthorExists) {
+      throw new BadRequestException('Author does not exists.');
+    }
+
     try {
-      return this.prisma.post.create({
+      return await this.prisma.post.create({
         data: {
           content,
+          to,
           authorId,
         },
       });
