@@ -6,15 +6,11 @@ import { ApiTags } from '@nestjs/swagger';
 interface RequestProps {
   user: {
     id: string;
-<<<<<<< HEAD
     name: string;
     email: string;
     roles: string[];
     permissions: string[];
     isValidated: boolean;
-=======
-    email: string;
->>>>>>> 8a92927b268ada7b14101e1c4b3f59ca279180ca
   };
 }
 
