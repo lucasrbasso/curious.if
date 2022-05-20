@@ -66,8 +66,8 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('/:id/UnauthorizedPost')
-  @Roles(Role.Admin)
+  @Get('filter/UnauthorizedPost')
+  @Roles(Role.Admin, Role.Mod)
   @ApiOperation({summary: 'Retorna Post não aprovados'})
   async getUnauthorizedPost(): Promise<PostDTO[]> {
     return this.postService.getUnauthorizedPost();
@@ -75,7 +75,7 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Patch('/:id')
+  @Patch()
   @ApiOperation({summary: 'Atualiza status do Post'})
   async updatePostStatus(@Body() updatePostStatusDTO: UpdatePostStatusDTO): Promise<PostDTO> {
     return this.postService.updatePostStatus(updatePostStatusDTO);

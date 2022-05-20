@@ -35,6 +35,9 @@ export class PostService {
       orderBy: {
         createdAt: 'desc',
       },
+      where: {
+        published: true,
+      },
       select: {
         id: true,
         createdAt: true,
