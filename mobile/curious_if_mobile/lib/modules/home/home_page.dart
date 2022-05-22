@@ -1,3 +1,4 @@
+import 'package:curious_if_mobile/core/routes/verify_roles.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/core.dart';
@@ -41,6 +42,22 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  void controlsrRoutes() {
+    if (indexPage > 2) {
+      if (VerifyRoles.hasUser(widget.user)) {
+        if (VerifyRoles.verifyAdmin(widget.user!)) {
+        } else {
+          indexPage = 0;
+          Navigator.pushNamed(context, RouterClass.home,
+              arguments: {'user': widget.user});
+        }
+      } else {
+        indexPage = 0;
+        Navigator.pushNamed(context, RouterClass.accountNotLogged);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -51,20 +68,14 @@ class _HomePageState extends State<HomePage> {
         statusBarHeight: statusBarHeight,
         createPost: () {
           indexPage = 4;
-          if (indexPage > 2 && (widget.user == null)) {
-            indexPage = 0;
-            Navigator.pushNamed(context, RouterClass.accountNotLogged);
-          }
+          controlsrRoutes();
           setState(() {});
         },
       ),
       bottomNavigationBar: BottomNavigationBarHome(
         onTap: (index) {
           indexPage = index;
-          if (indexPage > 2 && (widget.user == null)) {
-            indexPage = 0;
-            Navigator.pushNamed(context, RouterClass.accountNotLogged);
-          }
+          controlsrRoutes();
           setState(() {});
         },
       ),

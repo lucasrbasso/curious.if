@@ -35,7 +35,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
           const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       children: [
         Center(
-            child: Text("Envie sua Cantada",
+            child: Text("Envie sua Mensagem",
                 style: AppTheme.textStyles.textHeadingThree)),
         const SizedBox(height: 50),
         Text("Para:", style: AppTheme.textStyles.subtitleTextPost),

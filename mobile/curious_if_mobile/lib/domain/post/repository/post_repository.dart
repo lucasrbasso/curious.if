@@ -54,6 +54,7 @@ class PostRepository implements IPostRepository {
   }
 
   Object handleErrorReturn(Object e) {
+    print(e.toString());
     if (e is String) {
       return e;
     } else if (e is Map<String, dynamic>) {

@@ -25,6 +25,13 @@ class RouterClass {
     // Map<String, dynamic> arguments = settings.arguments as Map<String, dynamic>;
     // PROCURA A ROTA
 
+    Map<String, dynamic>? arguments;
+    UserModel? user;
+    if (routeSettings.arguments is Map<String, dynamic>) {
+      arguments = routeSettings.arguments as Map<String, dynamic>;
+      user = arguments["user"];
+    }
+
     switch (routeSettings.name) {
       // ROTA DA SPLASH
       case splash:

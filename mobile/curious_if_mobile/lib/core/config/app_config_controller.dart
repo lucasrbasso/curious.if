@@ -2,12 +2,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:localization/localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../i18n/i18n_const.dart';
 import '../core.dart';
 //import '/firebase_options.dart';
 part 'app_config_controller.g.dart';
@@ -140,8 +138,8 @@ class UtilsConst {
   //SERVIDOR
   //static String server = "http://192.168.1.3:3000/";
   //static String server = "http://10.0.2.2:3000/";
-  //static String server = "http://localhost:3000/";
-  static String server = "http://192.168.0.103:3000/";
+  static String server = "http://localhost:3000/";
+  //static String server = "http://192.168.0.103:3000/";
 }
 
 class VersionInfo {

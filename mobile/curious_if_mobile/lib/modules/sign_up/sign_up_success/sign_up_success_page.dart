@@ -28,7 +28,7 @@ class SignUpSuccessPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 11.w),
               child: Column(
                 children: [
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 17.5.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 28.w),
                     child: Image.asset(AppTheme.images.checkIcon,
