@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
-import 'pages/create_post_page/create_post_page.dart';
+import 'pages/explorer_page/explorer_page.dart';
 import 'pages/posts_page/posts_page.dart';
+import 'pages/search_page/search_page.dart';
 import 'widgets/app_bar_home/app_bar_home.dart';
 import 'widgets/bottom_navigation_bar_home/bottom_navigation_bar_home.dart';
 
@@ -26,57 +27,41 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     pages = [
       PostsPage(),
-      PostsPage(),
-      PostsPage(),
-      PostsPage(),
-      widget.user != null
-          ? CreatePostPage(
-              user: widget.user!,
-              onSuccess: () {
-                indexPage = 0;
-                setState(() {});
-              },
-            )
-          : Container(),
+      ExplorerPage(),
+      SearchPage(),
     ];
     super.initState();
   }
 
-  void controlsrRoutes() {
-    if (indexPage > 2) {
-      if (VerifyRoles.hasUser(widget.user)) {
-        if (VerifyRoles.verifyAdmin(widget.user!)) {
-        } else {
-          indexPage = 0;
-          Navigator.pushNamed(context, RouterClass.home,
-              arguments: {'user': widget.user});
-        }
-      } else {
-        indexPage = 0;
-        Navigator.pushNamed(context, RouterClass.accountNotLogged);
-      }
+  void controlRoutes() {
+    Map<String, dynamic> arguments = {"user": widget.user};
+    if (indexPage == 3) {
+      Navigator.pushNamed(context, RouterClass.profile, arguments: arguments);
+    } else if (indexPage == 4) {
+      print('CreatePostPage');
+      Navigator.pushNamed(context, RouterClass.createPost,
+          arguments: arguments);
     }
+    indexPage = 0;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    print(statusBarHeight);
     return Scaffold(
       backgroundColor: AppTheme.colors.background,
       appBar: AppBarHome(
         statusBarHeight: statusBarHeight,
         createPost: () {
           indexPage = 4;
-          controlsrRoutes();
-          setState(() {});
+          controlRoutes();
         },
       ),
       bottomNavigationBar: BottomNavigationBarHome(
         onTap: (index) {
           indexPage = index;
-          controlsrRoutes();
-          setState(() {});
+          controlRoutes();
         },
       ),
       body: pages[indexPage],

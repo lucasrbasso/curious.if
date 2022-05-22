@@ -6,7 +6,7 @@ part of 'app_theme_controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AppThemeController on _AppThemeControllerBase, Store {
   Computed<ThemeMode>? _$themeModeComputed;
@@ -38,7 +38,8 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
               name: '_AppThemeControllerBase.colorStatus'))
       .value;
 
-  final _$_themeModeAtom = Atom(name: '_AppThemeControllerBase._themeMode');
+  late final _$_themeModeAtom =
+      Atom(name: '_AppThemeControllerBase._themeMode', context: context);
 
   @override
   ThemeMode? get _themeMode {
@@ -53,7 +54,8 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
     });
   }
 
-  final _$_brightnessAtom = Atom(name: '_AppThemeControllerBase._brightness');
+  late final _$_brightnessAtom =
+      Atom(name: '_AppThemeControllerBase._brightness', context: context);
 
   @override
   Brightness? get _brightness {
@@ -68,7 +70,8 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_AppThemeControllerBase.errorMessage');
+  late final _$errorMessageAtom =
+      Atom(name: '_AppThemeControllerBase.errorMessage', context: context);
 
   @override
   String? get errorMessage {
@@ -83,16 +86,16 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
     });
   }
 
-  final _$toggleThemeModeAsyncAction =
-      AsyncAction('_AppThemeControllerBase.toggleThemeMode');
+  late final _$toggleThemeModeAsyncAction =
+      AsyncAction('_AppThemeControllerBase.toggleThemeMode', context: context);
 
   @override
   Future<void> toggleThemeMode() {
     return _$toggleThemeModeAsyncAction.run(() => super.toggleThemeMode());
   }
 
-  final _$setThemeModeAsyncAction =
-      AsyncAction('_AppThemeControllerBase.setThemeMode');
+  late final _$setThemeModeAsyncAction =
+      AsyncAction('_AppThemeControllerBase.setThemeMode', context: context);
 
   @override
   Future<bool> setThemeMode(ThemeMode? themeModeModify) {
@@ -100,8 +103,8 @@ mixin _$AppThemeController on _AppThemeControllerBase, Store {
         .run(() => super.setThemeMode(themeModeModify));
   }
 
-  final _$_AppThemeControllerBaseActionController =
-      ActionController(name: '_AppThemeControllerBase');
+  late final _$_AppThemeControllerBaseActionController =
+      ActionController(name: '_AppThemeControllerBase', context: context);
 
   @override
   void setBrightness(Brightness? brightness) {

@@ -2,9 +2,6 @@ class FormCreatePostController {
   String? name;
   String? message;
   String? validateName(String? value) {
-    if ((value ?? "").isEmpty) {
-      return 'Por favor insira um nome válido';
-    }
     return null;
   }
 

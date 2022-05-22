@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
-import '../../../../domain/login/model/user_model.dart';
 import '../../../../domain/post/model/post_model.dart';
 import '../../../../domain/post/usecase/post_usecase.dart';
 import 'posts_state.dart';
@@ -41,13 +40,14 @@ abstract class _PostsControllerBase with Store {
   Future<void> listPosts({String? cursorID}) async {
     try {
       await _modifyPostsState(PostsStateLoading());
+
+      await Future.delayed(const Duration(seconds: 1));
       List<PostModel> posts =
           await _postUsecase.listPosts(cursorID: cursorID ?? '');
       if (cursorID == null) {
         last = false;
         this.posts.removeWhere((element) => true);
       }
-      await Future.delayed(const Duration(seconds: 1));
       this.posts.addAll(posts);
       if (posts.isEmpty || posts.length < 10) last = true;
       await _modifyPostsState(PostsStateSuccess(
@@ -59,18 +59,22 @@ abstract class _PostsControllerBase with Store {
 
   Future<void> refreshScroll() async {
     if ((state is! PostsStateLoading) || posts.isNotEmpty) {
+      posts.removeWhere((element) => true);
       await listPosts();
     }
   }
 
   bool scrollInfo(ScrollNotification scrollInfo) {
-    if ((scrollInfo.metrics.pixels >
-            (scrollInfo.metrics.maxScrollExtent - 10.h)) &&
-        state is! PostsStateLoading &&
-        !last) {
-      listPosts(cursorID: posts.last.id);
+    if (posts.isNotEmpty) {
+      if ((scrollInfo.metrics.pixels >
+              (scrollInfo.metrics.maxScrollExtent - 10.h)) &&
+          state is! PostsStateLoading &&
+          !last) {
+        listPosts(cursorID: posts.last.id);
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 
   // FUNÇÃO PARA ABRIR O SNACKBAR

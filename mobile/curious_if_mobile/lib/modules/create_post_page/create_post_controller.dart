@@ -28,13 +28,15 @@ abstract class _CreatePostControllerBase with Store {
 
   @action
   Future<bool> createPost(
-      {required UserModel user, required String content}) async {
+      {required UserModel user,
+      required String content,
+      required String to}) async {
     try {
       await _modifyCreatePostState(CreatePostStateLoading());
       await Future.delayed(const Duration(seconds: 5));
       PostModel post = await _postUsecase.createPost(
         token: user.token,
-        authorID: "74b9ae4e-fc29-4c8a-a9f8-794dae692fe3",
+        to: to,
         content: content,
       );
       // if (posts.isEmpty || posts.length < 10) last = true;

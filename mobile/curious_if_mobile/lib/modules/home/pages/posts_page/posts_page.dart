@@ -37,6 +37,9 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
+      int itemCount =
+          _postsController.posts.length + _postsController.loadingShimmer;
+      print(itemCount);
       return NotificationListener<ScrollNotification>(
         onNotification: (scrollInfo) => _postsController.scrollInfo(scrollInfo),
         child: RefreshIndicator(
@@ -49,8 +52,7 @@ class _PostsPageState extends State<PostsPage> {
             padding: const EdgeInsets.only(top: 10),
             physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics()),
-            itemCount:
-                _postsController.posts.length + _postsController.loadingShimmer,
+            itemCount: itemCount,
             itemBuilder: (context, index) {
               if (index < _postsController.posts.length) {
                 return PostWidget(post: _postsController.posts[index]);
