@@ -7,26 +7,22 @@ import '../../modules/not_has_authorization/not_has_authorization_page.dart';
 import '../core.dart';
 
 class VerifyRoles {
-  static Widget accountNotLogged = AccountNotLoggedPage();
-  static Widget notHasAuthorization = NotHasAuthorizationPage();
-
-  static bool hasUser(UserModel? user) => user != null;
-  static bool verifyMod(UserModel? user) =>
-      user?.roles.contains(Roles.mod) ?? false;
-  static bool verifyAdmin(UserModel? user) =>
+  bool hasUser(UserModel? user) => user != null;
+  bool verifyMod(UserModel? user) => user?.roles.contains(Roles.mod) ?? false;
+  bool verifyAdmin(UserModel? user) =>
       user?.roles.contains(Roles.admin) ?? false;
-  static bool verifyCanPost(UserModel? user) =>
+  bool verifyCanPost(UserModel? user) =>
       user?.permissions.contains(Permission.canPost) ?? false;
 
-  static verifyRoleAndUser(UserModel? user, bool authorization, Widget page) {
+  verifyRoleAndUser(UserModel? user, bool authorization, Widget page) {
     if (hasUser(user)) {
       if (authorization) {
         return page;
       } else {
-        return notHasAuthorization;
+        return NotHasAuthorizationPage(key: UniqueKey());
       }
     } else {
-      return accountNotLogged;
+      return AccountNotLoggedPage(key: UniqueKey());
     }
   }
 }

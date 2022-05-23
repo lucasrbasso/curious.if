@@ -1,51 +1,68 @@
-import 'package:curious_if_mobile/shared/button_form_input/button_form_input.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/core.dart';
+import '../../domain/login/model/user_model.dart';
 import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 
-class NotHasAuthorizationPage extends StatelessWidget {
-  const NotHasAuthorizationPage({Key? key}) : super(key: key);
+class NotHasAuthorizationPage extends StatefulWidget {
+  final UserModel? user;
+  const NotHasAuthorizationPage({Key? key, this.user}) : super(key: key);
+
+  @override
+  State<NotHasAuthorizationPage> createState() =>
+      _NotHasAuthorizationPageState();
+}
+
+class _NotHasAuthorizationPageState extends State<NotHasAuthorizationPage> {
+  late int numberCat;
+  @override
+  void initState() {
+    numberCat = Random().nextInt(4);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.colors.background,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            SizedBox(
-              width: double.maxFinite,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Icon(
-                      Icons.account_circle_rounded,
-                      color: AppTheme.colors.backgroundButton,
-                    )),
-              ),
-            ),
-            Column(
-              children: [
-                Text("Opa!", style: AppTheme.textStyles.textHeadingTwo),
-                Text(
-                  "Você não tem autorização suficiente!!!",
-                  style: AppTheme.textStyles.subtitleOpacity,
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: AppThemeController().colorStatus,
+      sized: false,
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.background,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: double.maxFinite,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Image.asset(AppTheme.images.cat(numberCat)),
                 ),
-              ],
-            ),
-            SizedBox(height: 8),
-          ],
+              ),
+              SizedBox(height: 10.h),
+              Column(
+                children: [
+                  Text("Opa!", style: AppTheme.textStyles.textHeadingTwo),
+                  Text(
+                    "Você não tem autorização suficiente!!!",
+                    style: AppTheme.textStyles.subtitleOpacity,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomTextNavigationBar(
-        icon: Icon(Icons.arrow_back, color: AppTheme.colors.text, size: 18),
-        onTap: () => Navigator.pop(context),
-        text: "Voltar para a home",
+        bottomNavigationBar: BottomTextNavigationBar(
+          icon: Icon(Icons.arrow_back, color: AppTheme.colors.text, size: 18),
+          onTap: () => Navigator.pop(context),
+          text: "Voltar para a home",
+        ),
       ),
     );
   }

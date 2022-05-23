@@ -5,9 +5,14 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
 import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 
-class AccountNotLoggedPage extends StatelessWidget {
+class AccountNotLoggedPage extends StatefulWidget {
   const AccountNotLoggedPage({Key? key}) : super(key: key);
 
+  @override
+  State<AccountNotLoggedPage> createState() => _AccountNotLoggedPageState();
+}
+
+class _AccountNotLoggedPageState extends State<AccountNotLoggedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

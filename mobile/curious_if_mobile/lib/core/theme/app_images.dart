@@ -2,6 +2,7 @@ abstract class AppImages {
   String get logo;
   String get logoApp;
   String get checkIcon;
+  String cat(int index);
 }
 
 class AppImagesLight implements AppImages {
@@ -13,6 +14,12 @@ class AppImagesLight implements AppImages {
 
   @override
   String get checkIcon => 'assets/images/check_icon.png';
+
+  @override
+  String cat(int index) {
+    if (index < 0 || index > 3) index = 0;
+    return 'assets/images/cat$index.png';
+  }
 }
 
 class AppImagesDark extends AppImagesLight {
