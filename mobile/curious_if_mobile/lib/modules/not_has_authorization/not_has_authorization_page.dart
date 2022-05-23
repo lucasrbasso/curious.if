@@ -2,14 +2,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../../core/core.dart';
-import '../../domain/login/model/user_model.dart';
 import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 
 class NotHasAuthorizationPage extends StatefulWidget {
-  final UserModel? user;
-  const NotHasAuthorizationPage({Key? key, this.user}) : super(key: key);
+  const NotHasAuthorizationPage({Key? key}) : super(key: key);
 
   @override
   State<NotHasAuthorizationPage> createState() =>

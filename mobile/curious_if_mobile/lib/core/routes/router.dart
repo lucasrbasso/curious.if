@@ -113,7 +113,11 @@ class RouterClass {
           builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             true,
-            AccountPage(),
+            user == null
+                ? Container()
+                : AccountPage(
+                    user: user,
+                  ),
           ),
         );
 
