@@ -21,6 +21,7 @@ class WidgetForm extends StatefulWidget {
 class _WidgetFormState extends State<WidgetForm> {
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
     return IntrinsicHeight(
       child: Container(
         constraints: BoxConstraints(maxHeight: 80.h),

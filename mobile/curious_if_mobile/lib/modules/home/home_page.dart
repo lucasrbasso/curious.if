@@ -1,5 +1,6 @@
 import 'package:curious_if_mobile/core/routes/verify_roles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
@@ -49,27 +50,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    return Scaffold(
-      backgroundColor: AppTheme.colors.background,
-      appBar: AppBarHome(
-        statusBarHeight: statusBarHeight,
-        createPost: () {
-          indexPage = 4;
-          controlRoutes();
-        },
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: AppThemeController().colorStatus,
+      sized: false,
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.background,
+        appBar: AppBarHome(
+          statusBarHeight: statusBarHeight,
+          createPost: () {
+            indexPage = 4;
+            controlRoutes();
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBarHome(
+          onTap: (index) {
+            indexPage = index;
+            controlRoutes();
+          },
+        ),
+        body: pages[indexPage],
+        // floatingActionButton: FloatingActionButton(onPressed: () async {
+        //   try {
+        //     await AppThemeController().toggleThemeMode();
+        //   } catch (e) {}
+        // }),
       ),
-      bottomNavigationBar: BottomNavigationBarHome(
-        onTap: (index) {
-          indexPage = index;
-          controlRoutes();
-        },
-      ),
-      body: pages[indexPage],
-      // floatingActionButton: FloatingActionButton(onPressed: () async {
-      //   try {
-      //     await AppThemeController().toggleThemeMode();
-      //   } catch (e) {}
-      // }),
     );
   }
 }
