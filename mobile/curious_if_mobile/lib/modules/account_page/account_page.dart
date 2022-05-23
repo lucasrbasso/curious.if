@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../domain/login/model/user_model.dart';
 import '../../core/core.dart';
-import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import 'widgets/widget_form/widget_form.dart';
 
 class AccountPage extends StatelessWidget {
   final UserModel user;
@@ -37,7 +37,20 @@ class AccountPage extends StatelessWidget {
                 splashRadius: 24,
                 iconSize: 22,
                 color: AppTheme.colors.backgroundButton,
-                onPressed: () {},
+                onPressed: () {
+                  Widget sheet = WidgetForm(key: UniqueKey(), user: user);
+                  showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (BuildContext context) {
+                      return Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: sheet,
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
