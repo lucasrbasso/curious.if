@@ -15,6 +15,8 @@ class AccountNotLoggedPage extends StatefulWidget {
 class _AccountNotLoggedPageState extends State<AccountNotLoggedPage> {
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+
     return Scaffold(
       backgroundColor: AppTheme.colors.background,
       body: Padding(

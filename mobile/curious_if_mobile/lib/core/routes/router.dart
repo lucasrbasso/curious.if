@@ -6,7 +6,6 @@ import 'package:curious_if_mobile/modules/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import '../../domain/login/model/user_model.dart';
 import '../../modules/account_page/account_page.dart';
-import '../../modules/not_has_authorization/not_has_authorization_page.dart';
 import '../../modules/sign_up/sign_up_success/sign_up_success_page.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
@@ -47,8 +46,6 @@ class RouterClass {
       arguments = routeSettings.arguments as Map<String, dynamic>;
       user = arguments["user"];
     }
-
-    VerifyRoles verify = VerifyRoles();
 
     switch (routeSettings.name) {
       case initial:
@@ -94,7 +91,17 @@ class RouterClass {
       //TODO: Criar tela de uma postagem
       case createPost:
         return MaterialPageRoute(
-            builder: (_) => NotHasAuthorizationPage(user: user));
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
+            user,
+            VerifyRoles.verifyCanPost(user),
+            user == null
+                ? Container()
+                : CreatePostPage(
+                    user: user,
+                    onSuccess: () {},
+                  ),
+          ),
+        );
 
       //TODO: Criar tela de não há postagem
       case notHasPost:
@@ -103,7 +110,7 @@ class RouterClass {
       //TODO: Criar tela do profile
       case profile:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             true,
             AccountPage(),
@@ -113,7 +120,7 @@ class RouterClass {
       //TODO: Criar tela de configurações
       case config:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             true,
             Container(),
@@ -123,7 +130,7 @@ class RouterClass {
       //TODO: Criar tela de atividades
       case activities:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             true,
             Container(),
@@ -133,9 +140,9 @@ class RouterClass {
       //TODO: Criar tela de denuncias
       case delation:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
-            verify.verifyAdmin(user) || verify.verifyMod(user),
+            VerifyRoles.verifyAdmin(user) || VerifyRoles.verifyMod(user),
             Container(),
           ),
         );
@@ -143,18 +150,18 @@ class RouterClass {
       //TODO: Criar gerenciar roles e permissoes
       case manageRolesAndPermissions:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
-            verify.verifyAdmin(user),
+            VerifyRoles.verifyAdmin(user),
             Container(),
           ),
         );
       //TODO: Criar tela de gerenciar posts
       case manageNewPosts:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
-            verify.verifyAdmin(user) || verify.verifyMod(user),
+            VerifyRoles.verifyAdmin(user) || VerifyRoles.verifyMod(user),
             Container(),
           ),
         );
@@ -162,9 +169,9 @@ class RouterClass {
       //TODO: Criar tela de gerenciar registros
       case menageNewRegistrations:
         return MaterialPageRoute(
-          builder: (_) => verify.verifyRoleAndUser(
+          builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
-            verify.verifyAdmin(user) || verify.verifyMod(user),
+            VerifyRoles.verifyAdmin(user) || VerifyRoles.verifyMod(user),
             Container(),
           ),
         );
