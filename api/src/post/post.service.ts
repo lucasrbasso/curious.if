@@ -52,6 +52,8 @@ export class PostService {
   }
 
   async getPostById(id: string): Promise<PostDTO> {
+    if (!id) throw new BadRequestException('Post Id is required.');
+
     const post = await this.prisma.post.findUnique({
       where: { id },
       select: {
@@ -104,7 +106,7 @@ export class PostService {
     });
 
     if (!checkIfAuthorExists) {
-      throw new BadRequestException('Author does not exists.');
+      throw new NotFoundException('Author does not exists.');
     }
 
     try {
@@ -150,6 +152,8 @@ export class PostService {
   }
 
   async deletePost(id: string): Promise<void> {
+    if (!id) throw new BadRequestException('Post Id is required.');
+
     const post = await this.prisma.post.findUnique({
       where: { id },
     });
