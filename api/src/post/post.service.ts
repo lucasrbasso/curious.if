@@ -65,7 +65,7 @@ export class PostService {
     });
 
     if (!post) {
-      throw new BadRequestException('Post not found.');
+      throw new NotFoundException('Post not found.');
     }
     return post;
   }
@@ -132,7 +132,7 @@ export class PostService {
     });
 
     if (!postInDB) {
-      throw new NotFoundException('Post Id not found.');
+      throw new NotFoundException('Post not found.');
     }
 
     try {
@@ -155,7 +155,7 @@ export class PostService {
     });
 
     if (!post) {
-      throw new BadRequestException('Post not found.');
+      throw new NotFoundException('Post not found.');
     }
 
     await this.prisma.post.delete({ where: { id } });
