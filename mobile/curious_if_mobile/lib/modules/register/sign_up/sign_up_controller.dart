@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../core/core.dart';
-import '../../domain/signup/model/sign_up_model.dart';
-import '../../domain/signup/usecase/sign_up_usecase.dart';
-import '../../i18n/i18n_const.dart';
+import '../../../core/core.dart';
+import '../../../domain/signup/model/sign_up_model.dart';
+import '../../../domain/signup/usecase/sign_up_usecase.dart';
+import '../../../i18n/i18n_const.dart';
 import 'sign_up_state.dart';
 part 'sign_up_controller.g.dart';
 

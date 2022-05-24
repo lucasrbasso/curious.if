@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
-import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import '../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 
 class NotHasAuthorizationPage extends StatefulWidget {
   const NotHasAuthorizationPage({Key? key}) : super(key: key);

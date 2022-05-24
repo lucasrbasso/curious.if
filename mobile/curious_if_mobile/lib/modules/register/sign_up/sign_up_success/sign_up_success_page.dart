@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../core/core.dart';
-import '../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
-import '../../../shared/button_form_input/button_form_input.dart';
+import '../../../../core/core.dart';
+import '../../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import '../../../../shared/button_form_input/button_form_input.dart';
 import 'sign_up_success_controller.dart';
 
 class SignUpSuccessPage extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'package:curious_if_mobile/domain/login/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/roles-permission/model/roles_permission_model.dart';
-import '../../modules/account_not_logged/account_not_logged_page.dart';
-import '../../modules/not_has_authorization/not_has_authorization_page.dart';
+import '../../modules/errors/account_not_logged/account_not_logged_page.dart';
+import '../../modules/errors/not_has_authorization/not_has_authorization_page.dart';
 import '../core.dart';
 
 class VerifyRoles {

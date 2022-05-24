@@ -6,6 +6,7 @@ import '../core.dart';
 
 abstract class AppTextStyles {
   TextStyle get textHeadingThree;
+  TextStyle get textHeadingFour;
   TextStyle get subtitleHeadingThree;
   TextStyle get textHeadingTwo;
   TextStyle get textHintFieldInput;
@@ -53,6 +54,13 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get textHeadingThree => GoogleFonts.poppins(
         fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+
+  @override
+  TextStyle get textHeadingFour => GoogleFonts.poppins(
+        fontSize: 18,
         fontWeight: FontWeight.w500,
         color: AppTheme.colors.text,
       );

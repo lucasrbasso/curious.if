@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../core/core.dart';
-import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import '../../../core/core.dart';
+import '../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 import 'login_controller.dart';
 import 'widgets/form_login/form_login.dart';
 

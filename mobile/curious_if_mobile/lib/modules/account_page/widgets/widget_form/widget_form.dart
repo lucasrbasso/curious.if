@@ -69,7 +69,11 @@ class _WidgetFormState extends State<WidgetForm> {
                           ButtonIconText(
                             icon: FontAwesomeIcons.addressBook,
                             label: "Gerenciar\nPermissões",
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(context,
+                                  RouterClass.manageRolesAndPermissions,
+                                  arguments: {'user': widget.user});
+                            },
                           ),
                         ],
                         ButtonIconText(

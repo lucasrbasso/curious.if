@@ -1,11 +1,11 @@
 import 'package:curious_if_mobile/domain/signup/model/sign_up_model.dart';
-import 'package:curious_if_mobile/modules/sign_up/sign_up_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../core/core.dart';
-import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import '../../../core/core.dart';
+import '../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import 'sign_up_controller.dart';
 import 'widgets/form_sign_up/form_sign_up.dart';
 
 class SignUpPage extends StatefulWidget {

@@ -1,13 +1,13 @@
 import 'package:curious_if_mobile/core/routes/verify_roles.dart';
 import 'package:curious_if_mobile/modules/create_post_page/create_post_page.dart';
 import 'package:curious_if_mobile/modules/home/home_page.dart';
-import 'package:curious_if_mobile/modules/login/login_page.dart';
-import 'package:curious_if_mobile/modules/sign_up/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import '../../domain/login/model/user_model.dart';
 import '../../modules/account_page/account_page.dart';
-import '../../modules/menage_roles_and_permissions/menage_roles_and_permissions_page.dart';
-import '../../modules/sign_up/sign_up_success/sign_up_success_page.dart';
+import '../../modules/management/menage_roles_and_permissions/menage_roles_and_permissions_page.dart';
+import '../../modules/register/login/login_page.dart';
+import '../../modules/register/sign_up/sign_up_page.dart';
+import '../../modules/register/sign_up/sign_up_success/sign_up_success_page.dart';
 import '/core/config/app_config_page.dart';
 import '/modules/splash/splash_page.dart';
 
@@ -158,7 +158,9 @@ class RouterClass {
           builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             VerifyRoles.verifyAdmin(user),
-            MenageRolesAndPermissionsPage(),
+            user == null
+                ? Container()
+                : MenageRolesAndPermissionsPage(user: user),
           ),
         );
       //TODO: Criar tela de gerenciar posts

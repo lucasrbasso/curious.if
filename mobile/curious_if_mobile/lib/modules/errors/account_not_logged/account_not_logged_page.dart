@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/core.dart';
-import '../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
+import '../../../shared/bottom_text_navigation_bar/bottom_text_navigation_bar.dart';
 
 class AccountNotLoggedPage extends StatefulWidget {
   const AccountNotLoggedPage({Key? key}) : super(key: key);

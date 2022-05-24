@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../core/core.dart';
-import '../../domain/login/model/login_model.dart';
-import '../../domain/login/model/user_model.dart';
-import '../../domain/login/usecase/login_usecase.dart';
+import '../../../core/core.dart';
+import '../../../domain/login/model/login_model.dart';
+import '../../../domain/login/model/user_model.dart';
+import '../../../domain/login/usecase/login_usecase.dart';
 import 'login_state.dart';
 part 'login_controller.g.dart';
 
