@@ -18,17 +18,17 @@ class AlertDialogSettings extends StatelessWidget {
     double borderRadius = 1.w;
     return AlertDialog(
       clipBehavior: Clip.hardEdge,
-      backgroundColor: AppTheme.colors.background,
+      backgroundColor: AppTheme.colors.backgroundAlertDialog,
       title: Container(
         decoration: BoxDecoration(
-          color: AppTheme.colors.backgroundColor,
+          color: AppTheme.colors.backgroundAlertDialogColor,
         ),
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
         child: Row(
           children: [
             Flexible(
               child: Text(
-                I18nConst.infoUser,
+                "Informações do usuário",
                 style: AppTheme.textStyles.titleAlertDialog,
               ),
             ),
@@ -45,12 +45,12 @@ class AlertDialogSettings extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CardTextWidget(
-                title: I18nConst.name,
+                title: "Nome",
                 subtitle: 'user.name',
               ),
               SizedBox(height: 1.h),
               CardTextWidget(
-                title: I18nConst.email,
+                title: "Email",
                 subtitle: 'user.email',
               ),
               SizedBox(height: 1.h),
@@ -67,7 +67,7 @@ class AlertDialogSettings extends StatelessWidget {
                   Border.all(color: AppTheme.colors.border, width: borderWidth),
             ),
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
-            child: Text(I18nConst.quit, style: AppTheme.textStyles.textButton),
+            child: Text("Sair", style: AppTheme.textStyles.textButton),
           ),
           onTap: yesPress,
         ),

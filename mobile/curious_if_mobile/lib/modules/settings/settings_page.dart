@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      tooltip: I18nConst.quit,
+                      tooltip: "Sair",
                       iconSize: 24.sp,
                       padding: EdgeInsets.zero,
                       color: AppTheme.colors.appBarTitleSettings,
@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: SizedBox(
                           height: 32.sp,
                           child: Text(
-                            I18nConst.configs,
+                            "Configurações",
                             style: AppTheme.textStyles.appBarTitleSettings,
                           ),
                         ),
@@ -88,7 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.dark_mode,
                   backgroundColor: const Color(0xFF794BF6),
                 ),
-                title: I18nConst.darkMode,
+                title: "Dark Mode",
                 style: AppTheme.textStyles.bodyButtomTitleSettings,
                 onChanged: (value) {
                   if (value) {
@@ -102,11 +102,11 @@ class _SettingsPageState extends State<SettingsPage> {
               SizedBox(height: 2.h),
               DropDownSettingsTile<String>(
                 selected: settingsController.locale,
-                title: I18nConst.languageApp,
-                values: {
-                  'es': I18nConst.spanish,
-                  'en': I18nConst.english,
-                  'pt': I18nConst.portuguese,
+                title: "Tipo de linguagem",
+                values: const {
+                  'es': "Espanhol",
+                  'en': "Inglês",
+                  'pt': "Português",
                 },
                 leading: IconWidget(
                   color: AppTheme.colors.bodyIconColorSettings,
@@ -118,11 +118,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 2.5.h),
               SettingsGroup(
-                title: I18nConst.general,
+                title: "Geral",
                 style: AppTheme.textStyles.bodyTitleSettings,
                 children: [
                   SimpleSettingsTile(
-                    title: I18nConst.logout,
+                    title: "Logout",
                     subtitle: "",
                     style: AppTheme.textStyles.bodyButtomTitleSettings,
                     leading: IconWidget(
@@ -138,11 +138,11 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 1.5.h),
               SettingsGroup(
-                title: I18nConst.feedback,
+                title: "Feedback",
                 style: AppTheme.textStyles.bodyTitleSettings,
                 children: [
                   SimpleSettingsTile(
-                    title: I18nConst.reportBug,
+                    title: "Reportar um Bug",
                     subtitle: "",
                     style: AppTheme.textStyles.bodyButtomTitleSettings,
                     leading: IconWidget(
@@ -154,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   SizedBox(height: 1.5.h),
                   SimpleSettingsTile(
-                    title: I18nConst.sendFeedback,
+                    title: "Enviar um Feedback",
                     subtitle: "",
                     style: AppTheme.textStyles.bodyButtomTitleSettings,
                     leading: IconWidget(

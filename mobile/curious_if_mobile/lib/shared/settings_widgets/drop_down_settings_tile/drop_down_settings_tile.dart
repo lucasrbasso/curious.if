@@ -137,7 +137,7 @@ class _SettingsDropDown<T> extends StatelessWidget {
       children: <Widget>[
         DropdownButton<T>(
           key: dropdownButtonKey,
-          dropdownColor: AppTheme.colors.background,
+          dropdownColor: AppTheme.colors.backgroundAlertDialog,
           value: selected,
           alignment: alignment,
           onChanged: enabled ? onChanged : null,

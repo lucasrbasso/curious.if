@@ -1,35 +1,24 @@
 abstract class AppImages {
-  String get backgroundLogin;
-  String get iconGoogle;
-  String get iconApple;
   String get logo;
-  String get note;
+  String get logoApp;
+  String get checkIcon;
 }
 
 class AppImagesLight implements AppImages {
   @override
-  String get backgroundLogin => "assets/images/backgroundLight.png";
+  String get logo => 'assets/images/logo_splash_light.png';
 
   @override
-  String get iconGoogle => "assets/images/google-icon.png";
+  String get logoApp => 'assets/images/logo_app_light.png';
 
   @override
-  String get iconApple => "assets/images/apple-icon-light.png";
-
-  @override
-  String get logo => "assets/images/logo.png";
-
-  @override
-  String get note => "assets/images/note_light.png";
+  String get checkIcon => 'assets/images/check_icon.png';
 }
 
 class AppImagesDark extends AppImagesLight {
   @override
-  String get backgroundLogin => "assets/images/backgroundDark.png";
+  String get logo => 'assets/images/logo_splash_dark.png';
 
   @override
-  String get iconApple => "assets/images/apple-icon-dark.png";
-
-  @override
-  String get note => "assets/images/note_dark.png";
+  String get logoApp => 'assets/images/logo_app_dark.png';
 }

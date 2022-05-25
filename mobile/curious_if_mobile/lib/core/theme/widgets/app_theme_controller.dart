@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'app_theme_controller.g.dart';
@@ -29,7 +30,7 @@ abstract class _AppThemeControllerBase with Store {
 
   // QUANDO O TEMA É ALTERADO ELE INFORMA TODOS OS OBSERVERS EXTERNOS
   @computed
-  ThemeMode get themeMode => _themeMode ?? ThemeMode.light;
+  ThemeMode get themeMode => _themeMode ?? ThemeMode.system;
 // QUANDO O TEMA É ALTERADO ELE INFORMA TODOS OS OBSERVERS EXTERNOS
   @computed
   Brightness get brightness => _brightness ?? Brightness.light;
@@ -47,6 +48,17 @@ abstract class _AppThemeControllerBase with Store {
       setBrightness(Brightness.dark);
     } else {
       setBrightness(Brightness.light);
+    }
+  }
+
+  @action
+  Future<void> toggleThemeMode() async {
+    if (themeMode == ThemeMode.system) {
+      await setThemeMode(ThemeMode.dark);
+    } else if (themeMode == ThemeMode.dark) {
+      await setThemeMode(ThemeMode.light);
+    } else {
+      await setThemeMode(ThemeMode.system);
     }
   }
 
@@ -99,11 +111,32 @@ abstract class _AppThemeControllerBase with Store {
     }
   }
 
+  @computed
+  SystemUiOverlayStyle get colorStatus {
+    bool isDarkMode = brightness == Brightness.dark;
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // cor da barra superior
+      statusBarIconBrightness: isDarkMode
+          ? Brightness.light
+          : Brightness.dark, // ícones da barra superior
+      statusBarBrightness: isDarkMode ? Brightness.dark : Brightness.light,
+    );
+  }
+
+  SystemUiOverlayStyle get colorStatusIsWhite {
+    return const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // cor da barra superior
+      statusBarIconBrightness: Brightness.light, // ícones da barra superior
+      statusBarBrightness: Brightness.dark,
+    );
+  }
+
   void listenBrightnessSystem() {
     SingletonFlutterWindow? window = WidgetsBinding.instance?.window;
     window?.onPlatformBrightnessChanged = () {
       WidgetsBinding.instance?.handlePlatformBrightnessChanged();
       Brightness brightness = window.platformBrightness;
+      print(brightness);
       if (themeMode == ThemeMode.system) setBrightness(brightness);
     };
   }

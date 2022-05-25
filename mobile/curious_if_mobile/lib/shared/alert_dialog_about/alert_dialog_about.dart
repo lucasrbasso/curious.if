@@ -19,7 +19,7 @@ class AlertDialogAbout extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       clipBehavior: Clip.hardEdge,
-      backgroundColor: AppTheme.colors.background,
+      backgroundColor: AppTheme.colors.backgroundAlertDialog,
       title: Container(
         decoration: BoxDecoration(gradient: AppTheme.gradients.background),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
@@ -49,14 +49,14 @@ class AlertDialogAbout extends StatelessWidget {
       actions: [
         ElevatedButton(
           style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(AppTheme.colors.background),
+            backgroundColor: MaterialStateProperty.all<Color>(
+                AppTheme.colors.backgroundAlertDialog),
             side: MaterialStateProperty.all<BorderSide>(
                 BorderSide(color: AppTheme.colors.border, width: 1)),
           ),
           child: Text(
             back,
-            style: AppTheme.textStyles.textSimple.copyWith(fontSize: 14),
+            style: AppTheme.textStyles.textAlertDialog.copyWith(fontSize: 14),
           ),
           onPressed: () => onPress(),
         ),

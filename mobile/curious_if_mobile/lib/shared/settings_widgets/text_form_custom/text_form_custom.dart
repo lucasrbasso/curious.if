@@ -34,11 +34,11 @@ class TextFormCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle styleText;
     if (disableForm) {
-      styleText = AppTheme.textStyles.textSimple;
+      styleText = AppTheme.textStyles.textAlertDialog;
     } else if (disable) {
-      styleText = AppTheme.textStyles.textSimple;
+      styleText = AppTheme.textStyles.textAlertDialog;
     } else {
-      styleText = AppTheme.textStyles.textSimple;
+      styleText = AppTheme.textStyles.textAlertDialog;
     }
 
     InputBorder border = divider
@@ -59,15 +59,15 @@ class TextFormCustom extends StatelessWidget {
       initialValue: Bidi.stripHtmlIfNeeded(text.replaceAll("<br />", "\n")),
       keyboardType: TextInputType.multiline,
       style: styleText,
-      cursorColor: AppTheme.colors.backgroundColor,
+      cursorColor: AppTheme.colors.backgroundAlertDialogColor,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: styleText,
         hintText: hintText,
         isDense: true,
         hintStyle: disable
-            ? AppTheme.textStyles.textSimple
-            : AppTheme.textStyles.textSimple,
+            ? AppTheme.textStyles.textAlertDialog
+            : AppTheme.textStyles.textAlertDialog,
         border: InputBorder.none,
         enabledBorder: border,
         focusedBorder: border,

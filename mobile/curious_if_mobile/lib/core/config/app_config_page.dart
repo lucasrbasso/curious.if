@@ -26,21 +26,20 @@ class _AppConfigPageState extends State<AppConfigPage> {
   void initState() {
     // INICIALIZA TODAS AS CONFIGURAÇÕES DO APP
     _controllerConfig.initialConfiguration().then((value) {
-      if (value) {
-        body = SplashPage(
-          redirect: true,
-          key: UniqueKey(),
-        );
-      } else {
-        body = Material(
-          child: Center(
-            child: Text(
-              I18nConst.erroConfigApp,
-              textDirection: TextDirection.ltr,
-            ),
-          ),
-        );
-      }
+      value
+          ? body = SplashPage(
+              redirect: true,
+              key: UniqueKey(),
+            )
+          : body = const Material(
+              child: Center(
+                child: Text(
+                  "Erro na configuração do APP",
+                  textDirection: TextDirection.ltr,
+                ),
+              ),
+            );
+
       if (mounted) {
         setState(() {});
       }

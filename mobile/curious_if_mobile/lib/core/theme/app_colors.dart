@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 
 abstract class AppColors {
-  Color get example;
-  Color get backgroundColor;
   Color get background;
-  Color get textGradient;
-  Color get textTitle;
-  Color get textSimple;
-  Color get textSubtitle;
-  Color get textButton;
-  Color get textSubtitleOpacity;
-  Color get border;
-  Color get divider;
-  Color get icon;
-  Color get textError;
-  List<Color> get colorsPicker;
+  Color get text;
+  Color get textField;
+  Color get textButtonApp;
+  Color get backgroundButton;
+  Color get backgroundTextForm;
+  Color get backgroundBottomNavigationText;
+  Color get subtitleOpacity;
+  Color get subtitleButton;
+  Color get backgroundAppBar;
+  Color get titlePost;
+  Color get subtitlePost;
+  Color get colorShimmer;
+  Color get colorSecondaryShimmer;
 
   //COLORS SETTINGS
+  Color get border;
+  Color get divider;
+  Color get backgroundAlertDialogColor;
+  Color get backgroundAlertDialog;
+  Color get textSimple;
+  Color get textButton;
+  Color get textGradient;
+  Color get textSnackBar;
   Color get appBarIconSettings;
   Color get appBarTitleSettings;
   Color get bodyIconBackgroundSettings;
@@ -32,32 +40,44 @@ abstract class AppColors {
 
 class AppColorsLight implements AppColors {
   @override
-  Color get example => const Color(0xFF40B28C);
+  Color get background => const Color(0xFFF0F8FF);
+  @override
+  Color get text => const Color(0xFF000000);
+  @override
+  Color get textField => const Color(0xAF000000);
+  @override
+  Color get textButtonApp => const Color(0xFFFDFDFD);
 
   @override
-  Color get background => const Color(0xFFFFFFFF);
+  Color get backgroundButton => const Color(0xFF05A678);
+  @override
+  Color get backgroundTextForm => const Color(0xFFD4D4D4);
 
   @override
-  Color get backgroundColor => const Color(0xFF4721B4);
+  Color get backgroundBottomNavigationText => const Color(0xFFD4D4D4);
 
   @override
-  Color get textGradient => const Color(0xFFFFFFFF);
+  Color get subtitleOpacity => const Color(0xFF696969);
 
   @override
-  Color get textSimple => const Color(0xFF666666);
+  Color get subtitleButton => const Color(0xFF007A78);
 
   @override
-  Color get textSubtitle => const Color(0xFF666666);
+  Color get backgroundAppBar => const Color(0xFFD4D4D4);
 
   @override
-  Color get textButton => const Color(0xFF666666);
+  Color get titlePost => const Color(0xFF000000);
 
   @override
-  Color get textSubtitleOpacity => const Color(0xFFA4B2AE);
+  Color get subtitlePost => const Color(0xFF05A678);
 
   @override
-  Color get textTitle => const Color(0xFF455250);
+  Color get colorShimmer => const Color(0x5f3f3f3f);
 
+  @override
+  Color get colorSecondaryShimmer => const Color(0xffaaa4a4);
+
+  /*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFFDCE0E5);
 
@@ -65,26 +85,23 @@ class AppColorsLight implements AppColors {
   Color get divider => const Color(0x33666666);
 
   @override
-  Color get icon => const Color(0xFFFFFFFF);
+  Color get backgroundAlertDialog => const Color(0xFFFFFFFF);
 
   @override
-  Color get textError => Colors.red;
+  Color get backgroundAlertDialogColor => const Color(0xFF4721B4);
 
   @override
-  List<Color> get colorsPicker => const [
-        Color(0xFFE0F1CF),
-        Color(0xFFF1CFCF),
-        Color(0xFFF1DDCF),
-        Color(0xFFF1EECF),
-        Color(0xFFE2F1CF),
-        Color(0xFFCFF1D7),
-        Color(0xFFCFF1EF),
-        Color(0xFFCFD7F1),
-        Color(0xFFD8CFF1),
-        Color(0xFFF1CFEC),
-      ];
+  Color get textButton => const Color(0xFF666666);
 
-  /*---------------COLORS SETTINGS---------------*/
+  @override
+  Color get textSimple => const Color(0xFF666666);
+
+  @override
+  Color get textGradient => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSnackBar => const Color(0xFFFFFFFF);
+
   @override
   Color get appBarIconSettings => const Color(0xFF4F4F4F);
 
@@ -121,32 +138,44 @@ class AppColorsLight implements AppColors {
 
 class AppColorsDark implements AppColors {
   @override
-  Color get example => const Color(0xFF40B28C);
+  Color get background => const Color(0xFF3E3B47);
+  @override
+  Color get text => const Color(0xFFF4EDE8);
+  @override
+  Color get textField => const Color(0xFF666360);
+  @override
+  Color get textButtonApp => const Color(0xFFFDFDFD);
 
   @override
-  Color get background => const Color(0xFF333333);
+  Color get backgroundButton => const Color(0xFF05A678);
 
   @override
-  Color get backgroundColor => const Color(0xFF4721B4);
+  Color get backgroundTextForm => const Color(0xFF232129);
 
   @override
-  Color get textGradient => const Color(0xFFFFFFFF);
+  Color get backgroundBottomNavigationText => const Color(0xFF312E38);
 
   @override
-  Color get textSimple => const Color(0xFFFFFFFF);
+  Color get subtitleOpacity => const Color(0xFF999591);
 
   @override
-  Color get textButton => const Color(0xFFFFFFFF);
+  Color get subtitleButton => const Color(0xFF007A78);
 
   @override
-  Color get textSubtitle => const Color(0xFF666666);
+  Color get backgroundAppBar => const Color(0xFF312E38);
 
   @override
-  Color get textSubtitleOpacity => const Color(0xFFA4B2AE);
+  Color get titlePost => const Color(0xFFFFFFFF);
 
   @override
-  Color get textTitle => const Color(0xFF455250);
+  Color get subtitlePost => const Color(0xFF05A678);
 
+  @override
+  Color get colorShimmer => const Color(0x3ff3f3f3);
+
+  @override
+  Color get colorSecondaryShimmer => const Color(0x0f4a4a4a);
+/*---------------COLORS SETTINGS---------------*/
   @override
   Color get border => const Color(0xFF5C5C5C);
 
@@ -154,26 +183,23 @@ class AppColorsDark implements AppColors {
   Color get divider => const Color(0x33666666);
 
   @override
-  Color get icon => const Color(0xFFFFFFFF);
+  Color get backgroundAlertDialog => const Color(0xFF333333);
 
   @override
-  Color get textError => Colors.red;
+  Color get backgroundAlertDialogColor => const Color(0xFF4721B4);
 
   @override
-  List<Color> get colorsPicker => const [
-        Color(0xFFE0F1CF),
-        Color(0xFFF1CFCF),
-        Color(0xFFF1DDCF),
-        Color(0xFFF1EECF),
-        Color(0xFFE2F1CF),
-        Color(0xFFCFF1D7),
-        Color(0xFFCFF1EF),
-        Color(0xFFCFD7F1),
-        Color(0xFFD8CFF1),
-        Color(0xFFF1CFEC),
-      ];
+  Color get textGradient => const Color(0xFFFFFFFF);
 
-/*---------------COLORS SETTINGS---------------*/
+  @override
+  Color get textButton => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSimple => const Color(0xFFFFFFFF);
+
+  @override
+  Color get textSnackBar => const Color(0xFFFFFFFF);
+
   @override
   Color get appBarIconSettings => const Color(0xFFFFFFFF);
 
