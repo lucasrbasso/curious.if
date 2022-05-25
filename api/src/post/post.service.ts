@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma/prisma.service';
 import { PostDTO } from './dto/get-post-output.dto';
@@ -7,6 +11,11 @@ interface CreatePostProps {
   authorId: string;
   to?: string;
   content: string;
+}
+
+interface UpdatePostProps {
+  id: string;
+  published: boolean;
 }
 
 interface PaginationProps {
@@ -26,6 +35,9 @@ export class PostService {
       orderBy: {
         createdAt: 'desc',
       },
+      where: {
+        published: true,
+      },
       select: {
         id: true,
         createdAt: true,
@@ -40,6 +52,8 @@ export class PostService {
   }
 
   async getPostById(id: string): Promise<PostDTO> {
+    if (!id) throw new BadRequestException('Post Id is required.');
+
     const post = await this.prisma.post.findUnique({
       where: { id },
       select: {
@@ -53,9 +67,29 @@ export class PostService {
     });
 
     if (!post) {
-      throw new BadRequestException('Post not found.');
+      throw new NotFoundException('Post not found.');
     }
     return post;
+  }
+
+  async getUnauthorizedPost(): Promise<PostDTO[]> {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        published: false,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        published: true,
+      },
+    });
+
+    return posts;
   }
 
   async createPost({
@@ -72,7 +106,7 @@ export class PostService {
     });
 
     if (!checkIfAuthorExists) {
-      throw new BadRequestException('Author does not exists.');
+      throw new NotFoundException('Author does not exists.');
     }
 
     try {
@@ -88,13 +122,44 @@ export class PostService {
     }
   }
 
+  async updatePostStatus({ id, published }: UpdatePostProps): Promise<PostDTO> {
+    if (!id) {
+      throw new BadRequestException('Post Id is required.');
+    }
+
+    const postInDB = await this.prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!postInDB) {
+      throw new NotFoundException('Post not found.');
+    }
+
+    try {
+      return await this.prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          published,
+        },
+      });
+    } catch (err: any) {
+      throw new BadRequestException('There was an error when editing a post.');
+    }
+  }
+
   async deletePost(id: string): Promise<void> {
+    if (!id) throw new BadRequestException('Post Id is required.');
+
     const post = await this.prisma.post.findUnique({
       where: { id },
     });
 
     if (!post) {
-      throw new BadRequestException('Post not found.');
+      throw new NotFoundException('Post not found.');
     }
 
     await this.prisma.post.delete({ where: { id } });

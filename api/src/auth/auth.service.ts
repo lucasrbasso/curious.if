@@ -11,15 +11,11 @@ interface AuthProps {
 
 interface RequestUserProps {
   id: string;
-<<<<<<< HEAD
   name: string;
   email: string;
   roles: string[];
   permissions: string[];
   isValidated: boolean;
-=======
-  email: string;
->>>>>>> 8a92927b268ada7b14101e1c4b3f59ca279180ca
 }
 
 @Injectable()
@@ -39,11 +35,7 @@ export class AuthService {
       const checkCredentials = await bcrypt.compare(pass, user.password);
 
       if (checkCredentials) {
-<<<<<<< HEAD
-        const { ...result } = user;
-=======
         const { password, ...result } = user;
->>>>>>> 8a92927b268ada7b14101e1c4b3f59ca279180ca
 
         return result;
       }
@@ -52,7 +44,6 @@ export class AuthService {
   }
 
   async login(user: RequestUserProps) {
-<<<<<<< HEAD
     const payload = {
       email: user.email,
       sub: user.id,
@@ -72,10 +63,6 @@ export class AuthService {
 
     return {
       ...userReturn,
-=======
-    const payload = { email: user.email, sub: user.id };
-    return {
->>>>>>> 8a92927b268ada7b14101e1c4b3f59ca279180ca
       access_token: this.jwtService.sign(payload),
     };
   }
