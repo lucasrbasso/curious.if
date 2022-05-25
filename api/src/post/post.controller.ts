@@ -31,7 +31,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Read)
   @Get()
-  @ApiOperation({summary: 'Retorna todos os Posts'})
+  @ApiOperation({ summary: 'Retorna todos os Posts' })
   async getAllPosts(
     @Query('cursor') cursor?: string,
     @Query('take') take?: string,
@@ -45,7 +45,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Read)
   @Get('/:id')
-  @ApiOperation({summary: 'Retorna Post por ID'})
+  @ApiOperation({ summary: 'Retorna Post por ID' })
   async getPostById(@Param('id') id: string): Promise<PostDTO> {
     return this.postService.getPostById(id);
   }
@@ -53,7 +53,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Post)
   @Post()
-  @ApiOperation({summary: 'Cria Post'})
+  @ApiOperation({ summary: 'Cria Post' })
   async createPost(
     @Body() createPostInputDto: CreatePostInputDTO,
     @Request() req,
@@ -68,7 +68,7 @@ export class PostController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('filter/UnauthorizedPost')
   @Roles(Role.Admin, Role.Mod)
-  @ApiOperation({summary: 'Retorna Post não aprovados'})
+  @ApiOperation({ summary: 'Retorna Post não aprovados' })
   async getUnauthorizedPost(): Promise<PostDTO[]> {
     return this.postService.getUnauthorizedPost();
   }
@@ -76,15 +76,17 @@ export class PostController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Patch()
-  @ApiOperation({summary: 'Atualiza status do Post'})
-  async updatePostStatus(@Body() updatePostStatusDTO: UpdatePostStatusDTO): Promise<PostDTO> {
+  @ApiOperation({ summary: 'Atualiza status do Post' })
+  async updatePostStatus(
+    @Body() updatePostStatusDTO: UpdatePostStatusDTO,
+  ): Promise<PostDTO> {
     return this.postService.updatePostStatus(updatePostStatusDTO);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Delete('/:id')
-  @ApiOperation({summary: 'Deleta Post por ID'})
+  @ApiOperation({ summary: 'Deleta Post por ID' })
   async deletePost(@Param('id') id: string): Promise<void> {
     return this.postService.deletePost(id);
   }
