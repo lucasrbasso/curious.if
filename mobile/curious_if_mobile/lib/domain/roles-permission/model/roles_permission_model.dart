@@ -1,5 +1,18 @@
-enum Permission { canRead, canPost }
-enum Roles { admin, mod }
+enum Permission {
+  canRead("Pode Ler"),
+  canPost("Pode Postar");
+
+  final String label;
+  const Permission(this.label);
+}
+
+enum Roles {
+  admin("Administrador"),
+  mod("Moderador");
+
+  final String label;
+  const Roles(this.label);
+}
 
 extension StringToPermission on String {
   Permission get parsePermission => {

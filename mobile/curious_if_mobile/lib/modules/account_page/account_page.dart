@@ -17,7 +17,7 @@ class AccountPage extends StatelessWidget {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: AppTheme.colors.background,
-      appBar: AppBarSimple(user: user, label: "PERFIL", hasButton: true),
+      appBar: AppBarSimple(user: user, label: "PERFIL", hasBars: true),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: Column(

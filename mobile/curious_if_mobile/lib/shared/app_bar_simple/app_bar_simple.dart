@@ -10,12 +10,14 @@ import '../../modules/account_page/widgets/widget_form/widget_form.dart';
 class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
   final String label;
   final UserModel user;
-  final bool hasButton;
+  final bool hasBars;
+  final bool hasSearch;
   const AppBarSimple({
     Key? key,
     required this.label,
     required this.user,
-    this.hasButton = false,
+    this.hasBars = false,
+    this.hasSearch = false,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
       title: Text(label, style: AppTheme.textStyles.textHeadingFour),
       centerTitle: true,
       actions: [
-        if (hasButton) ...[
+        if (hasBars) ...[
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: IconButton(
@@ -55,6 +57,24 @@ class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
                     );
                   },
                 );
+              },
+            ),
+          ),
+        ],
+        if (hasSearch) ...[
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: IconButton(
+              icon: const FaIcon(
+                FontAwesomeIcons.magnifyingGlass,
+              ),
+              padding: EdgeInsets.zero,
+              tooltip: "Pesquisar",
+              splashRadius: 24,
+              iconSize: 20,
+              color: AppTheme.colors.backgroundButton,
+              onPressed: () {
+                print(ThemeData().splashColor);
               },
             ),
           ),
