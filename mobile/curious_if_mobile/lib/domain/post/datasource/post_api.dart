@@ -10,7 +10,7 @@ abstract class IPostApi {
   });
   Future<String> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
   });
   void dispose();
@@ -48,7 +48,7 @@ class PostApi implements IPostApi {
   @override
   Future<String> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
   }) async {
     try {
@@ -58,10 +58,7 @@ class PostApi implements IPostApi {
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Authorization': 'Bearer $token'
               },
-              body: json.encode(<String, String>{
-                'content': content,
-                'authorId': authorID,
-              }))
+              body: json.encode(<String, String>{'content': content, 'to': to}))
           .timeout(const Duration(seconds: 10));
       return responseErrorStatusCode(response);
     } catch (e) {
