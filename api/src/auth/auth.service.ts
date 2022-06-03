@@ -35,7 +35,7 @@ export class AuthService {
       const checkCredentials = await bcrypt.compare(pass, user.password);
 
       if (checkCredentials) {
-        const { ...result } = user;
+        const { password, ...result } = user;
 
         return result;
       }

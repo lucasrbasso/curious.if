@@ -8,7 +8,7 @@ abstract class IPostUseCase {
   });
   Future<PostModel> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
   });
   void dispose();
@@ -39,12 +39,12 @@ class PostUseCase implements IPostUseCase {
   @override
   Future<PostModel> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
   }) async {
     try {
       PostModel post = await _repository.createPost(
-        authorID: authorID,
+        to: to,
         content: content,
         token: token,
       );

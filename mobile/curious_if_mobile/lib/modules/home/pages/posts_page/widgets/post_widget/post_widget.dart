@@ -55,14 +55,16 @@ class PostWidget extends StatelessWidget {
                 style: AppTheme.textStyles.titlePost,
               ),
               SizedBox(height: 2),
-              Text.rich(TextSpan(
-                  text: "Para: ",
-                  style: AppTheme.textStyles.titleTextPost,
-                  children: [
-                    TextSpan(
-                        text: post.forPeople,
-                        style: AppTheme.textStyles.subtitleTextPost)
-                  ])),
+              if (post.forPeople.isNotEmpty) ...[
+                Text.rich(TextSpan(
+                    text: "Para: ",
+                    style: AppTheme.textStyles.titleTextPost,
+                    children: [
+                      TextSpan(
+                          text: post.forPeople,
+                          style: AppTheme.textStyles.subtitleTextPost)
+                    ])),
+              ],
               SizedBox(height: 2),
               Text(post.content, style: AppTheme.textStyles.subtitleTextPost),
             ]

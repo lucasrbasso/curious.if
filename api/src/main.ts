@@ -18,6 +18,9 @@ async function bootstrap() {
     .setTitle('Curious.IF')
     .setDescription('API para envio de spotted')
     .setVersion('1.0')
+    .addTag('Users')
+    .addTag('Posts')
+    .addTag('Login')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -36,10 +36,11 @@ class PostModel {
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return PostModel(
       id: map['id'] ?? '',
       content: map['content'] ?? '',
-      forPeople: map['forPeople'] ?? '',
+      forPeople: map['to'] ?? '',
       createdAt: DateTime.parse(map['createdAt']),
     );
   }

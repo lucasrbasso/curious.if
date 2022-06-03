@@ -14,7 +14,7 @@ class AppBarHome extends StatelessWidget with PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(statusBarHeight / 2 + 2.h);
+  Size get preferredSize => Size.fromHeight(statusBarHeight / 2 + 4.h);
 
   @override
   Widget build(BuildContext context) {
