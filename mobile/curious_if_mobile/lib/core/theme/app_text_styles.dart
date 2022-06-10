@@ -20,6 +20,7 @@ abstract class AppTextStyles {
   TextStyle get subtitleTextPost;
   TextStyle get titleTextPost;
 
+  TextStyle get textSlidableButton;
   /*---------------TEXTSTYLE SETTINGS---------------*/
   TextStyle get textButton;
   TextStyle get textSnackBar;
@@ -33,6 +34,13 @@ abstract class AppTextStyles {
 }
 
 class AppTextStylesDefault implements AppTextStyles {
+  @override
+  TextStyle get textSlidableButton => GoogleFonts.inter(
+        fontSize: 8.5.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      );
+
   @override
   TextStyle get textHintFieldInput => GoogleFonts.poppins(
         fontSize: 14,

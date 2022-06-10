@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
-import '../../../../../../domain/post/model/post_model.dart';
-import '../../../../../../shared/shimmer_row/shimmer_row_widget.dart';
+import '../../../../../domain/management/model/post_management_model.dart';
+import '../../../../../shared/shimmer_row/shimmer_row_widget.dart';
 
-class PostWidget extends StatelessWidget {
-  final PostModel post;
+class PostManageWidget extends StatelessWidget {
+  final PostManagementModel post;
   final bool loading;
-  const PostWidget({
+  const PostManageWidget({
     Key? key,
     required this.post,
     this.loading = false,
@@ -18,12 +18,14 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      padding: const EdgeInsets.only(left: 12, right: 12),
       child: Container(
+        width: double.maxFinite,
         decoration: BoxDecoration(
           color: AppTheme.colors.backgroundTextForm,
           borderRadius: BorderRadius.circular(12),
         ),
+        constraints: BoxConstraints(minHeight: 78),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

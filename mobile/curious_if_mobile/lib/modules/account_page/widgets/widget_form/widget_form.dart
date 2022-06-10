@@ -79,7 +79,11 @@ class _WidgetFormState extends State<WidgetForm> {
                         ButtonIconText(
                           icon: FontAwesomeIcons.signsPost,
                           label: "Gerenciar\nPostagens",
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouterClass.manageNewPosts,
+                                arguments: {'user': widget.user});
+                          },
                         ),
                         ButtonIconText(
                           icon: FontAwesomeIcons.peopleGroup,
