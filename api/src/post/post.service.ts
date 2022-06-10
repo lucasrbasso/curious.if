@@ -283,19 +283,19 @@ export class PostService {
     }
 
     try {
-      await this.prisma.like.create({
-        data: {
-          postId,
-          userId,
-        },
-      });
-
       if (isLiked) {
         return {
           ...post,
           isLiked: true,
         };
       }
+
+      await this.prisma.like.create({
+        data: {
+          postId,
+          userId,
+        },
+      });
 
       const finalPost = await this.prisma.post.update({
         where: {
