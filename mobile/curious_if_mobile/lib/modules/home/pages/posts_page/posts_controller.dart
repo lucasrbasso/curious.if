@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sizer/sizer.dart';
@@ -37,13 +39,13 @@ abstract class _PostsControllerBase with Store {
       state = stateModify;
 
   @action
-  Future<void> listPosts({String? cursorID}) async {
+  Future<void> listPosts({String? cursorID, String? id}) async {
     try {
       await _modifyPostsState(PostsStateLoading());
 
       await Future.delayed(const Duration(seconds: 1));
       List<PostModel> posts =
-          await _postUsecase.listPosts(cursorID: cursorID ?? '');
+          await _postUsecase.listPosts(cursorID: cursorID ?? '', id: id);
       if (cursorID == null) {
         last = false;
         this.posts.removeWhere((element) => true);
@@ -57,11 +59,22 @@ abstract class _PostsControllerBase with Store {
     }
   }
 
-  Future<void> refreshScroll() async {
+  Future<void> refreshScroll(String? id) async {
     if ((state is! PostsStateLoading) || posts.isNotEmpty) {
       posts.removeWhere((element) => true);
-      await listPosts();
+      await listPosts(id: id);
     }
+  }
+
+  Future<bool?> likePost(bool isLiked, PostModel post, String token) async {
+    try {
+      await _postUsecase.setLikePost(
+          isLiked: isLiked, id: post.id, token: token);
+      return isLiked;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
   }
 
   bool scrollInfo(ScrollNotification scrollInfo) {

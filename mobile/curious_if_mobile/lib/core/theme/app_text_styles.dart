@@ -8,6 +8,7 @@ abstract class AppTextStyles {
   TextStyle get textHeadingThree;
   TextStyle get textHeadingFour;
   TextStyle get subtitleHeadingThree;
+  TextStyle get subtitleHeadingFour;
   TextStyle get textHeadingTwo;
   TextStyle get textHintFieldInput;
   TextStyle get textFieldInput;
@@ -76,6 +77,13 @@ class AppTextStylesDefault implements AppTextStyles {
   @override
   TextStyle get subtitleHeadingThree => GoogleFonts.poppins(
         fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleOpacity,
+      );
+
+  @override
+  TextStyle get subtitleHeadingFour => GoogleFonts.poppins(
+        fontSize: 15,
         fontWeight: FontWeight.w500,
         color: AppTheme.colors.subtitleOpacity,
       );
