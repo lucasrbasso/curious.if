@@ -25,7 +25,7 @@ class PostManageWidget extends StatelessWidget {
           color: AppTheme.colors.backgroundTextForm,
           borderRadius: BorderRadius.circular(12),
         ),
-        constraints: BoxConstraints(minHeight: 78),
+        constraints: const BoxConstraints(minHeight: 78),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -38,7 +38,7 @@ class PostManageWidget extends StatelessWidget {
                 "Spotted#0001",
                 style: AppTheme.textStyles.titlePost,
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               if (post.forPeople.isNotEmpty) ...[
                 Text.rich(TextSpan(
                     text: "Para: ",
@@ -49,7 +49,7 @@ class PostManageWidget extends StatelessWidget {
                           style: AppTheme.textStyles.subtitleTextPost)
                     ])),
               ],
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(post.content, style: AppTheme.textStyles.subtitleTextPost),
             ]
           ],
