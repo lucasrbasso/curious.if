@@ -19,6 +19,8 @@ model Post {
   likes         Like[]
   numberOfLikes Int    @default(0)
 
+  comments Comment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
@@ -33,8 +35,9 @@ model User {
   permissions String[]
   roles       String[]
 
-  posts Post[]
-  likes Like[]
+  posts    Post[]
+  likes    Like[]
+  comments Comment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -46,6 +49,21 @@ model Like {
 
   author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  content String
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId String
 
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postId String
