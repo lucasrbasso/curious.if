@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:like_button/like_button.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../../../../../core/core.dart';
 
 class LikeButtonWidget extends StatelessWidget {
   final bool isLiked;
@@ -25,7 +20,7 @@ class LikeButtonWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: () {},
         child: LikeButton(
-          padding: EdgeInsets.symmetric(horizontal: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 2),
           onTap: onTap,
           isLiked: isLiked,
           size: 20,

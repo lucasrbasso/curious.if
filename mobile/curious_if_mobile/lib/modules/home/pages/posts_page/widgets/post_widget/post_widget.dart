@@ -1,7 +1,6 @@
-import 'package:curious_if_mobile/shared/shimmer_container/shimmer_container_widget.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../../domain/post/model/post_model.dart';
@@ -21,7 +20,7 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(post);
+    log(post.toString());
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Container(
@@ -41,7 +40,7 @@ class PostWidget extends StatelessWidget {
                 "Spotted#0001",
                 style: AppTheme.textStyles.titlePost,
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               if (post.forPeople.isNotEmpty) ...[
                 Text.rich(TextSpan(
                     text: "Para: ",
@@ -52,9 +51,9 @@ class PostWidget extends StatelessWidget {
                           style: AppTheme.textStyles.subtitleTextPost)
                     ])),
               ],
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(post.content, style: AppTheme.textStyles.subtitleTextPost),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Row(
                 children: [
                   LikeButtonWidget(

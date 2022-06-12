@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -136,7 +137,7 @@ abstract class _AppThemeControllerBase with Store {
     window.onPlatformBrightnessChanged = () {
       WidgetsBinding.instance.handlePlatformBrightnessChanged();
       Brightness brightness = window.platformBrightness;
-      print(brightness);
+      log(brightness.toString());
       if (themeMode == ThemeMode.system) setBrightness(brightness);
     };
   }

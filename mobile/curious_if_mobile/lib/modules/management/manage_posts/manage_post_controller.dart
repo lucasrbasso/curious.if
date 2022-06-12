@@ -1,8 +1,8 @@
-import 'package:curious_if_mobile/domain/management/model/user_management_model.dart';
+import 'dart:developer';
+
 import 'package:curious_if_mobile/modules/management/manage_posts/widgets/post_manage_widget/post_manage_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
 import '../../../domain/management/model/post_management_model.dart';
 import '../../../domain/management/usecase/management_usecase.dart';
@@ -61,18 +61,18 @@ abstract class _ManagePostControllerBase with Store {
   Future<void> onPublishEdit(String id, String token,
       Function onAnimationDeletion, bool isPublished) async {
     try {
-      String response =
-          await _managementUsecase.patchPost(id, token, isPublished);
+      await _managementUsecase.patchPost(id, token, isPublished);
       await onAnimationDeletion();
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @action
   Future<bool> confirmDismiss(String id, String token,
       Function onAnimationDeletion, bool isPublished) async {
     try {
-      String response =
-          await _managementUsecase.patchPost(id, token, isPublished);
+      await _managementUsecase.patchPost(id, token, isPublished);
       return true;
     } catch (e) {
       return false;
@@ -122,9 +122,9 @@ abstract class _ManagePostControllerBase with Store {
     try {
       String response =
           await _managementUsecase.patchPost(post.id, token, isPublished);
-      print(response);
+      log(response);
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 

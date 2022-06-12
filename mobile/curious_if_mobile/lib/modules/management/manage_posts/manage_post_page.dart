@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -46,7 +48,7 @@ class _ManagePostPageState extends State<ManagePostPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    MediaQuery.of(context).padding.top;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppThemeController().colorStatus,
       sized: false,
@@ -59,7 +61,7 @@ class _ManagePostPageState extends State<ManagePostPage> {
         ),
         body: Observer(
           builder: (context) {
-            print("Teste");
+            log("Teste");
             return RefreshIndicator(
               onRefresh: () async {
                 await _managePostController.refreshScroll(

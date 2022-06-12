@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_preview_screenshot/device_preview_screenshot.dart';
@@ -21,8 +22,7 @@ Future<void> onScreenshot(
           '${tempDir.path}/${screenshot.device.name.replaceAll(" ", "")}_${timestamp.toString().replaceAll(RegExp(r"[^a-zA-Z0-9]"), "")}.png')
       .create();
   // フレームがあるときはそのまま書き込む
-  print(
-      '${tempDir.path}/${screenshot.device.name.replaceAll(" ", "")}_${timestamp.toString().replaceAll(RegExp(r"[^a-zA-Z0-9]"), "")}.png');
+  log('${tempDir.path}/${screenshot.device.name.replaceAll(" ", "")}_${timestamp.toString().replaceAll(RegExp(r"[^a-zA-Z0-9]"), "")}.png');
   if (isFrameVisible) {
     file.writeAsBytesSync(screenshot.bytes);
   } else {

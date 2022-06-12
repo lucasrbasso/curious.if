@@ -1,4 +1,5 @@
 //import 'package:firebase_core/firebase_core.dart';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -124,7 +125,7 @@ abstract class AppConfigControllerBase with Store {
     try {
       await controllerAppTheme.currentThemeMode();
 
-      print(controllerAppTheme.themeMode);
+      log(controllerAppTheme.themeMode.toString());
       controllerAppTheme.listenBrightnessSystem();
       await currentLocale();
       return true;

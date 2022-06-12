@@ -1,6 +1,4 @@
-import 'package:curious_if_mobile/shared/shimmer_container/shimmer_container_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../domain/management/model/post_management_model.dart';
