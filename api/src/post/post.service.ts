@@ -59,6 +59,7 @@ export class PostService {
           createdAt: true,
           updatedAt: true,
           content: true,
+          comments: true,
           to: true,
           published: true,
           numberOfLikes: true,
@@ -98,6 +99,7 @@ export class PostService {
         select: {
           id: true,
           createdAt: true,
+          comments: true,
           updatedAt: true,
           content: true,
           to: true,
@@ -111,7 +113,17 @@ export class PostService {
         },
       });
 
-      const formattedPosts = posts.map((post) => ({ ...post, isLiked: false }));
+      const formattedPosts = posts.map((post) => {
+        const numberOfComments = post.comments.length;
+        delete post.comments;
+
+        return {
+          ...post,
+          isLiked: false,
+          numberOfComments,
+        };
+      });
+
       return formattedPosts;
     }
   }

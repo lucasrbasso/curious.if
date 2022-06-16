@@ -79,8 +79,8 @@ export class CommentsController {
     return this.commentsService.createComment(commentData);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
   @Delete('/:id')
   @ApiOperation({ summary: 'Deleta um Comentário pelo ID' })
   async deleteComment(

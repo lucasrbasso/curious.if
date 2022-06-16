@@ -35,7 +35,7 @@ export class PostController {
     @Headers() headers,
     @Query('cursor') cursor?: string,
     @Query('take') take?: string,
-  ): Promise<PostDTO[]> {
+  ): Promise<UserPostDTO[]> {
     return this.postService.getAllPosts({
       user_id: headers.user_id || '',
       take: take ? Number(take) : 2,
