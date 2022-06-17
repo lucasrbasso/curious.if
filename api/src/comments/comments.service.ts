@@ -60,17 +60,31 @@ export class CommentsService {
         where: {
           postId,
         },
+        select: {
+          id: true,
+          content: true,
+          authorId: true,
+          author: true,
+          postId: true,
+          createdAt: true,
+          updatedAt: true,
+        },
       });
 
       const formattedComments = comments.map((comment) => {
+        const authorName = comment.author.name;
+        delete comment.author;
+
         if (comment.authorId === userId) {
+          console.log(comment);
           return {
             ...comment,
+            authorName,
             isOwner: true,
           };
         }
 
-        return { ...comment, isOwner: false };
+        return { ...comment, isOwner: false, authorName };
       });
 
       return formattedComments;
