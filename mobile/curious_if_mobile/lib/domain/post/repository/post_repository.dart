@@ -41,7 +41,9 @@ class PostRepository implements IPostRepository {
     try {
       String response = await _datasource.listPosts(
           cursorID: cursorID, takeValue: takeValue, id: id);
-
+      print("Aaa");
+      print(response);
+      print("Aaa");
       List<PostModel> posts = PostModel.fromJsonList(response);
       return posts;
     } catch (e) {

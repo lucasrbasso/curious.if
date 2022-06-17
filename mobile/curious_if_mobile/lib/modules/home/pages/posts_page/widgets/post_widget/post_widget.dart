@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import '../../../../../../core/core.dart';
 import '../../../../../../domain/post/model/post_model.dart';
 import '../../../../../../shared/shimmer_row/shimmer_row_widget.dart';
+import 'comments_button_widget.dart';
 import 'like_button_widget.dart';
 
 class PostWidget extends StatelessWidget {
   final PostModel post;
   final bool loading;
-  final Future<bool?> Function(bool) onTap;
+  final Future<bool?> Function(bool) onTapLike;
+  final Function() onTapComment;
   const PostWidget({
     Key? key,
     required this.post,
     this.loading = false,
-    required this.onTap,
+    required this.onTapLike,
+    required this.onTapComment,
   }) : super(key: key);
 
   @override
@@ -59,8 +62,12 @@ class PostWidget extends StatelessWidget {
                   LikeButtonWidget(
                     isLiked: post.isLiked,
                     numberOfLikes: post.numberOfLikes,
-                    onTap: onTap,
+                    onTap: onTapLike,
                   ),
+                  const SizedBox(width: 8),
+                  CommentButtonWidget(
+                    onTap: onTapComment,
+                  )
                 ],
               )
             ]

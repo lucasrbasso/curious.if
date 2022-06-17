@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:curious_if_mobile/modules/home/pages/posts_page/widgets/popup_comments/popup_comments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -62,7 +63,17 @@ class _PostsPageState extends State<PostsPage> {
               if (index < _postsController.posts.length) {
                 return PostWidget(
                     post: _postsController.posts[index],
-                    onTap: (isLiked) async {
+                    onTapComment: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return PopupComments(
+                            post: _postsController.posts[index],
+                          );
+                        },
+                      );
+                    },
+                    onTapLike: (isLiked) async {
                       if (widget.user != null &&
                           VerifyRoles.verifyCanPost(widget.user)) {
                         return await _postsController.likePost(
@@ -80,7 +91,8 @@ class _PostsPageState extends State<PostsPage> {
                 return PostWidget(
                   post: PostModel.mock(),
                   loading: true,
-                  onTap: (isLiked) async {
+                  onTapComment: () {},
+                  onTapLike: (isLiked) async {
                     return null;
                   },
                 );

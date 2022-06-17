@@ -4,12 +4,14 @@ import 'package:like_button/like_button.dart';
 class LikeButtonWidget extends StatelessWidget {
   final bool isLiked;
   final int numberOfLikes;
+  final CountPostion countPostion;
   final Future<bool?> Function(bool) onTap;
   const LikeButtonWidget({
     Key? key,
     required this.isLiked,
     required this.numberOfLikes,
     required this.onTap,
+    this.countPostion = CountPostion.right,
   }) : super(key: key);
 
   @override
@@ -21,6 +23,10 @@ class LikeButtonWidget extends StatelessWidget {
         onTap: () {},
         child: LikeButton(
           padding: const EdgeInsets.symmetric(horizontal: 2),
+          countPostion: countPostion,
+          likeCountAnimationType: numberOfLikes < 1000
+              ? LikeCountAnimationType.part
+              : LikeCountAnimationType.none,
           onTap: onTap,
           isLiked: isLiked,
           size: 20,
@@ -40,11 +46,18 @@ class LikeButtonWidget extends StatelessWidget {
           },
           likeCount: numberOfLikes,
           countBuilder: (count, bool isLiked, String text) {
-            var color = isLiked ? Colors.pink.shade600 : Colors.grey.shade600;
-            return Text(
-              text,
+            Color color = isLiked ? Colors.pink.shade600 : Colors.grey.shade600;
+
+            String texto = count! >= 1000
+                ? (count / 1000.0).toStringAsFixed(1) + 'k'
+                : text;
+            print("Antes");
+            print(text);
+            Widget result = Text(
+              texto,
               style: TextStyle(color: color),
             );
+            return result;
           },
         ),
       ),
