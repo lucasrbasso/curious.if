@@ -2,7 +2,8 @@ import '../model/comment_model.dart';
 import '../repository/comment_repository.dart';
 
 abstract class ICommentUseCase {
-  Future<CommentModel> createComment(String content, String postId);
+  Future<CommentModel> createComment(
+      String content, String postId, String token);
   Future<List<CommentModel>> getAllCommentsPost(String postId);
   void dispose();
 }
@@ -25,9 +26,11 @@ class CommentUseCase implements ICommentUseCase {
   }
 
   @override
-  Future<CommentModel> createComment(String content, String postId) async {
+  Future<CommentModel> createComment(
+      String content, String postId, String token) async {
     try {
-      CommentModel comment = await _repository.createComment(content, postId);
+      CommentModel comment =
+          await _repository.createComment(content, postId, token);
       return comment;
     } catch (e) {
       rethrow;

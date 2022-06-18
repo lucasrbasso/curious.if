@@ -63,15 +63,23 @@ class _PostsPageState extends State<PostsPage> {
               if (index < _postsController.posts.length) {
                 return PostWidget(
                     post: _postsController.posts[index],
-                    onTapComment: () {
-                      showDialog(
+                    onTapComment: () async {
+                      dynamic response = await showDialog(
                         context: context,
-                        builder: (BuildContext context) {
+                        builder: (BuildContext dialogContext) {
                           return PopupComments(
                             post: _postsController.posts[index],
+                            user: widget.user,
                           );
                         },
                       );
+                      if (response is int && response != 0) {
+                        _postsController.posts[index] =
+                            _postsController.posts[index].copyWith(
+                                numberOfComments: _postsController
+                                        .posts[index].numberOfComments +
+                                    response);
+                      }
                     },
                     onTapLike: (isLiked) async {
                       if (widget.user != null &&

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
+import '../../../../../../domain/login/model/user_model.dart';
 import '../../../../../../domain/post/model/post_model.dart';
 import '../../../../../../shared/shimmer_row/shimmer_row_widget.dart';
 import '../../../../../../shared/text_form_input/text_form_input.dart';
@@ -16,9 +17,11 @@ import 'widgets/post_comment_widget.dart';
 import 'widgets/shimmer_comment_widget.dart';
 
 class PopupComments extends StatefulWidget {
+  final UserModel? user;
   final PostModel post;
   const PopupComments({
     Key? key,
+    required this.user,
     required this.post,
   }) : super(key: key);
 
@@ -37,65 +40,86 @@ class _PopupCommentsState extends State<PopupComments> {
   }
 
   @override
+  void dispose() {
+    popupCommentsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      insetPadding: EdgeInsets.only(bottom: 24),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18.0))),
-      contentPadding: EdgeInsets.zero,
-      titlePadding: EdgeInsets.only(right: 8, top: 8),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            borderRadius: BorderRadius.circular(20),
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.cancel_outlined, color: Colors.red),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context, rootNavigator: true)
+            .pop(popupCommentsController.numberOfCommentsAddOrExclude);
+        return false;
+      },
+      child: AlertDialog(
+        insetPadding: const EdgeInsets.only(bottom: 24),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(18.0))),
+        contentPadding: EdgeInsets.zero,
+        titlePadding: const EdgeInsets.only(right: 8, top: 8),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () => Navigator.maybePop(context),
+              borderRadius: BorderRadius.circular(20),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.cancel_outlined, color: Colors.red),
+              ),
             ),
-          ),
-        ],
-      ),
-      content: Container(
-        width: 90.w,
-        height: 80.h,
-        padding: EdgeInsets.only(bottom: 12),
-        child: Scrollbar(
-          isAlwaysShown: true,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                PostCommentWidget(post: widget.post),
-                CreateCommentWidget(),
-                const SizedBox(height: 24),
-                Observer(builder: (context) {
-                  print(popupCommentsController.state
-                      is PopupCommentsStateSuccess);
-                  return Column(
-                    children: [
-                      if (popupCommentsController.state
-                          is PopupCommentsStateLoading) ...[
-                        ShimmerCommentWidget(),
-                        ShimmerCommentWidget(),
-                        ShimmerCommentWidget(),
-                      ] else if (popupCommentsController.state
-                          is PopupCommentsStateSuccess) ...[
-                        ...popupCommentsController.comments.map((comment) {
-                          print(comment);
-                          return CommentWidget(commentModel: comment);
-                        }).toList()
-                      ]
-                    ],
-                  );
-                }),
-              ],
+          ],
+        ),
+        content: Container(
+          width: 90.w,
+          height: 80.h,
+          padding: EdgeInsets.only(bottom: 12),
+          child: Scrollbar(
+            isAlwaysShown: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  PostCommentWidget(post: widget.post),
+                  if (widget.user != null) ...[
+                    CreateCommentWidget(
+                      onSaved: (value) async {
+                        return await popupCommentsController.createComment(
+                            value, widget.post.id, widget.user!.token);
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  const SizedBox(height: 12),
+                  Observer(builder: (context) {
+                    print(popupCommentsController.state
+                        is PopupCommentsStateSuccess);
+                    return Column(
+                      children: [
+                        if (popupCommentsController.state
+                            is PopupCommentsStateLoading) ...[
+                          ShimmerCommentWidget(),
+                          ShimmerCommentWidget(),
+                          ShimmerCommentWidget(),
+                        ] else if (popupCommentsController.state
+                            is PopupCommentsStateSuccess) ...[
+                          ...popupCommentsController.comments.map((comment) {
+                            print(comment);
+                            return CommentWidget(commentModel: comment);
+                          }).toList()
+                        ]
+                      ],
+                    );
+                  }),
+                ],
+              ),
             ),
           ),
         ),
+        backgroundColor: AppTheme.colors.background,
       ),
-      backgroundColor: AppTheme.colors.background,
     );
   }
 }

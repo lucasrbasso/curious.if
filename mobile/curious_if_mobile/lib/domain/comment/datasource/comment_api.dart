@@ -4,7 +4,7 @@ import 'package:http/http.dart' show Client;
 import '../../../core/core.dart';
 
 abstract class ICommentApi {
-  Future<String> createComment(String content, String postId);
+  Future<String> createComment(String content, String postId, String token);
   Future<String> getAllCommentsPost(String postId);
   void dispose();
 }
@@ -19,13 +19,15 @@ class CommentApi implements ICommentApi {
   }
 
   @override
-  Future<String> createComment(String content, String postId) async {
+  Future<String> createComment(
+      String content, String postId, String token) async {
     try {
       final response = await client
           .post(
             Uri.parse(server + "api/comments/"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $token'
             },
             body: jsonEncode(<String, String>{
               'content': content,

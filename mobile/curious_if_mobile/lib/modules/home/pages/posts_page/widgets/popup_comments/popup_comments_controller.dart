@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:curious_if_mobile/domain/comment/usecase/comment_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -25,6 +27,8 @@ abstract class _PopupCommentsControllerBase with Store {
   @observable
   ObservableList<CommentModel> comments = ObservableList.of([]);
 
+  int numberOfCommentsAddOrExclude = 0;
+
   @observable
   int loadingShimmer = 5;
 
@@ -50,6 +54,24 @@ abstract class _PopupCommentsControllerBase with Store {
     } catch (e) {
       await _modifyPopupCommentsState(
           PopupCommentsStateFailure(message: e.toString()));
+    }
+  }
+
+  @action
+  Future<bool> createComment(
+      String content, String postId, String token) async {
+    try {
+      await Future.delayed(const Duration(seconds: 2));
+      return false;
+      CommentModel comment =
+          await _commentUseCase.createComment(content, postId, token);
+      print(comment);
+      numberOfCommentsAddOrExclude++;
+      comments.insert(0, comment);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
     }
   }
 

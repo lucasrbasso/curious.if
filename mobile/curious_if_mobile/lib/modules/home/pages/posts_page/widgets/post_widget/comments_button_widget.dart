@@ -7,9 +7,11 @@ import '../../../../../../core/core.dart';
 
 class CommentButtonWidget extends StatelessWidget {
   final Function() onTap;
+  final int numberOfComments;
   const CommentButtonWidget({
     Key? key,
     required this.onTap,
+    required this.numberOfComments,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,8 @@ class CommentButtonWidget extends StatelessWidget {
                   size: 18,
                 ),
                 SizedBox(width: 4),
-                Text("0", style: TextStyle(color: Colors.grey.shade600))
+                Text(numberOfComments.toString(),
+                    style: TextStyle(color: Colors.grey.shade600))
               ],
             ),
           ),

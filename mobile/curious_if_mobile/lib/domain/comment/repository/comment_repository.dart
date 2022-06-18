@@ -2,7 +2,8 @@ import '../datasource/comment_api.dart';
 import '../model/comment_model.dart';
 
 abstract class ICommentRepository {
-  Future<CommentModel> createComment(String content, String postId);
+  Future<CommentModel> createComment(
+      String content, String postId, String token);
   Future<List<CommentModel>> getAllCommentsPost(String postId);
   void dispose();
 }
@@ -25,9 +26,10 @@ class CommentRepository implements ICommentRepository {
   }
 
   @override
-  Future<CommentModel> createComment(String content, String postId) async {
+  Future<CommentModel> createComment(
+      String content, String postId, String token) async {
     try {
-      String response = await _datasource.createComment(content, postId);
+      String response = await _datasource.createComment(content, postId, token);
       CommentModel comment = CommentModel.fromJson(response);
       return comment;
     } catch (e) {

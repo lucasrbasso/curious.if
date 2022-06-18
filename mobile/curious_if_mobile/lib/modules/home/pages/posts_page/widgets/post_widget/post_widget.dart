@@ -67,6 +67,7 @@ class PostWidget extends StatelessWidget {
                   const SizedBox(width: 8),
                   CommentButtonWidget(
                     onTap: onTapComment,
+                    numberOfComments: post.numberOfComments,
                   )
                 ],
               )
