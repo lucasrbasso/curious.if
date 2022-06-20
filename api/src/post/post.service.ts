@@ -396,8 +396,6 @@ export class PostService {
         },
       });
 
-      console.log(finalPost);
-
       return {
         ...finalPost,
         isLiked: false,
