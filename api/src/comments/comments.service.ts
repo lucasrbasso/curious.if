@@ -76,7 +76,6 @@ export class CommentsService {
         delete comment.author;
 
         if (comment.authorId === userId) {
-          console.log(comment);
           return {
             ...comment,
             authorName,
@@ -139,13 +138,15 @@ export class CommentsService {
     }
 
     try {
-      return await this.prisma.comment.create({
+      const comment = await this.prisma.comment.create({
         data: {
           postId,
           authorId,
           content,
         },
       });
+
+      return { ...comment, authorName: checkIfAuthorExists.name };
     } catch (err: any) {
       throw new BadRequestException(
         'There was an error trying to create a comment.',

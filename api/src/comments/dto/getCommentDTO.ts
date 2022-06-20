@@ -5,4 +5,5 @@ export class GetCommentDTO {
   authorId: string;
   createdAt: Date;
   updatedAt: Date;
+  authorName?: string;
 }
