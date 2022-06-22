@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../domain/management/model/user_management_model.dart';
+import '../../../../../shared/shimmer_row/shimmer_row_widget.dart';
 
 class UserWidget extends StatelessWidget {
   final UserManagementModel user;
@@ -34,26 +35,7 @@ class UserWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (loading) ...[
-                Row(
-                  children: [
-                    SizedBox(width: 1.w),
-                    ShimmerContainerWidget(height: 22.w, width: 25.w),
-                    SizedBox(width: 4.w),
-                    Column(
-                      children: [
-                        ShimmerContainerWidget(height: 4.w, width: 57.w),
-                        SizedBox(height: 4.w),
-                        ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                        SizedBox(height: 1.5.w),
-                        ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                        SizedBox(height: 1.5.w),
-                        ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                        SizedBox(height: 1.5.w),
-                        ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                      ],
-                    )
-                  ],
-                ),
+                const ShimmerRowWidget(),
               ] else ...[
                 Padding(
                   padding:

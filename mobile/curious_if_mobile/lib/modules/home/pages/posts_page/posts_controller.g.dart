@@ -70,9 +70,9 @@ mixin _$PostsController on _PostsControllerBase, Store {
       AsyncAction('_PostsControllerBase.listPosts', context: context);
 
   @override
-  Future<void> listPosts({String? cursorID}) {
+  Future<void> listPosts({String? cursorID, String? id}) {
     return _$listPostsAsyncAction
-        .run(() => super.listPosts(cursorID: cursorID));
+        .run(() => super.listPosts(cursorID: cursorID, id: id));
   }
 
   late final _$_PostsControllerBaseActionController =

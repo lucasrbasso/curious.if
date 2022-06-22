@@ -76,6 +76,16 @@ mixin _$ManageUserController on _ManageUserControllerBase, Store {
         .run(() => super.getListUsers(token: token));
   }
 
+  late final _$putUserAsyncAction =
+      AsyncAction('_ManageUserControllerBase.putUser', context: context);
+
+  @override
+  Future<void> putUser(
+      {required String token, required UserManagementModel user}) {
+    return _$putUserAsyncAction
+        .run(() => super.putUser(token: token, user: user));
+  }
+
   late final _$_ManageUserControllerBaseActionController =
       ActionController(name: '_ManageUserControllerBase', context: context);
 

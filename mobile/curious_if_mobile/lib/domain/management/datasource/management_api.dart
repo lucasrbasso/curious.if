@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'package:http/http.dart' show Client;
 
 import '../../../core/core.dart';
-import '../../login/model/user_model.dart';
 import '../../roles-permission/model/roles_permission_model.dart';
 
 abstract class IManagementApi {
   Future<String> getUsers(String token);
   Future<String> putUsers(
       String id, String token, List<Permission> permissions, List<Roles> roles);
+  Future<String> getListPostsUnauthorized(String token);
+  Future<String> patchPost(String id, String token, bool published);
   void dispose();
 }
 
@@ -58,6 +59,56 @@ class ManagementApi implements IManagementApi {
               'permissions':
                   permissions.map((e) => e.parseStringPermission).toList(),
               'roles': roles.map((e) => e.parseStringRoles).toList()
+            }),
+          )
+          .timeout(const Duration(seconds: 10));
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return response.body;
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
+        throw json.decode(response.body);
+      } else {
+        throw "Erro na conexão da API (Status: ${response.statusCode})";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> getListPostsUnauthorized(String token) async {
+    try {
+      final response = await client.get(
+        Uri.parse("${server}api/posts/filter/UnauthorizedPost"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return response.body;
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
+        throw json.decode(response.body);
+      } else {
+        throw "Erro na conexão da API (Status: ${response.statusCode})";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> patchPost(String id, String token, bool published) async {
+    try {
+      final response = await client
+          .patch(
+            Uri.parse("${server}api/posts"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer $token'
+            },
+            body: json.encode(<String, dynamic>{
+              'id': id,
+              'published': published,
             }),
           )
           .timeout(const Duration(seconds: 10));

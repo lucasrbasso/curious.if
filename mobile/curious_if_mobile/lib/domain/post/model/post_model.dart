@@ -2,11 +2,17 @@ import 'dart:convert';
 
 class PostModel {
   final String id;
+  final int numberOfLikes;
+  final int numberOfComments;
+  final bool isLiked;
   final String content;
   final String forPeople;
   final DateTime createdAt;
   PostModel({
     required this.id,
+    required this.numberOfLikes,
+    required this.numberOfComments,
+    required this.isLiked,
     required this.content,
     required this.forPeople,
     required this.createdAt,
@@ -14,12 +20,18 @@ class PostModel {
 
   PostModel copyWith({
     String? id,
+    int? numberOfLikes,
+    int? numberOfComments,
+    bool? isLiked,
     String? content,
     String? forPeople,
     DateTime? createdAt,
   }) {
     return PostModel(
       id: id ?? this.id,
+      numberOfLikes: numberOfLikes ?? this.numberOfLikes,
+      numberOfComments: numberOfComments ?? this.numberOfComments,
+      isLiked: isLiked ?? this.isLiked,
       content: content ?? this.content,
       forPeople: forPeople ?? this.forPeople,
       createdAt: createdAt ?? this.createdAt,
@@ -29,6 +41,9 @@ class PostModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'numberOfLikes': numberOfLikes,
+      'numberOfComments': numberOfComments,
+      'isLiked': isLiked,
       'content': content,
       'forPeople': forPeople,
       'createdAt': createdAt.millisecondsSinceEpoch,
@@ -36,9 +51,11 @@ class PostModel {
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
-    print(map);
     return PostModel(
       id: map['id'] ?? '',
+      numberOfLikes: map['numberOfLikes']?.toInt() ?? 0,
+      numberOfComments: map['numberOfComments']?.toInt() ?? 0,
+      isLiked: map['isLiked'] ?? false,
       content: map['content'] ?? '',
       forPeople: map['to'] ?? '',
       createdAt: DateTime.parse(map['createdAt']),
@@ -50,6 +67,9 @@ class PostModel {
       id: '',
       content: '',
       forPeople: '',
+      isLiked: false,
+      numberOfLikes: 0,
+      numberOfComments: 0,
       createdAt: DateTime.now(),
     );
   }
@@ -70,7 +90,7 @@ class PostModel {
 
   @override
   String toString() {
-    return 'PostModel(id: $id, content: $content, forPeople: $forPeople, createdAt: $createdAt)';
+    return 'PostModel(id: $id, numberOfComments: $numberOfComments, numberOfLikes: $numberOfLikes,  isLiked: $isLiked, content: $content, forPeople: $forPeople, createdAt: $createdAt)';
   }
 
   @override
@@ -79,6 +99,9 @@ class PostModel {
 
     return other is PostModel &&
         other.id == id &&
+        other.numberOfLikes == numberOfLikes &&
+        other.numberOfComments == numberOfComments &&
+        other.isLiked == isLiked &&
         other.content == content &&
         other.forPeople == forPeople &&
         other.createdAt == createdAt;
@@ -87,6 +110,9 @@ class PostModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        numberOfLikes.hashCode ^
+        numberOfComments.hashCode ^
+        isLiked.hashCode ^
         content.hashCode ^
         forPeople.hashCode ^
         createdAt.hashCode;

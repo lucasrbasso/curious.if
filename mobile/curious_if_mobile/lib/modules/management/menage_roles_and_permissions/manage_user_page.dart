@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/core.dart';
 import '../../../domain/login/model/user_model.dart';
 import '../../../domain/management/model/user_management_model.dart';
-import '../../../domain/post/model/post_model.dart';
 import '../../../shared/app_bar_simple/app_bar_simple.dart';
 import 'manage_user_controller.dart';
 import 'popup/popup_user.dart';

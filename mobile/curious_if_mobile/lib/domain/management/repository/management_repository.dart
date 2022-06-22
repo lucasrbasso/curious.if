@@ -1,11 +1,14 @@
 import '../../roles-permission/model/roles_permission_model.dart';
 import '../datasource/management_api.dart';
+import '../model/post_management_model.dart';
 import '../model/user_management_model.dart';
 
 abstract class IManagementRepository {
   Future<List<UserManagementModel>> getUsers(String token);
   Future<String> putUsers(
       String id, String token, List<Permission> permissions, List<Roles> roles);
+  Future<List<PostManagementModel>> getListPostsUnauthorized(String token);
+  Future<String> patchPost(String id, String token, bool published);
 
   void dispose();
 }
@@ -34,6 +37,29 @@ class ManagementRepository implements IManagementRepository {
     try {
       String response =
           await _datasource.putUsers(id, token, permissions, roles);
+      return response;
+    } catch (e) {
+      throw handleErrorReturn(e);
+    }
+  }
+
+  @override
+  Future<List<PostManagementModel>> getListPostsUnauthorized(
+      String token) async {
+    try {
+      String response = await _datasource.getListPostsUnauthorized(token);
+      List<PostManagementModel> listPostsUnauthorized =
+          PostManagementModel.fromJsonList(response);
+      return listPostsUnauthorized;
+    } catch (e) {
+      throw handleErrorReturn(e);
+    }
+  }
+
+  @override
+  Future<String> patchPost(String id, String token, bool published) async {
+    try {
+      String response = await _datasource.patchPost(id, token, published);
       return response;
     } catch (e) {
       throw handleErrorReturn(e);
