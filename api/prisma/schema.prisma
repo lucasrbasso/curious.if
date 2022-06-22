@@ -16,8 +16,12 @@ model Post {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
+  likes         Like[]
+  numberOfLikes Int    @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
 }
 
 model User {
@@ -30,6 +34,21 @@ model User {
   roles       String[]
 
   posts Post[]
+  likes Like[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+model Like {
+  id String @id @default(uuid())
+
+  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

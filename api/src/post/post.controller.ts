@@ -9,11 +9,12 @@ import {
   UseGuards,
   Query,
   Request,
+  Headers,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostInputDTO } from './dto/create-post-input.dto';
 import { UpdatePostStatusDTO } from './dto/update-post-status.dto';
-import { PostDTO } from './dto/get-post-output.dto';
+import { PostDTO, UserPostDTO } from './dto/get-post-output.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PermissionsGuard } from 'src/users/permissions/permissions.guard';
@@ -28,15 +29,15 @@ import { Roles } from 'src/users/roles/roles.decorator';
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @UseGuards(JwtAuthGuard, PermissionsGuard)
-  @Permissions(Permission.Read)
   @Get()
   @ApiOperation({ summary: 'Retorna todos os Posts' })
   async getAllPosts(
+    @Headers() headers,
     @Query('cursor') cursor?: string,
     @Query('take') take?: string,
   ): Promise<PostDTO[]> {
     return this.postService.getAllPosts({
+      user_id: headers.user_id || '',
       take: take ? Number(take) : 2,
       cursor: cursor ? { id: cursor } : undefined,
     });
@@ -46,8 +47,46 @@ export class PostController {
   @Permissions(Permission.Read)
   @Get('/:id')
   @ApiOperation({ summary: 'Retorna Post por ID' })
-  async getPostById(@Param('id') id: string): Promise<PostDTO> {
-    return this.postService.getPostById(id);
+  async getPostById(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<UserPostDTO> {
+    const postData = {
+      postId: id,
+      userId: req.user.userId,
+    };
+
+    return this.postService.getPostById(postData);
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
+  @Post('/like/:id')
+  @ApiOperation({ summary: 'Like Post' })
+  async likePost(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<UserPostDTO> {
+    const likePostData = {
+      postId: id,
+      userId: req.user.userId,
+    };
+    return this.postService.likePost(likePostData);
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
+  @Delete('/like/:id')
+  @ApiOperation({ summary: 'Remove like from Post' })
+  async removeLike(
+    @Param('id') id: string,
+    @Request() req,
+  ): Promise<UserPostDTO> {
+    const likePostData = {
+      postId: id,
+      userId: req.user.userId,
+    };
+    return this.postService.removeLike(likePostData);
   }
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
