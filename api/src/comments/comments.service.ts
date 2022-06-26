@@ -348,7 +348,8 @@ export class CommentsService {
           id: commentId,
         },
         data: {
-          numberOfLikes: comment.numberOfLikes - 1,
+          numberOfLikes:
+            comment.numberOfLikes > 0 ? comment.numberOfLikes - 1 : 0,
         },
       });
 
