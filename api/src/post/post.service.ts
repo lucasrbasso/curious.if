@@ -43,77 +43,48 @@ export class PostService {
     take,
     cursor,
   }: PaginationProps): Promise<UserPostDTO[]> {
-    if (user_id) {
-      const posts = await this.prisma.post.findMany({
-        take,
-        skip: cursor ? 1 : 0,
-        cursor,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        where: {
-          published: true,
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          content: true,
-          to: true,
-          published: true,
-          numberOfLikes: true,
-          likes: {
-            where: {
-              userId: user_id,
-            },
+    const posts = await this.prisma.post.findMany({
+      take,
+      skip: cursor ? 1 : 0,
+      cursor,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        published: true,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        comments: true,
+        updatedAt: true,
+        content: true,
+        to: true,
+        published: true,
+        numberOfLikes: true,
+        likes: {
+          where: {
+            userId: user_id,
           },
         },
-      });
+      },
+    });
 
-      const formattedPosts = posts.map((post) => {
-        const { likes, ...postContent } = post;
+    const formattedPosts = posts.map((post) => {
+      const numberOfComments = post.comments.length;
+      const isLiked = post.likes.length > 0;
 
-        return likes.length > 0
-          ? {
-              ...postContent,
-              isLiked: true,
-            }
-          : {
-              ...postContent,
-              isLiked: false,
-            };
-      });
-      return formattedPosts;
-    } else {
-      const posts = await this.prisma.post.findMany({
-        take,
-        skip: cursor ? 1 : 0,
-        cursor,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        where: {
-          published: true,
-        },
-        select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          content: true,
-          to: true,
-          published: true,
-          numberOfLikes: true,
-          likes: {
-            where: {
-              userId: user_id,
-            },
-          },
-        },
-      });
+      delete post.comments;
+      delete post.likes;
 
-      const formattedPosts = posts.map((post) => ({ ...post, isLiked: false }));
-      return formattedPosts;
-    }
+      return {
+        ...post,
+        isLiked,
+        numberOfComments,
+      };
+    });
+
+    return formattedPosts;
   }
 
   async getPostById({ postId, userId }: GetPostProps): Promise<UserPostDTO> {
@@ -383,8 +354,6 @@ export class PostService {
           numberOfLikes: true,
         },
       });
-
-      console.log(finalPost);
 
       return {
         ...finalPost,

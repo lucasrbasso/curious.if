@@ -1,21 +1,29 @@
-import 'package:curious_if_mobile/shared/shimmer_container/shimmer_container_widget.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../../domain/post/model/post_model.dart';
+import '../../../../../../shared/shimmer_row/shimmer_row_widget.dart';
+import 'comments_button_widget.dart';
+import 'like_button_widget.dart';
 
 class PostWidget extends StatelessWidget {
   final PostModel post;
   final bool loading;
+  final Future<bool?> Function(bool) onTapLike;
+  final Function() onTapComment;
   const PostWidget({
     Key? key,
     required this.post,
     this.loading = false,
+    required this.onTapLike,
+    required this.onTapComment,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    log(post.toString());
     return Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       child: Container(
@@ -29,32 +37,13 @@ class PostWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (loading) ...[
-              Row(
-                children: [
-                  SizedBox(width: 1.w),
-                  ShimmerContainerWidget(height: 22.w, width: 25.w),
-                  SizedBox(width: 4.w),
-                  Column(
-                    children: [
-                      ShimmerContainerWidget(height: 4.w, width: 57.w),
-                      SizedBox(height: 4.w),
-                      ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                      SizedBox(height: 1.5.w),
-                      ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                      SizedBox(height: 1.5.w),
-                      ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                      SizedBox(height: 1.5.w),
-                      ShimmerContainerWidget(height: 1.5.w, width: 57.w),
-                    ],
-                  )
-                ],
-              ),
+              const ShimmerRowWidget(),
             ] else ...[
               Text(
                 "Spotted#0001",
                 style: AppTheme.textStyles.titlePost,
               ),
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               if (post.forPeople.isNotEmpty) ...[
                 Text.rich(TextSpan(
                     text: "Para: ",
@@ -65,8 +54,23 @@ class PostWidget extends StatelessWidget {
                           style: AppTheme.textStyles.subtitleTextPost)
                     ])),
               ],
-              SizedBox(height: 2),
+              const SizedBox(height: 2),
               Text(post.content, style: AppTheme.textStyles.subtitleTextPost),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  LikeButtonWidget(
+                    isLiked: post.isLiked,
+                    numberOfLikes: post.numberOfLikes,
+                    onTap: onTapLike,
+                  ),
+                  const SizedBox(width: 8),
+                  CommentButtonWidget(
+                    onTap: onTapComment,
+                    numberOfComments: post.numberOfComments,
+                  )
+                ],
+              )
             ]
           ],
         ),

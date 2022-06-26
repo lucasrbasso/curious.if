@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     pages = [
-      PostsPage(),
+      PostsPage(user: widget.user),
       ExplorerPage(),
       SearchPage(),
     ];

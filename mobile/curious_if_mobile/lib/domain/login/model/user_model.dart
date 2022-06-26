@@ -6,12 +6,14 @@ import '../../roles-permission/model/roles_permission_model.dart';
 
 class UserModel {
   final String name;
+  final String id;
   final String email;
   final List<Permission> permissions;
   final List<Roles> roles;
   final String token;
   UserModel({
     required this.name,
+    required this.id,
     required this.email,
     required this.permissions,
     required this.roles,
@@ -20,6 +22,7 @@ class UserModel {
 
   UserModel copyWith({
     String? name,
+    String? id,
     String? email,
     List<Permission>? permissions,
     List<Roles>? roles,
@@ -27,6 +30,7 @@ class UserModel {
   }) {
     return UserModel(
       name: name ?? this.name,
+      id: id ?? this.id,
       email: email ?? this.email,
       permissions: permissions ?? this.permissions,
       roles: roles ?? this.roles,
@@ -44,6 +48,7 @@ class UserModel {
     });
     result.addAll({'roles': roles.map((x) => x.parseStringRoles).toList()});
     result.addAll({'token': token});
+    result.addAll({'id': id});
 
     return result;
   }
@@ -58,6 +63,7 @@ class UserModel {
       roles: List<Roles>.from(
           map['roles']?.map((role) => role.toString().parseRoles) ?? []),
       token: map['access_token'] ?? '',
+      id: map['id'] ?? '',
     );
   }
 
@@ -68,7 +74,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, permissions: $permissions, roles: $roles, token: $token)';
+    return 'UserModel(name: $name, id: $id, email: $email, permissions: $permissions, roles: $roles, token: $token)';
   }
 
   @override
@@ -78,6 +84,7 @@ class UserModel {
 
     return other is UserModel &&
         other.name == name &&
+        other.id == id &&
         other.email == email &&
         listEquals(other.permissions, permissions) &&
         listEquals(other.roles, roles) &&
@@ -90,6 +97,7 @@ class UserModel {
         email.hashCode ^
         permissions.hashCode ^
         roles.hashCode ^
+        id.hashCode ^
         token.hashCode;
   }
 }

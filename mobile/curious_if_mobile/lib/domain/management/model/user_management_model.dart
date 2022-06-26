@@ -91,9 +91,9 @@ class UserManagementModel {
   static List<UserManagementModel> fromApi(String source) {
     List<dynamic> list = json.decode(source);
     List<UserManagementModel> userManagementModel = [];
-    list.forEach((value) {
+    for (dynamic value in list) {
       userManagementModel.add(UserManagementModel.fromMap(value));
-    });
+    }
     return userManagementModel;
   }
 

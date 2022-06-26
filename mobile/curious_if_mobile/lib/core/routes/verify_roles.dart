@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import '../../domain/roles-permission/model/roles_permission_model.dart';
 import '../../modules/errors/account_not_logged/account_not_logged_page.dart';
 import '../../modules/errors/not_has_authorization/not_has_authorization_page.dart';
-import '../core.dart';
 
 class VerifyRoles {
-  static Widget accountNotLogged = AccountNotLoggedPage();
-  static Widget notHasAuthorization = NotHasAuthorizationPage();
+  static Widget accountNotLogged = const AccountNotLoggedPage();
+  static Widget notHasAuthorization = const NotHasAuthorizationPage();
 
   static bool hasUser(UserModel? user) => user != null;
   static bool verifyMod(UserModel? user) =>
