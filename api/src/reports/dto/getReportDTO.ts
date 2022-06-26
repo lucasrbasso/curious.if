@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+} from 'class-validator';
 
-export class GetCommentReportDTO {
+export class GetReportDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID()
@@ -25,6 +31,10 @@ export class GetCommentReportDTO {
   @IsNotEmpty()
   @IsUUID()
   commentId: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  type: 'COMMENT' | 'POST';
 
   @ApiProperty()
   @IsNotEmpty()

@@ -69,13 +69,11 @@ export class CommentsController {
   @ApiOperation({ summary: 'Like em um comentário' })
   async likeComment(
     @Param('id') commentId: string,
-    @Body() { postId }: { postId: string },
     @Request() req,
   ): Promise<GetCommentDTO> {
     return this.commentsService.likeComment({
       commentId,
       userId: req.user.userId,
-      postId,
     });
   }
 
@@ -85,13 +83,11 @@ export class CommentsController {
   @ApiOperation({ summary: 'Remove like em um comentário' })
   async removeCommentLike(
     @Param('id') commentId: string,
-    @Body() { postId }: { postId: string },
     @Request() req,
   ): Promise<GetCommentDTO> {
     return this.commentsService.removeCommentLike({
       commentId,
       userId: req.user.userId,
-      postId,
     });
   }
 
