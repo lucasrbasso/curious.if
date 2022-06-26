@@ -6,10 +6,11 @@ part of 'posts_controller.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PostsController on _PostsControllerBase, Store {
-  final _$stateAtom = Atom(name: '_PostsControllerBase.state');
+  late final _$stateAtom =
+      Atom(name: '_PostsControllerBase.state', context: context);
 
   @override
   PostsState get state {
@@ -24,7 +25,8 @@ mixin _$PostsController on _PostsControllerBase, Store {
     });
   }
 
-  final _$postsAtom = Atom(name: '_PostsControllerBase.posts');
+  late final _$postsAtom =
+      Atom(name: '_PostsControllerBase.posts', context: context);
 
   @override
   ObservableList<PostModel> get posts {
@@ -39,8 +41,8 @@ mixin _$PostsController on _PostsControllerBase, Store {
     });
   }
 
-  final _$loadingShimmerAtom =
-      Atom(name: '_PostsControllerBase.loadingShimmer');
+  late final _$loadingShimmerAtom =
+      Atom(name: '_PostsControllerBase.loadingShimmer', context: context);
 
   @override
   int get loadingShimmer {
@@ -55,8 +57,8 @@ mixin _$PostsController on _PostsControllerBase, Store {
     });
   }
 
-  final _$_modifyPostsStateAsyncAction =
-      AsyncAction('_PostsControllerBase._modifyPostsState');
+  late final _$_modifyPostsStateAsyncAction =
+      AsyncAction('_PostsControllerBase._modifyPostsState', context: context);
 
   @override
   Future<void> _modifyPostsState(PostsState stateModify) {
@@ -64,16 +66,17 @@ mixin _$PostsController on _PostsControllerBase, Store {
         .run(() => super._modifyPostsState(stateModify));
   }
 
-  final _$listPostsAsyncAction = AsyncAction('_PostsControllerBase.listPosts');
+  late final _$listPostsAsyncAction =
+      AsyncAction('_PostsControllerBase.listPosts', context: context);
 
   @override
-  Future<void> listPosts({String? cursorID}) {
+  Future<void> listPosts({String? cursorID, String? id}) {
     return _$listPostsAsyncAction
-        .run(() => super.listPosts(cursorID: cursorID));
+        .run(() => super.listPosts(cursorID: cursorID, id: id));
   }
 
-  final _$_PostsControllerBaseActionController =
-      ActionController(name: '_PostsControllerBase');
+  late final _$_PostsControllerBaseActionController =
+      ActionController(name: '_PostsControllerBase', context: context);
 
   @override
   void modifyShimmer(int length) {

@@ -6,6 +6,9 @@ import '../core.dart';
 
 abstract class AppTextStyles {
   TextStyle get textHeadingThree;
+  TextStyle get textHeadingFour;
+  TextStyle get subtitleHeadingThree;
+  TextStyle get subtitleHeadingFour;
   TextStyle get textHeadingTwo;
   TextStyle get textHintFieldInput;
   TextStyle get textFieldInput;
@@ -18,6 +21,7 @@ abstract class AppTextStyles {
   TextStyle get subtitleTextPost;
   TextStyle get titleTextPost;
 
+  TextStyle get textSlidableButton;
   /*---------------TEXTSTYLE SETTINGS---------------*/
   TextStyle get textButton;
   TextStyle get textSnackBar;
@@ -31,6 +35,13 @@ abstract class AppTextStyles {
 }
 
 class AppTextStylesDefault implements AppTextStyles {
+  @override
+  TextStyle get textSlidableButton => GoogleFonts.inter(
+        fontSize: 8.5.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      );
+
   @override
   TextStyle get textHintFieldInput => GoogleFonts.poppins(
         fontSize: 14,
@@ -54,6 +65,27 @@ class AppTextStylesDefault implements AppTextStyles {
         fontSize: 24,
         fontWeight: FontWeight.w500,
         color: AppTheme.colors.text,
+      );
+
+  @override
+  TextStyle get textHeadingFour => GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.text,
+      );
+
+  @override
+  TextStyle get subtitleHeadingThree => GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleOpacity,
+      );
+
+  @override
+  TextStyle get subtitleHeadingFour => GoogleFonts.poppins(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppTheme.colors.subtitleOpacity,
       );
   @override
   TextStyle get textHeadingTwo => GoogleFonts.poppins(

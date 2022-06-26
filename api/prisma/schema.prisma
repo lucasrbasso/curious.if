@@ -16,8 +16,14 @@ model Post {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
+  likes         Like[]
+  numberOfLikes Int    @default(0)
+
+  comments Comment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
 }
 
 model User {
@@ -29,7 +35,38 @@ model User {
   permissions String[]
   roles       String[]
 
-  posts Post[]
+  posts    Post[]
+  likes    Like[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+model Like {
+  id String @id @default(uuid())
+
+  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  content String
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

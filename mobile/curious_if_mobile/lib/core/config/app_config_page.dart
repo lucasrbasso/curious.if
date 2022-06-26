@@ -1,4 +1,3 @@
-import '../../i18n/i18n_const.dart';
 import '/modules/splash/splash_page.dart';
 
 import '/core/core.dart';
@@ -10,7 +9,7 @@ class AppConfigPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AppConfigPageState createState() => _AppConfigPageState();
+  State<AppConfigPage> createState() => _AppConfigPageState();
 }
 
 class _AppConfigPageState extends State<AppConfigPage> {

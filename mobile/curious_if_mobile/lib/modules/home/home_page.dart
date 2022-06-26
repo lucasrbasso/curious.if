@@ -1,9 +1,12 @@
+import 'package:curious_if_mobile/core/routes/verify_roles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
-import 'pages/create_post_page/create_post_page.dart';
+import 'pages/explorer_page/explorer_page.dart';
 import 'pages/posts_page/posts_page.dart';
+import 'pages/search_page/search_page.dart';
 import 'widgets/app_bar_home/app_bar_home.dart';
 import 'widgets/bottom_navigation_bar_home/bottom_navigation_bar_home.dart';
 
@@ -24,56 +27,54 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     pages = [
-      PostsPage(),
-      PostsPage(),
-      PostsPage(),
-      PostsPage(),
-      widget.user != null
-          ? CreatePostPage(
-              user: widget.user!,
-              onSuccess: () {
-                indexPage = 0;
-                setState(() {});
-              },
-            )
-          : Container(),
+      PostsPage(user: widget.user),
+      ExplorerPage(),
+      SearchPage(),
     ];
     super.initState();
+  }
+
+  void controlRoutes() {
+    Map<String, dynamic> arguments = {"user": widget.user};
+    if (indexPage == 3) {
+      Navigator.pushNamed(context, RouterClass.profile, arguments: arguments);
+    } else if (indexPage == 4) {
+      print('CreatePostPage');
+      Navigator.pushNamed(context, RouterClass.createPost,
+          arguments: arguments);
+    }
+    indexPage = 0;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
-    print(statusBarHeight);
-    return Scaffold(
-      backgroundColor: AppTheme.colors.background,
-      appBar: AppBarHome(
-        statusBarHeight: statusBarHeight,
-        createPost: () {
-          indexPage = 4;
-          if (indexPage > 2 && (widget.user == null)) {
-            indexPage = 0;
-            Navigator.pushNamed(context, RouterClass.accountNotLogged);
-          }
-          setState(() {});
-        },
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: AppThemeController().colorStatus,
+      sized: false,
+      child: Scaffold(
+        backgroundColor: AppTheme.colors.background,
+        appBar: AppBarHome(
+          statusBarHeight: statusBarHeight,
+          createPost: () {
+            indexPage = 4;
+            controlRoutes();
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBarHome(
+          onTap: (index) {
+            indexPage = index;
+            controlRoutes();
+          },
+        ),
+        body: pages[indexPage],
+        // floatingActionButton: FloatingActionButton(onPressed: () async {
+        //   try {
+        //     await AppThemeController().toggleThemeMode();
+        //   } catch (e) {}
+        // }),
       ),
-      bottomNavigationBar: BottomNavigationBarHome(
-        onTap: (index) {
-          indexPage = index;
-          if (indexPage > 2 && (widget.user == null)) {
-            indexPage = 0;
-            Navigator.pushNamed(context, RouterClass.accountNotLogged);
-          }
-          setState(() {});
-        },
-      ),
-      body: pages[indexPage],
-      // floatingActionButton: FloatingActionButton(onPressed: () async {
-      //   try {
-      //     await AppThemeController().toggleThemeMode();
-      //   } catch (e) {}
-      // }),
     );
   }
 }

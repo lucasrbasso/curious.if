@@ -23,7 +23,7 @@ class LoginApi implements ILoginApi {
     try {
       final response = await client
           .post(
-            Uri.parse(server + "auth/login/"),
+            Uri.parse(server + "api/auth/login/"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },

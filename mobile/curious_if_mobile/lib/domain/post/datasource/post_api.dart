@@ -7,11 +7,20 @@ abstract class IPostApi {
   Future<String> listPosts({
     required String cursorID,
     required String takeValue,
+    String? id,
   });
   Future<String> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
+  });
+  Future<String> likePost({
+    required String token,
+    required String id,
+  });
+  Future<String> removeLikePost({
+    required String token,
+    required String id,
   });
   void dispose();
 }
@@ -29,14 +38,16 @@ class PostApi implements IPostApi {
   Future<String> listPosts({
     required String cursorID,
     required String takeValue,
+    String? id,
   }) async {
     String? cursor = "cursor=$cursorID";
     String take = "take=$takeValue";
     try {
       final Response response = await client.get(
-        Uri.parse(server + "api/posts/?$cursor&$take"),
+        Uri.parse("${server}api/posts/?$cursor&$take"),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
+          'Content-Type': 'application/json; charset=UTF-8',
+          'user_id': id ?? '',
         },
       ).timeout(const Duration(seconds: 10));
       return responseErrorStatusCode(response);
@@ -48,21 +59,56 @@ class PostApi implements IPostApi {
   @override
   Future<String> createPost({
     required String token,
-    required String authorID,
+    required String to,
     required String content,
   }) async {
     try {
       final Response response = await client
-          .post(Uri.parse(server + "api/posts/"),
+          .post(Uri.parse("${server}api/posts/"),
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Authorization': 'Bearer $token'
               },
-              body: json.encode(<String, String>{
-                'content': content,
-                'authorId': authorID,
-              }))
+              body: json.encode(<String, String>{'content': content, 'to': to}))
           .timeout(const Duration(seconds: 10));
+      return responseErrorStatusCode(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> likePost({
+    required String token,
+    required String id,
+  }) async {
+    try {
+      final Response response = await client.post(
+        Uri.parse("${server}api/posts/like/$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 10));
+      return responseErrorStatusCode(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> removeLikePost({
+    required String token,
+    required String id,
+  }) async {
+    try {
+      final Response response = await client.delete(
+        Uri.parse("${server}api/posts/like/$id"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 10));
       return responseErrorStatusCode(response);
     } catch (e) {
       rethrow;

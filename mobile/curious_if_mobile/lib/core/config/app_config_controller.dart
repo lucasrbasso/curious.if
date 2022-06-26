@@ -1,13 +1,12 @@
 //import 'package:firebase_core/firebase_core.dart';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:localization/localization.dart';
 import 'package:mobx/mobx.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../i18n/i18n_const.dart';
 import '../core.dart';
 //import '/firebase_options.dart';
 part 'app_config_controller.g.dart';
@@ -126,7 +125,7 @@ abstract class AppConfigControllerBase with Store {
     try {
       await controllerAppTheme.currentThemeMode();
 
-      print(controllerAppTheme.themeMode);
+      log(controllerAppTheme.themeMode.toString());
       controllerAppTheme.listenBrightnessSystem();
       await currentLocale();
       return true;

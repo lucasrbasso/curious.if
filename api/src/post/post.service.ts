@@ -1,7 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  NotFoundException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../database/prisma/prisma.service';
-import { PostDTO } from './dto/get-post-output.dto';
+import { PostDTO, UserPostDTO } from './dto/get-post-output.dto';
 
 interface CreatePostProps {
   authorId: string;
@@ -9,20 +13,161 @@ interface CreatePostProps {
   content: string;
 }
 
+interface GetPostProps {
+  postId: string;
+  userId: string;
+}
+
+interface UpdatePostProps {
+  id: string;
+  published: boolean;
+}
+
 interface PaginationProps {
+  user_id: string;
   take?: number;
   cursor?: Prisma.PostWhereUniqueInput;
+}
+
+interface LikePostProps {
+  postId: string;
+  userId: string;
 }
 
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
 
-  async getAllPosts({ take, cursor }: PaginationProps): Promise<PostDTO[]> {
+  async getAllPosts({
+    user_id,
+    take,
+    cursor,
+  }: PaginationProps): Promise<UserPostDTO[]> {
+    if (user_id) {
+      const posts = await this.prisma.post.findMany({
+        take,
+        skip: cursor ? 1 : 0,
+        cursor,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        where: {
+          published: true,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          content: true,
+          comments: true,
+          to: true,
+          published: true,
+          numberOfLikes: true,
+          likes: {
+            where: {
+              userId: user_id,
+            },
+          },
+        },
+      });
+
+      const formattedPosts = posts.map((post) => {
+        const { likes, ...postContent } = post;
+
+        return likes.length > 0
+          ? {
+              ...postContent,
+              isLiked: true,
+            }
+          : {
+              ...postContent,
+              isLiked: false,
+            };
+      });
+      return formattedPosts;
+    } else {
+      const posts = await this.prisma.post.findMany({
+        take,
+        skip: cursor ? 1 : 0,
+        cursor,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        where: {
+          published: true,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          comments: true,
+          updatedAt: true,
+          content: true,
+          to: true,
+          published: true,
+          numberOfLikes: true,
+          likes: {
+            where: {
+              userId: user_id,
+            },
+          },
+        },
+      });
+
+      const formattedPosts = posts.map((post) => {
+        const numberOfComments = post.comments.length;
+        delete post.comments;
+
+        return {
+          ...post,
+          isLiked: false,
+          numberOfComments,
+        };
+      });
+
+      return formattedPosts;
+    }
+  }
+
+  async getPostById({ postId, userId }: GetPostProps): Promise<UserPostDTO> {
+    if (!postId) {
+      throw new BadRequestException('Post Id is required.');
+    }
+
+    const isLiked = await this.prisma.like.findFirst({
+      where: {
+        postId,
+        userId,
+      },
+    });
+
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        to: true,
+        published: true,
+        numberOfLikes: true,
+      },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found.');
+    }
+
+    return {
+      ...post,
+      isLiked: !!isLiked,
+    };
+  }
+
+  async getUnauthorizedPost(): Promise<PostDTO[]> {
     const posts = await this.prisma.post.findMany({
-      take,
-      skip: cursor ? 1 : 0,
-      cursor,
+      where: {
+        published: false,
+      },
       orderBy: {
         createdAt: 'desc',
       },
@@ -33,29 +178,11 @@ export class PostService {
         content: true,
         to: true,
         published: true,
+        numberOfLikes: true,
       },
     });
 
     return posts;
-  }
-
-  async getPostById(id: string): Promise<PostDTO> {
-    const post = await this.prisma.post.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-      },
-    });
-
-    if (!post) {
-      throw new BadRequestException('Post not found.');
-    }
-    return post;
   }
 
   async createPost({
@@ -72,7 +199,7 @@ export class PostService {
     });
 
     if (!checkIfAuthorExists) {
-      throw new BadRequestException('Author does not exists.');
+      throw new NotFoundException('Author does not exists.');
     }
 
     try {
@@ -88,15 +215,193 @@ export class PostService {
     }
   }
 
+  async updatePostStatus({ id, published }: UpdatePostProps): Promise<PostDTO> {
+    if (!id) {
+      throw new BadRequestException('Post Id is required.');
+    }
+
+    const postInDB = await this.prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!postInDB) {
+      throw new NotFoundException('Post not found.');
+    }
+
+    try {
+      return await this.prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          published,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          content: true,
+          to: true,
+          published: true,
+          numberOfLikes: true,
+        },
+      });
+    } catch (err: any) {
+      throw new BadRequestException('There was an error when editing a post.');
+    }
+  }
+
   async deletePost(id: string): Promise<void> {
+    if (!id) throw new BadRequestException('Post Id is required.');
+
     const post = await this.prisma.post.findUnique({
       where: { id },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found.');
+    }
+
+    await this.prisma.post.delete({ where: { id } });
+  }
+
+  async likePost(likePostData: LikePostProps): Promise<UserPostDTO> {
+    const { postId, userId } = likePostData;
+
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        to: true,
+        published: true,
+        numberOfLikes: true,
+      },
+    });
+
+    const isLiked = await this.prisma.like.findFirst({
+      where: {
+        postId,
+        userId,
+      },
     });
 
     if (!post) {
       throw new BadRequestException('Post not found.');
     }
 
-    await this.prisma.post.delete({ where: { id } });
+    try {
+      if (isLiked) {
+        return {
+          ...post,
+          isLiked: true,
+        };
+      }
+
+      await this.prisma.like.create({
+        data: {
+          postId,
+          userId,
+        },
+      });
+
+      const finalPost = await this.prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          numberOfLikes: post.numberOfLikes + 1,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          content: true,
+          to: true,
+          published: true,
+          numberOfLikes: true,
+        },
+      });
+
+      return {
+        ...finalPost,
+        isLiked: true,
+      };
+    } catch (err: any) {
+      throw new BadRequestException('There was an error when creating a like.');
+    }
+  }
+
+  async removeLike(likePostData: LikePostProps): Promise<UserPostDTO> {
+    const { postId, userId } = likePostData;
+
+    const isLiked = await this.prisma.like.findFirst({
+      where: {
+        postId,
+        userId,
+      },
+    });
+
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        content: true,
+        to: true,
+        published: true,
+        numberOfLikes: true,
+      },
+    });
+
+    if (!post) {
+      throw new BadRequestException('Post not found.');
+    }
+
+    if (!isLiked) {
+      return {
+        ...post,
+        isLiked: false,
+      };
+    }
+
+    try {
+      await this.prisma.like.deleteMany({
+        where: {
+          userId,
+          postId,
+        },
+      });
+
+      const finalPost = await this.prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          numberOfLikes: post.numberOfLikes - 1,
+        },
+        select: {
+          id: true,
+          createdAt: true,
+          updatedAt: true,
+          content: true,
+          to: true,
+          published: true,
+          numberOfLikes: true,
+        },
+      });
+
+      return {
+        ...finalPost,
+        isLiked: false,
+      };
+    } catch (err: any) {
+      throw new BadRequestException('There was an error when creating a like.');
+    }
   }
 }

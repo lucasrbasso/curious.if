@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ abstract class _AppThemeControllerBase with Store {
 
   void reConfigBrightnessWhenModifyTheme(ThemeMode themeModeModify) {
     if (themeModeModify == ThemeMode.system) {
-      setBrightness(WidgetsBinding.instance!.window.platformBrightness);
+      setBrightness(WidgetsBinding.instance.window.platformBrightness);
     } else if (themeModeModify == ThemeMode.dark) {
       setBrightness(Brightness.dark);
     } else {
@@ -132,11 +133,11 @@ abstract class _AppThemeControllerBase with Store {
   }
 
   void listenBrightnessSystem() {
-    SingletonFlutterWindow? window = WidgetsBinding.instance?.window;
-    window?.onPlatformBrightnessChanged = () {
-      WidgetsBinding.instance?.handlePlatformBrightnessChanged();
+    SingletonFlutterWindow window = WidgetsBinding.instance.window;
+    window.onPlatformBrightnessChanged = () {
+      WidgetsBinding.instance.handlePlatformBrightnessChanged();
       Brightness brightness = window.platformBrightness;
-      print(brightness);
+      log(brightness.toString());
       if (themeMode == ThemeMode.system) setBrightness(brightness);
     };
   }

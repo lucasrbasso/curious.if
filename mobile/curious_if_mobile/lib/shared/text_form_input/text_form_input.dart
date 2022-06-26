@@ -8,6 +8,10 @@ class TextFormInput extends StatefulWidget {
   final Function(String)? onChanged;
   final void Function(String?)? onSaved;
   final Widget? icon;
+
+  final Widget? suffixIcon;
+
+  final Widget? suffix;
   final String text;
   final String? label;
   final String? hintText;
@@ -17,6 +21,8 @@ class TextFormInput extends StatefulWidget {
   final Color? focusedBorderColor;
   final int? maxLength;
   final int? maxLines;
+
+  final int? minLines;
   final bool expands;
   final bool flexible;
   final bool divider;
@@ -26,24 +32,27 @@ class TextFormInput extends StatefulWidget {
 
   const TextFormInput({
     Key? key,
+    this.validate,
     this.onChanged,
+    this.onSaved,
+    this.icon,
+    this.suffixIcon,
+    this.suffix,
     required this.text,
-    this.divider = true,
-    this.disable = false,
-    this.disableForm = false,
-    this.flexible = false,
-    this.textAlign = TextAlign.left,
     this.label,
     this.hintText,
-    this.maxLength,
-    this.expands = false,
+    this.textAlign = TextAlign.left,
     this.textStyle,
     this.contentPadding,
     this.focusedBorderColor,
+    this.maxLength,
     this.maxLines = 1,
-    this.icon,
-    this.onSaved,
-    this.validate,
+    this.minLines,
+    this.expands = false,
+    this.flexible = false,
+    this.divider = true,
+    this.disable = false,
+    this.disableForm = false,
     this.password = false,
   }) : super(key: key);
 
@@ -88,10 +97,12 @@ class _TextFormInputState extends State<TextFormInput> {
         radius: Radius.circular(20),
         thickness: 5,
         child: TextFormField(
+          textAlignVertical: TextAlignVertical.center,
           readOnly: widget.disable || widget.disableForm,
           maxLength: widget.maxLength,
           expands: widget.expands,
           maxLines: widget.maxLines,
+          minLines: widget.minLines,
           textAlign: widget.textAlign,
           obscureText: _passwordVisible,
           enableSuggestions: !widget.password,
@@ -110,6 +121,7 @@ class _TextFormInputState extends State<TextFormInput> {
             filled: true,
             labelStyle: widget.textStyle ?? styleText,
             prefixIcon: widget.icon,
+            suffix: widget.suffix,
             hintText: widget.hintText,
             isDense: true,
             hintStyle: widget.disable
@@ -122,7 +134,7 @@ class _TextFormInputState extends State<TextFormInput> {
                 borderSide: border.borderSide
                     .copyWith(color: widget.focusedBorderColor)),
             suffixIcon: !widget.password
-                ? null
+                ? widget.suffixIcon
                 : Material(
                     color: Colors.transparent,
                     child: IconButton(
