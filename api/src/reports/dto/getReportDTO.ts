@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDate,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsUUID,
-} from 'class-validator';
+import { IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export class GetReportDTO {
   @ApiProperty()

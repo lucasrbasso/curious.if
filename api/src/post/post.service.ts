@@ -34,6 +34,16 @@ interface LikePostProps {
   userId: string;
 }
 
+const postSelectConfig = {
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  content: true,
+  to: true,
+  published: true,
+  numberOfLikes: true,
+};
+
 @Injectable()
 export class PostService {
   constructor(private prisma: PrismaService) {}
@@ -54,14 +64,9 @@ export class PostService {
         published: true,
       },
       select: {
-        id: true,
-        createdAt: true,
+        ...postSelectConfig,
+        postNumber: true,
         comments: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-        numberOfLikes: true,
         likes: {
           where: {
             userId: user_id,
@@ -102,13 +107,7 @@ export class PostService {
     const post = await this.prisma.post.findUnique({
       where: { id: postId },
       select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-        numberOfLikes: true,
+        ...postSelectConfig,
       },
     });
 
@@ -126,18 +125,30 @@ export class PostService {
     const posts = await this.prisma.post.findMany({
       where: {
         published: false,
+        isValidated: false,
       },
       orderBy: {
         createdAt: 'desc',
       },
       select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-        numberOfLikes: true,
+        ...postSelectConfig,
+      },
+    });
+
+    return posts;
+  }
+
+  async getUnacceptedPosts(): Promise<PostDTO[]> {
+    const posts = await this.prisma.post.findMany({
+      where: {
+        published: false,
+        isValidated: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        ...postSelectConfig,
       },
     });
 
@@ -174,7 +185,7 @@ export class PostService {
     }
   }
 
-  async updatePostStatus({ id, published }: UpdatePostProps): Promise<PostDTO> {
+  async validatePost({ id, published }: UpdatePostProps): Promise<PostDTO> {
     if (!id) {
       throw new BadRequestException('Post Id is required.');
     }
@@ -189,6 +200,16 @@ export class PostService {
       throw new NotFoundException('Post not found.');
     }
 
+    const lastedPost = await this.prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        published: true,
+      },
+      take: 1,
+    });
+
     try {
       return await this.prisma.post.update({
         where: {
@@ -196,15 +217,11 @@ export class PostService {
         },
         data: {
           published,
+          isValidated: true,
+          postNumber: published ? lastedPost[0].postNumber + 1 : -1,
         },
         select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          content: true,
-          to: true,
-          published: true,
-          numberOfLikes: true,
+          ...postSelectConfig,
         },
       });
     } catch (err: any) {
@@ -232,13 +249,7 @@ export class PostService {
     const post = await this.prisma.post.findUnique({
       where: { id: postId },
       select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-        numberOfLikes: true,
+        ...postSelectConfig,
       },
     });
 
@@ -276,13 +287,7 @@ export class PostService {
           numberOfLikes: post.numberOfLikes + 1,
         },
         select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          content: true,
-          to: true,
-          published: true,
-          numberOfLikes: true,
+          ...postSelectConfig,
         },
       });
 
@@ -308,13 +313,7 @@ export class PostService {
     const post = await this.prisma.post.findUnique({
       where: { id: postId },
       select: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        content: true,
-        to: true,
-        published: true,
-        numberOfLikes: true,
+        ...postSelectConfig,
       },
     });
 
@@ -345,13 +344,7 @@ export class PostService {
           numberOfLikes: post.numberOfLikes - 1,
         },
         select: {
-          id: true,
-          createdAt: true,
-          updatedAt: true,
-          content: true,
-          to: true,
-          published: true,
-          numberOfLikes: true,
+          ...postSelectConfig,
         },
       });
 
