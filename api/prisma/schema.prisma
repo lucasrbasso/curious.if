@@ -19,9 +19,8 @@ model Post {
   likes         Like[]
   numberOfLikes Int    @default(0)
 
-  comments      Comment[]
-  commentLike   CommentLike[]
-  commentReport CommentReport[]
+  comments Comment[]
+  reports  Report[]
 
 
   createdAt DateTime @default(now())
@@ -38,37 +37,23 @@ model User {
   permissions String[]
   roles       String[]
 
-  posts         Post[]
-  likes         Like[]
-  comments      Comment[]
-  commentLike   CommentLike[]
-  commentReport CommentReport[]
+  posts    Post[]
+  likes    Like[]
+  comments Comment[]
+  reports  Report[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-}
-
-model Like {
-  id String @id @default(uuid())
-
-  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Comment {
   id String @id @default(uuid())
 
   content       String
-  commentReport CommentReport[]
-  commentLike   CommentLike[]
-  numberOfLikes Int             @default(0)
+  report        Report[]
+  like          Like[]
+  numberOfLikes Int      @default(0)
 
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   authorId String
@@ -80,14 +65,33 @@ model Comment {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model CommentLike {
+model Like {
   id String @id @default(uuid())
 
   author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  commentId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Report {
+  id String @id @default(uuid())
+
+  content String?
+  type    ReportType @default(POST)
+
+  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  commentId String?
 
   post   Post   @relation(fields: [postId], references: [id])
   postId String
@@ -96,20 +100,7 @@ model CommentLike {
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model CommentReport {
-  id String @id @default(uuid())
-
-  content String?
-
-  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  commentId String
-
-  post   Post   @relation(fields: [postId], references: [id])
-  postId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+enum ReportType {
+  COMMENT
+  POST
 }

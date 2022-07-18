@@ -25,7 +25,6 @@ interface GetCommentsByPostProps {
 
 interface LikeCommentProps {
   commentId: string;
-  postId: string;
   userId: string;
 }
 
@@ -80,7 +79,7 @@ export class CommentsService {
         select: {
           ...commentsSelectConfig,
           author: true,
-          commentLike: {
+          like: {
             where: {
               userId,
             },
@@ -90,7 +89,7 @@ export class CommentsService {
 
       const formattedComments = comments.map((comment) => {
         const authorName = comment.author.name;
-        const isLiked = comment.commentLike.length > 0;
+        const isLiked = comment.like.length > 0;
 
         delete comment.author;
         delete comment.commentLike;
@@ -220,7 +219,6 @@ export class CommentsService {
   }
 
   async likeComment({
-    postId,
     userId,
     commentId,
   }: LikeCommentProps): Promise<GetCommentDTO> {
@@ -231,12 +229,12 @@ export class CommentsService {
     });
 
     const post = await this.prisma.post.findUnique({
-      where: { id: postId },
+      where: { id: comment.postId },
     });
 
-    const isLiked = await this.prisma.commentLike.findFirst({
+    const isLiked = await this.prisma.like.findFirst({
       where: {
-        postId,
+        postId: comment.postId,
         userId,
         commentId,
       },
@@ -258,10 +256,10 @@ export class CommentsService {
         };
       }
 
-      await this.prisma.commentLike.create({
+      await this.prisma.like.create({
         data: {
           commentId,
-          postId,
+          postId: comment.postId,
           userId,
         },
       });
@@ -287,7 +285,6 @@ export class CommentsService {
   }
 
   async removeCommentLike({
-    postId,
     userId,
     commentId,
   }: LikeCommentProps): Promise<GetCommentDTO> {
@@ -298,7 +295,7 @@ export class CommentsService {
     });
 
     const post = await this.prisma.post.findUnique({
-      where: { id: postId },
+      where: { id: comment.postId },
     });
 
     const user = await this.prisma.user.findUnique({
@@ -319,9 +316,9 @@ export class CommentsService {
       throw new BadRequestException('User not found.');
     }
 
-    const isLiked = await this.prisma.commentLike.findFirst({
+    const isLiked = await this.prisma.like.findFirst({
       where: {
-        postId,
+        postId: comment.postId,
         userId,
         commentId,
       },
@@ -335,10 +332,10 @@ export class CommentsService {
         };
       }
 
-      await this.prisma.commentLike.deleteMany({
+      await this.prisma.like.deleteMany({
         where: {
           commentId,
-          postId,
+          postId: comment.postId,
           userId,
         },
       });
