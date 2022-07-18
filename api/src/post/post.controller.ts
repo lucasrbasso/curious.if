@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Patch,
   Post,
   Body,
   Delete,
@@ -10,6 +9,7 @@ import {
   Query,
   Request,
   Headers,
+  Put,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostInputDTO } from './dto/create-post-input.dto';
@@ -41,6 +41,22 @@ export class PostController {
       take: take ? Number(take) : 2,
       cursor: cursor ? { id: cursor } : undefined,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('/unauthorized-posts')
+  @Roles(Role.Admin, Role.Mod)
+  @ApiOperation({ summary: 'Retorna Post não aprovados' })
+  async getUnauthorizedPost(): Promise<PostDTO[]> {
+    return this.postService.getUnauthorizedPost();
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('/unaccepted-posts')
+  @Roles(Role.Admin, Role.Mod)
+  @ApiOperation({ summary: 'Retorna Post não aprovados' })
+  async getUnacceptedPosts(): Promise<PostDTO[]> {
+    return this.postService.getUnacceptedPosts();
   }
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
@@ -105,21 +121,13 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('filter/UnauthorizedPost')
-  @Roles(Role.Admin, Role.Mod)
-  @ApiOperation({ summary: 'Retorna Post não aprovados' })
-  async getUnauthorizedPost(): Promise<PostDTO[]> {
-    return this.postService.getUnauthorizedPost();
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Patch()
+  @Put()
   @ApiOperation({ summary: 'Atualiza status do Post' })
   async updatePostStatus(
     @Body() updatePostStatusDTO: UpdatePostStatusDTO,
   ): Promise<PostDTO> {
-    return this.postService.updatePostStatus(updatePostStatusDTO);
+    return this.postService.validatePost(updatePostStatusDTO);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

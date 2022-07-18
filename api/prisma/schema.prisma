@@ -8,10 +8,12 @@ generator client {
 }
 
 model Post {
-  id        String  @id @default(uuid())
-  published Boolean @default(false)
-  content   String
-  to        String?
+  id          String  @id @default(uuid())
+  published   Boolean @default(false)
+  isValidated Boolean @default(false)
+  content     String
+  postNumber  Int     @default(0)
+  to          String?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
