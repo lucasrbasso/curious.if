@@ -72,9 +72,29 @@ mixin _$PopupCommentsController on _PopupCommentsControllerBase, Store {
       context: context);
 
   @override
-  Future<void> getAllCommentsPost(String postId) {
+  Future<void> getAllCommentsPost(String postId, String? userId) {
     return _$getAllCommentsPostAsyncAction
-        .run(() => super.getAllCommentsPost(postId));
+        .run(() => super.getAllCommentsPost(postId, userId));
+  }
+
+  late final _$createCommentAsyncAction = AsyncAction(
+      '_PopupCommentsControllerBase.createComment',
+      context: context);
+
+  @override
+  Future<bool> createComment(String content, String postId, String token) {
+    return _$createCommentAsyncAction
+        .run(() => super.createComment(content, postId, token));
+  }
+
+  late final _$deleteCommentAsyncAction = AsyncAction(
+      '_PopupCommentsControllerBase.deleteComment',
+      context: context);
+
+  @override
+  Future<bool> deleteComment(CommentModel comment, String token) {
+    return _$deleteCommentAsyncAction
+        .run(() => super.deleteComment(comment, token));
   }
 
   late final _$_PopupCommentsControllerBaseActionController =

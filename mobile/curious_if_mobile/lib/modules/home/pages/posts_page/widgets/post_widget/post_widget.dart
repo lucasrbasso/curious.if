@@ -40,7 +40,7 @@ class PostWidget extends StatelessWidget {
               const ShimmerRowWidget(),
             ] else ...[
               Text(
-                "Spotted#0001",
+                "Spotted#${post.numberPost.toString().padLeft(4, '0')}",
                 style: AppTheme.textStyles.titlePost,
               ),
               const SizedBox(height: 2),

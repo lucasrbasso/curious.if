@@ -64,7 +64,9 @@ class _FormCreatePostWidgetState extends State<FormCreatePostWidget> {
                 }
                 bool isSaved = await widget.onSaved(
                     {"name": controller.name, "message": controller.message});
-                print(isSaved);
+                if (isSaved) {
+                  _formKey.currentState?.reset();
+                }
                 isLoading = false;
                 if (mounted) {
                   setState(() {});

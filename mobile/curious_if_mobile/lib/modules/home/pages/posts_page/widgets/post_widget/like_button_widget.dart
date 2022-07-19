@@ -52,7 +52,6 @@ class LikeButtonWidget extends StatelessWidget {
                 ? (count / 1000.0).toStringAsFixed(1) + 'k'
                 : text;
             print("Antes");
-            print(text);
             Widget result = Text(
               texto,
               style: TextStyle(color: color),

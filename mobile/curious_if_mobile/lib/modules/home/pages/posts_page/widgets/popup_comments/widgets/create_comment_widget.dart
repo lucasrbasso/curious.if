@@ -38,7 +38,12 @@ class _CreateCommentWidgetState extends State<CreateCommentWidget> {
                 error = '';
                 setState(() {});
                 bool result = await widget.onSaved(value ?? '');
-                if (!result) error = "Erro ao enviar a mensagem";
+                if (!result) {
+                  error = "Erro ao enviar a mensagem";
+                } else {
+                  _formKey.currentState?.reset();
+                }
+
                 loading = false;
                 setState(() {});
               },

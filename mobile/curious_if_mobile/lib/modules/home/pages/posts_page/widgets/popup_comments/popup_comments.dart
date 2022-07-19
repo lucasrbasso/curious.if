@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../../../core/core.dart';
+import '../../../../../../core/routes/verify_roles.dart';
 import '../../../../../../domain/login/model/user_model.dart';
 import '../../../../../../domain/post/model/post_model.dart';
 import '../../../../../../shared/shimmer_row/shimmer_row_widget.dart';
@@ -34,7 +35,7 @@ class _PopupCommentsState extends State<PopupComments> {
   @override
   void initState() {
     popupCommentsController = PopupCommentsController();
-    popupCommentsController.getAllCommentsPost(widget.post.id);
+    popupCommentsController.getAllCommentsPost(widget.post.id, widget.user?.id);
     popupCommentsController.autoRun(context);
     super.initState();
   }
@@ -107,7 +108,28 @@ class _PopupCommentsState extends State<PopupComments> {
                             is PopupCommentsStateSuccess) ...[
                           ...popupCommentsController.comments.map((comment) {
                             print(comment);
-                            return CommentWidget(commentModel: comment);
+                            return CommentWidget(
+                              commentModel: comment,
+                              onDelete: () async {
+                                return await popupCommentsController
+                                    .deleteComment(comment, widget.user!.token);
+                              },
+                              onTapLike: (isLiked) async {
+                                if (widget.user != null &&
+                                    VerifyRoles.verifyCanPost(widget.user)) {
+                                  return await popupCommentsController
+                                      .likeComment(
+                                    !isLiked,
+                                    comment,
+                                    widget.user!.token,
+                                  );
+                                } else if (widget.user != null) {
+                                  popupCommentsController.showSnackBar(context,
+                                      "Sua conta está em análise!", Colors.red);
+                                }
+                                return null;
+                              },
+                            );
                           }).toList()
                         ]
                       ],

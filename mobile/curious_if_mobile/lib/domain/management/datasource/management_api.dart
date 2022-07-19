@@ -78,7 +78,7 @@ class ManagementApi implements IManagementApi {
   Future<String> getListPostsUnauthorized(String token) async {
     try {
       final response = await client.get(
-        Uri.parse("${server}api/posts/filter/UnauthorizedPost"),
+        Uri.parse("${server}api/posts/unauthorized-posts"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
@@ -98,9 +98,11 @@ class ManagementApi implements IManagementApi {
 
   @override
   Future<String> patchPost(String id, String token, bool published) async {
+    print(id);
+    print(published);
     try {
       final response = await client
-          .patch(
+          .put(
             Uri.parse("${server}api/posts"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',

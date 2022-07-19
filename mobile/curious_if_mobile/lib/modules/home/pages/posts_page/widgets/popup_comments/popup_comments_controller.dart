@@ -41,12 +41,12 @@ abstract class _PopupCommentsControllerBase with Store {
       state = stateModify;
 
   @action
-  Future<void> getAllCommentsPost(String postId) async {
+  Future<void> getAllCommentsPost(String postId, String? userId) async {
     try {
       await _modifyPopupCommentsState(PopupCommentsStateLoading());
       await Future.delayed(const Duration(seconds: 2));
       List<CommentModel> comments =
-          await _commentUseCase.getAllCommentsPost(postId);
+          await _commentUseCase.getAllCommentsPost(postId, userId);
 
       this.comments.addAll(comments);
       await _modifyPopupCommentsState(PopupCommentsStateSuccess(
@@ -62,13 +62,38 @@ abstract class _PopupCommentsControllerBase with Store {
       String content, String postId, String token) async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      return false;
       CommentModel comment =
           await _commentUseCase.createComment(content, postId, token);
       print(comment);
       numberOfCommentsAddOrExclude++;
       comments.insert(0, comment);
+      print(comments);
       return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool?> likeComment(
+      bool isLiked, CommentModel comment, String token) async {
+    try {
+      await _commentUseCase.setLikeComment(
+          isLiked: isLiked, id: comment.id, token: token);
+      return isLiked;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
+  @action
+  Future<bool> deleteComment(CommentModel comment, String token) async {
+    try {
+      await _commentUseCase.deleteComment(id: comment.id, token: token);
+
+      numberOfCommentsAddOrExclude--;
+      return comments.remove(comment);
     } catch (e) {
       log(e.toString());
       return false;

@@ -94,7 +94,16 @@ class _WidgetFormState extends State<WidgetForm> {
                       ButtonIconText(
                         icon: Icons.logout,
                         label: "Sair",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            RouterClass.home,
+                            (route) {
+                              print(route);
+                              return false;
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

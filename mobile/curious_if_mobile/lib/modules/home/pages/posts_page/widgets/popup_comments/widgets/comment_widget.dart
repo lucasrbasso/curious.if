@@ -5,12 +5,18 @@ import 'package:sizer/sizer.dart';
 import '../../../../../../../core/core.dart';
 import '../../../../../../../domain/comment/model/comment_model.dart';
 import '../../post_widget/like_button_widget.dart';
+import 'popup_menu_buttons.dart';
 
 class CommentWidget extends StatelessWidget {
   final CommentModel commentModel;
+
+  final Future<bool?> Function(bool) onTapLike;
+  final Future<bool> Function() onDelete;
   const CommentWidget({
     Key? key,
     required this.commentModel,
+    required this.onTapLike,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -37,13 +43,13 @@ class CommentWidget extends StatelessWidget {
               Row(
                 children: [
                   LikeButtonWidget(
-                      isLiked: false,
-                      numberOfLikes: 500,
-                      countPostion:
-                          500 > 999 ? CountPostion.bottom : CountPostion.right,
-                      onTap: (like) async {
-                        return !like;
-                      }),
+                    isLiked: commentModel.isLiked,
+                    numberOfLikes: commentModel.numberOfLikes,
+                    countPostion: commentModel.numberOfLikes > 999
+                        ? CountPostion.bottom
+                        : CountPostion.right,
+                    onTap: onTapLike,
+                  ),
                   SizedBox(width: 2),
                 ],
               ),
@@ -77,23 +83,8 @@ class CommentWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 0),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.circular(15),
-                        child: Ink(
-                          padding: const EdgeInsets.all(4),
-                          child: Icon(
-                            Icons.more_vert,
-                            color: AppTheme.colors.backgroundButton,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                  PopupMenuButtons(
+                      isOwner: commentModel.isOwner, onDelete: onDelete),
                 ],
               ),
             ),
