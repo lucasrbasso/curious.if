@@ -36,7 +36,6 @@ const commentsSelectConfig = {
   numberOfLikes: true,
   createdAt: true,
   updatedAt: true,
-  commentLike: true,
 };
 
 @Injectable()
@@ -92,7 +91,6 @@ export class CommentsService {
         const isLiked = comment.like.length > 0;
 
         delete comment.author;
-        delete comment.commentLike;
 
         return {
           ...comment,
@@ -104,6 +102,7 @@ export class CommentsService {
 
       return formattedComments;
     } catch (err: any) {
+      console.log(err);
       throw new BadRequestException(
         'There was an error trying to get all comments from this post.',
       );
@@ -162,7 +161,11 @@ export class CommentsService {
         },
       });
 
-      return { ...comment, authorName: checkIfAuthorExists.name };
+      return {
+        ...comment,
+        authorName: checkIfAuthorExists.name,
+        isOwner: true,
+      };
     } catch (err: any) {
       throw new BadRequestException(
         'There was an error trying to create a comment.',
