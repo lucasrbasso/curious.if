@@ -102,7 +102,6 @@ export class CommentsService {
 
       return formattedComments;
     } catch (err: any) {
-      console.log(err);
       throw new BadRequestException(
         'There was an error trying to get all comments from this post.',
       );
