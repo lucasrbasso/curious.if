@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:curious_if_mobile/domain/reports/model/report_post.dart';
+import 'package:curious_if_mobile/domain/reports/usecase/reports_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sizer/sizer.dart';
@@ -10,13 +12,16 @@ import 'posts_state.dart';
 part 'posts_controller.g.dart';
 
 class PostsController extends _PostsControllerBase with _$PostsController {
-  PostsController({IPostUseCase? postUsecase}) {
-    _postUsecase = postUsecase ?? PostUseCase();
-  }
+  static final PostsController _postsController = PostsController._internal();
+
+  factory PostsController() => _postsController;
+
+  PostsController._internal();
 }
 
 abstract class _PostsControllerBase with Store {
-  late IPostUseCase _postUsecase;
+  final IPostUseCase _postUsecase = PostUseCase();
+  final IReportsUseCase _reportUsecase = ReportsUseCase();
 
   late ReactionDisposer reactionDisposer;
 
@@ -37,6 +42,18 @@ abstract class _PostsControllerBase with Store {
   @action
   Future<void> _modifyPostsState(PostsState stateModify) async =>
       state = stateModify;
+
+  @action
+  Future<void> insertPosts(List<PostModel> newPosts) async {
+    posts.insertAll(0, newPosts);
+  }
+
+  @action
+  Future<void> removePosts(List<String> removePosts) async {
+    for (String element in removePosts) {
+      posts.removeWhere((elementRemove) => elementRemove.id == element);
+    }
+  }
 
   @action
   Future<void> listPosts({String? cursorID, String? id}) async {
@@ -75,6 +92,18 @@ abstract class _PostsControllerBase with Store {
       log(e.toString());
     }
     return null;
+  }
+
+  Future<bool> reportPost(PostModel post, String content, String token) async {
+    try {
+      ReportPost report = ReportPost(postId: post.id, content: content);
+      await Future.delayed(const Duration(seconds: 2));
+      await _reportUsecase.reportPost(report, token);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
   }
 
   bool scrollInfo(ScrollNotification scrollInfo) {
@@ -119,10 +148,5 @@ abstract class _PostsControllerBase with Store {
         modifyShimmer(5);
       }
     });
-  }
-
-  void dispose() {
-    _postUsecase.dispose();
-    reactionDisposer.reaction.dispose();
   }
 }

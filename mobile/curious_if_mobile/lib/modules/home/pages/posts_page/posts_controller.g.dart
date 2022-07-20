@@ -66,6 +66,22 @@ mixin _$PostsController on _PostsControllerBase, Store {
         .run(() => super._modifyPostsState(stateModify));
   }
 
+  late final _$insertPostsAsyncAction =
+      AsyncAction('_PostsControllerBase.insertPosts', context: context);
+
+  @override
+  Future<void> insertPosts(List<PostModel> newPosts) {
+    return _$insertPostsAsyncAction.run(() => super.insertPosts(newPosts));
+  }
+
+  late final _$removePostsAsyncAction =
+      AsyncAction('_PostsControllerBase.removePosts', context: context);
+
+  @override
+  Future<void> removePosts(List<String> removePosts) {
+    return _$removePostsAsyncAction.run(() => super.removePosts(removePosts));
+  }
+
   late final _$listPostsAsyncAction =
       AsyncAction('_PostsControllerBase.listPosts', context: context);
 
