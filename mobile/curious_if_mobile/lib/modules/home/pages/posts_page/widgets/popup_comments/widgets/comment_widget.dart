@@ -12,11 +12,13 @@ class CommentWidget extends StatelessWidget {
 
   final Future<bool?> Function(bool) onTapLike;
   final Future<bool> Function() onDelete;
+  final Future<void> Function() onDenounce;
   const CommentWidget({
     Key? key,
     required this.commentModel,
     required this.onTapLike,
     required this.onDelete,
+    required this.onDenounce,
   }) : super(key: key);
 
   @override
@@ -84,7 +86,9 @@ class CommentWidget extends StatelessWidget {
                     ),
                   ),
                   PopupMenuButtons(
-                      isOwner: commentModel.isOwner, onDelete: onDelete),
+                      onDenounce: onDenounce,
+                      isOwner: commentModel.isOwner,
+                      onDelete: onDelete),
                 ],
               ),
             ),

@@ -3,14 +3,17 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../../../../core/core.dart';
+import '../../popup_report/popup_report.dart';
 
 class PopupMenuButtons extends StatelessWidget {
   final bool isOwner;
 
+  final Future<void> Function() onDenounce;
   final Future<bool> Function() onDelete;
   const PopupMenuButtons({
     Key? key,
     required this.isOwner,
+    required this.onDenounce,
     required this.onDelete,
   }) : super(key: key);
 
@@ -34,8 +37,13 @@ class PopupMenuButtons extends StatelessWidget {
             padding: EdgeInsets.zero,
             color: AppTheme.colors.background,
             elevation: 20,
-            itemBuilder: (context) => [
+            itemBuilder: (contextPopup) => [
               PopupMenuItem(
+                onTap: () async {
+                  print("test2e");
+                  onDenounce();
+                  print("teste");
+                },
                 padding: EdgeInsets.zero,
                 child: Align(
                   alignment: Alignment.centerLeft,

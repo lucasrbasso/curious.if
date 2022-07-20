@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:curious_if_mobile/domain/comment/usecase/comment_usecase.dart';
+import 'package:curious_if_mobile/domain/reports/model/report_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../../domain/comment/model/comment_model.dart';
+import '../../../../../../domain/reports/usecase/reports_usecase.dart';
 import 'popup_comments_state.dart';
 part 'popup_comments_controller.g.dart';
 
@@ -19,7 +21,12 @@ class PopupCommentsController extends _PopupCommentsControllerBase
 abstract class _PopupCommentsControllerBase with Store {
   late ICommentUseCase _commentUseCase;
 
+  final IReportsUseCase _reportUsecase = ReportsUseCase();
+
   late ReactionDisposer reactionDisposer;
+
+  @observable
+  bool isVisible = false;
 
   @observable
   PopupCommentsState state = PopupCommentsStateEmpty();
@@ -31,6 +38,9 @@ abstract class _PopupCommentsControllerBase with Store {
 
   @observable
   int loadingShimmer = 5;
+
+  @action
+  void modifyIsVisible(bool newIsVisible) => isVisible = newIsVisible;
 
   @action
   void modifyShimmer(int length) => loadingShimmer = length;
@@ -68,6 +78,20 @@ abstract class _PopupCommentsControllerBase with Store {
       numberOfCommentsAddOrExclude++;
       comments.insert(0, comment);
       print(comments);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> reportComment(
+      CommentModel comment, String content, String token) async {
+    try {
+      ReportComment report = ReportComment(
+          commentId: comment.id, content: content, postId: comment.postId);
+      await Future.delayed(const Duration(seconds: 2));
+      await _reportUsecase.reportComment(report, token);
       return true;
     } catch (e) {
       log(e.toString());
