@@ -104,12 +104,9 @@ mixin _$ManagePostController on _ManagePostControllerBase, Store {
 
   @override
   Future<void> patchPostUnauthorized(
-      {required String token,
-      required PostManagementModel post,
-      required bool isPublished}) {
+      {required String token, required String id, required bool isPublished}) {
     return _$patchPostUnauthorizedAsyncAction.run(() => super
-        .patchPostUnauthorized(
-            token: token, post: post, isPublished: isPublished));
+        .patchPostUnauthorized(token: token, id: id, isPublished: isPublished));
   }
 
   late final _$_ManagePostControllerBaseActionController =

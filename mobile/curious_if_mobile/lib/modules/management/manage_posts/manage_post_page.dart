@@ -49,97 +49,106 @@ class _ManagePostPageState extends State<ManagePostPage> {
   @override
   Widget build(BuildContext context) {
     MediaQuery.of(context).padding.top;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: AppThemeController().colorStatus,
-      sized: false,
-      child: Scaffold(
-        backgroundColor: AppTheme.colors.background,
-        appBar: AppBarSimple(
-          label: "GERENCIAR POSTS",
-          user: widget.user,
-          hasSearch: true,
-        ),
-        body: Observer(
-          builder: (context) {
-            log("Teste");
-            return RefreshIndicator(
-              onRefresh: () async {
-                await _managePostController.refreshScroll(
-                    widget.user.token, _listKey);
-              },
-              color: AppTheme.colors.titlePost,
-              backgroundColor: AppTheme.colors.backgroundButton,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  if (_managePostController.state
-                      is! ManagePostStateLoading) ...[
-                    SlidableAutoCloseBehavior(
-                      child: AnimatedList(
-                        padding: const EdgeInsets.only(top: 10),
-                        key: _listKey,
-                        initialItemCount: _managePostController.posts.length,
-                        physics: const BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics()),
-                        itemBuilder: (context, index, animation) {
+    return WillPopScope(
+      onWillPop: () async {
+        print(_managePostController.postsHome);
+        Navigator.of(context, rootNavigator: true)
+            .pop(_managePostController.postsHome);
+        return false;
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: AppThemeController().colorStatus,
+        sized: false,
+        child: Scaffold(
+          backgroundColor: AppTheme.colors.background,
+          appBar: AppBarSimple(
+            label: "GERENCIAR POSTS",
+            user: widget.user,
+            hasSearch: true,
+          ),
+          body: Observer(
+            builder: (context) {
+              log("Teste");
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await _managePostController.refreshScroll(
+                      widget.user.token, _listKey);
+                },
+                color: AppTheme.colors.titlePost,
+                backgroundColor: AppTheme.colors.backgroundButton,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    if (_managePostController.state
+                        is! ManagePostStateLoading) ...[
+                      SlidableAutoCloseBehavior(
+                        child: AnimatedList(
+                          padding: const EdgeInsets.only(top: 10),
+                          key: _listKey,
+                          initialItemCount: _managePostController.posts.length,
+                          physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                          itemBuilder: (context, index, animation) {
+                            return Column(
+                              children: [
+                                SlidableCardWidget(
+                                  key: Key(_managePostController.posts[index]
+                                      .toString()),
+                                  onPublishEdit: (context, publish) =>
+                                      _managePostController.onPublishEdit(
+                                    _managePostController.posts[index].id,
+                                    widget.user.token,
+                                    () => _managePostController
+                                        .onAnimationDeletion(
+                                            index, _listKey, context),
+                                    publish,
+                                  ),
+                                  onDismissed: (publish) =>
+                                      _managePostController.onDismissed(
+                                          index, context, _listKey),
+                                  confirmDismiss: (publish) =>
+                                      _managePostController.confirmDismiss(
+                                    _managePostController.posts[index].id,
+                                    widget.user.token,
+                                    () => _managePostController
+                                        .onAnimationDeletion(
+                                            index, _listKey, context),
+                                    publish,
+                                  ),
+                                  post: _managePostController.posts[index],
+                                ),
+                                const SizedBox(height: 8)
+                              ],
+                            );
+                          },
+                        ),
+                      )
+                    ] else ...[
+                      ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
                           return Column(
                             children: [
-                              SlidableCardWidget(
-                                key: Key(_managePostController.posts[index]
-                                    .toString()),
-                                onPublishEdit: (context, publish) =>
-                                    _managePostController.onPublishEdit(
-                                  _managePostController.posts[index].id,
-                                  widget.user.token,
-                                  () =>
-                                      _managePostController.onAnimationDeletion(
-                                          index, _listKey, context),
-                                  publish,
-                                ),
-                                onDismissed: (publish) => _managePostController
-                                    .onDismissed(index, context, _listKey),
-                                confirmDismiss: (publish) =>
-                                    _managePostController.confirmDismiss(
-                                  _managePostController.posts[index].id,
-                                  widget.user.token,
-                                  () =>
-                                      _managePostController.onAnimationDeletion(
-                                          index, _listKey, context),
-                                  publish,
-                                ),
-                                post: _managePostController.posts[index],
-                              ),
+                              PostManageWidget(
+                                  key: UniqueKey(),
+                                  post: PostManagementModel.mock(),
+                                  loading: true),
                               const SizedBox(height: 8)
                             ],
                           );
                         },
                       ),
-                    )
-                  ] else ...[
-                    ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            PostManageWidget(
-                                key: UniqueKey(),
-                                post: PostManagementModel.mock(),
-                                loading: true),
-                            const SizedBox(height: 8)
-                          ],
-                        );
-                      },
-                    ),
-                  ]
-                ],
-              ),
-            );
-          },
-          // floatingActionButton: FloatingActionButton(onPressed: () async {
-          //   try {
-          //     await AppThemeController().toggleThemeMode();
-          //   } catch (e) {}
-          // }),
+                    ]
+                  ],
+                ),
+              );
+            },
+            // floatingActionButton: FloatingActionButton(onPressed: () async {
+            //   try {
+            //     await AppThemeController().toggleThemeMode();
+            //   } catch (e) {}
+            // }),
+          ),
         ),
       ),
     );
