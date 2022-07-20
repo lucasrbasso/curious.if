@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
+import '../../domain/post/model/post_model.dart';
 import '../../modules/account_page/widgets/widget_form/widget_form.dart';
 
 class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
@@ -12,12 +13,18 @@ class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
   final UserModel user;
   final bool hasBars;
   final bool hasSearch;
+  final void Function(List<PostModel>)? addPost;
+
+  final void Function(List<String>)? subtractPosts;
+
   const AppBarSimple({
     Key? key,
     required this.label,
     required this.user,
     this.hasBars = false,
     this.hasSearch = false,
+    this.addPost,
+    this.subtractPosts,
   }) : super(key: key);
 
   @override
@@ -45,7 +52,12 @@ class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
               iconSize: 20,
               color: AppTheme.colors.backgroundButton,
               onPressed: () {
-                Widget sheet = WidgetForm(key: UniqueKey(), user: user);
+                Widget sheet = WidgetForm(
+                  key: UniqueKey(),
+                  user: user,
+                  addPost: addPost ?? (post) {},
+                  subtractPosts: subtractPosts ?? (postID) {},
+                );
                 showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
@@ -89,7 +101,7 @@ class AppBarSimple extends StatelessWidget with PreferredSizeWidget {
           splashRadius: 24,
           iconSize: 20,
           color: AppTheme.colors.backgroundButton,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.maybePop(context),
         ),
       ),
     );
