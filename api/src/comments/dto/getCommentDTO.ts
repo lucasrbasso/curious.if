@@ -5,5 +5,7 @@ export class GetCommentDTO {
   authorId: string;
   createdAt: Date;
   updatedAt: Date;
+  isOwner?: boolean;
+  isLiked?: boolean;
   authorName?: string;
 }

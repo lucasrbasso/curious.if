@@ -23,6 +23,21 @@ interface GetCommentsByPostProps {
   userId: string;
 }
 
+interface LikeCommentProps {
+  commentId: string;
+  userId: string;
+}
+
+const commentsSelectConfig = {
+  id: true,
+  content: true,
+  authorId: true,
+  postId: true,
+  numberOfLikes: true,
+  createdAt: true,
+  updatedAt: true,
+};
+
 @Injectable()
 export class CommentsService {
   constructor(private prisma: PrismaService) {}
@@ -60,30 +75,32 @@ export class CommentsService {
         where: {
           postId,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
         select: {
-          id: true,
-          content: true,
-          authorId: true,
+          ...commentsSelectConfig,
           author: true,
-          postId: true,
-          createdAt: true,
-          updatedAt: true,
+          like: {
+            where: {
+              userId,
+            },
+          },
         },
       });
 
       const formattedComments = comments.map((comment) => {
         const authorName = comment.author.name;
+        const isLiked = comment.like.length > 0;
+
         delete comment.author;
 
-        if (comment.authorId === userId) {
-          return {
-            ...comment,
-            authorName,
-            isOwner: true,
-          };
-        }
-
-        return { ...comment, isOwner: false, authorName };
+        return {
+          ...comment,
+          authorName,
+          isOwner: comment.authorId === userId,
+          isLiked,
+        };
       });
 
       return formattedComments;
@@ -146,7 +163,11 @@ export class CommentsService {
         },
       });
 
-      return { ...comment, authorName: checkIfAuthorExists.name };
+      return {
+        ...comment,
+        authorName: checkIfAuthorExists.name,
+        isOwner: true,
+      };
     } catch (err: any) {
       throw new BadRequestException(
         'There was an error trying to create a comment.',
@@ -198,6 +219,149 @@ export class CommentsService {
     } catch (err: any) {
       throw new BadRequestException(
         'There was an error trying to delete a comment.',
+      );
+    }
+  }
+
+  async likeComment({
+    userId,
+    commentId,
+  }: LikeCommentProps): Promise<GetCommentDTO> {
+    const comment = await this.prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+
+    const post = await this.prisma.post.findUnique({
+      where: { id: comment.postId },
+    });
+
+    const isLiked = await this.prisma.like.findFirst({
+      where: {
+        postId: comment.postId,
+        userId,
+        commentId,
+      },
+    });
+
+    if (!comment) {
+      throw new BadRequestException('Comment not found.');
+    }
+
+    if (!post) {
+      throw new BadRequestException('Post not found.');
+    }
+
+    try {
+      if (isLiked) {
+        return {
+          ...comment,
+          isLiked: true,
+        };
+      }
+
+      await this.prisma.like.create({
+        data: {
+          commentId,
+          postId: comment.postId,
+          userId,
+        },
+      });
+
+      const updatedComment = await this.prisma.comment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          numberOfLikes: comment.numberOfLikes + 1,
+        },
+      });
+
+      return {
+        ...updatedComment,
+        isLiked: true,
+      };
+    } catch (err: any) {
+      throw new BadRequestException(
+        'There was an error trying to give a like.',
+      );
+    }
+  }
+
+  async removeCommentLike({
+    userId,
+    commentId,
+  }: LikeCommentProps): Promise<GetCommentDTO> {
+    const comment = await this.prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+
+    const post = await this.prisma.post.findUnique({
+      where: { id: comment.postId },
+    });
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!comment) {
+      throw new BadRequestException('Comment not found.');
+    }
+
+    if (!post) {
+      throw new BadRequestException('Post not found.');
+    }
+
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+
+    const isLiked = await this.prisma.like.findFirst({
+      where: {
+        postId: comment.postId,
+        userId,
+        commentId,
+      },
+    });
+
+    try {
+      if (!isLiked) {
+        return {
+          ...comment,
+          isLiked: false,
+        };
+      }
+
+      await this.prisma.like.deleteMany({
+        where: {
+          commentId,
+          postId: comment.postId,
+          userId,
+        },
+      });
+
+      const updatedComment = await this.prisma.comment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          numberOfLikes:
+            comment.numberOfLikes > 0 ? comment.numberOfLikes - 1 : 0,
+        },
+      });
+
+      return {
+        ...updatedComment,
+        isLiked: false,
+      };
+    } catch (err: any) {
+      throw new BadRequestException(
+        'There was an error trying to remove a like.',
       );
     }
   }

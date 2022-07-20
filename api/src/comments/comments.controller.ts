@@ -65,6 +65,34 @@ export class CommentsController {
 
   @UseGuards(JwtAuthGuard, PermissionsGuard)
   @Permissions(Permission.Post)
+  @Post('/like/:id')
+  @ApiOperation({ summary: 'Like em um comentário' })
+  async likeComment(
+    @Param('id') commentId: string,
+    @Request() req,
+  ): Promise<GetCommentDTO> {
+    return this.commentsService.likeComment({
+      commentId,
+      userId: req.user.userId,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
+  @Delete('/like/:id')
+  @ApiOperation({ summary: 'Remove like em um comentário' })
+  async removeCommentLike(
+    @Param('id') commentId: string,
+    @Request() req,
+  ): Promise<GetCommentDTO> {
+    return this.commentsService.removeCommentLike({
+      commentId,
+      userId: req.user.userId,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions(Permission.Post)
   @Post()
   @ApiOperation({ summary: 'Cria Comentário' })
   async createComment(

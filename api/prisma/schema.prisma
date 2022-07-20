@@ -8,10 +8,12 @@ generator client {
 }
 
 model Post {
-  id        String  @id @default(uuid())
-  published Boolean @default(false)
-  content   String
-  to        String?
+  id          String  @id @default(uuid())
+  published   Boolean @default(false)
+  isValidated Boolean @default(false)
+  content     String
+  postNumber  Int     @default(0)
+  to          String?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
@@ -20,6 +22,8 @@ model Post {
   numberOfLikes Int    @default(0)
 
   comments Comment[]
+  reports  Report[]
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -38,10 +42,29 @@ model User {
   posts    Post[]
   likes    Like[]
   comments Comment[]
+  reports  Report[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  content       String
+  report        Report[]
+  like          Like[]
+  numberOfLikes Int      @default(0)
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Like {
@@ -53,21 +76,33 @@ model Like {
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postId String
 
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
-model Comment {
+model Report {
   id String @id @default(uuid())
 
-  content String
+  content String?
+  type    ReportType @default(POST)
 
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  authorId String
+  author User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
 
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  commentId String?
+
+  post   Post   @relation(fields: [postId], references: [id])
   postId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum ReportType {
+  COMMENT
+  POST
 }
