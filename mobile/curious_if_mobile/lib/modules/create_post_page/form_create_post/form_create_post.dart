@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/core.dart';
 import '../../../../../shared/button_form_input/button_form_input.dart';
 import '../../../../../shared/text_form_input/text_form_input.dart';
 import 'form_create_post_controller.dart';
