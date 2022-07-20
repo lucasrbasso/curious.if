@@ -11,6 +11,8 @@ class CommentModel {
   final String id;
   final String authorName;
   final bool isOwner;
+  final int numberOfLikes;
+  final bool isLiked;
   final String content;
   final String authorId;
   final String postId;
@@ -20,6 +22,8 @@ class CommentModel {
     required this.id,
     required this.isOwner,
     required this.content,
+    required this.numberOfLikes,
+    required this.isLiked,
     required this.authorId,
     required this.authorName,
     required this.postId,
@@ -31,6 +35,8 @@ class CommentModel {
     String? id,
     String? content,
     String? authorId,
+    int? numberOfLikes,
+    bool? isLiked,
     String? authorName,
     String? postId,
     DateTime? createdAt,
@@ -39,6 +45,8 @@ class CommentModel {
   }) {
     return CommentModel(
       id: id ?? this.id,
+      numberOfLikes: numberOfLikes ?? this.numberOfLikes,
+      isLiked: isLiked ?? this.isLiked,
       content: content ?? this.content,
       authorId: authorId ?? this.authorId,
       authorName: authorName ?? this.authorName,
@@ -52,6 +60,8 @@ class CommentModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'numberOfLikes': numberOfLikes,
+      'isLiked': isLiked,
       'content': content,
       'authorId': authorId,
       'authorName': authorName,
@@ -65,6 +75,8 @@ class CommentModel {
   factory CommentModel.fromMap(Map<String, dynamic> map) {
     return CommentModel(
       id: map['id'] ?? '',
+      numberOfLikes: map['numberOfLikes']?.toInt() ?? 0,
+      isLiked: map['isLiked'] ?? false,
       content: map['content'] ?? '',
       authorId: map['authorId'] ?? '',
       authorName: map['authorName'] ?? '',
@@ -91,7 +103,7 @@ class CommentModel {
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, authorName: $authorName, isOwner: $isOwner content: $content, authorId: $authorId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CommentModel(id: $id,numberOfLikes: $numberOfLikes, isLiked: $isLiked, authorName: $authorName, isOwner: $isOwner content: $content, authorId: $authorId, postId: $postId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -100,6 +112,8 @@ class CommentModel {
 
     return other is CommentModel &&
         other.id == id &&
+        other.numberOfLikes == numberOfLikes &&
+        other.isLiked == isLiked &&
         other.content == content &&
         other.authorName == authorName &&
         other.authorId == authorId &&
@@ -112,6 +126,8 @@ class CommentModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        numberOfLikes.hashCode ^
+        isLiked.hashCode ^
         content.hashCode ^
         isOwner.hashCode ^
         authorName.hashCode ^

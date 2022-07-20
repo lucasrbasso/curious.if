@@ -1,1 +1,14 @@
-{"create-account":"Create your account","name":"Name","e-mail":"E-mail","password":"Password","register":"Register","back-login":"Back to login","completed-registration":"Completed registration","aprove-register":"Wait for a moderator to aprove your registration","got-it":"Got it!","login":"Login","dont-have-account":"Don't have an account yet?","go-register":"Register"}
+{
+  "create-account": "Create your account",
+  "name": "Name",
+  "e-mail": "E-mail",
+  "password": "Password",
+  "register": "Register",
+  "back-login": "Back to login",
+  "completed-registration": "Completed registration",
+  "aprove-register": "Wait for a moderator to aprove your registration",
+  "got-it": "Got it!",
+  "login": "Login",
+  "dont-have-account": "Don't have an account yet?",
+  "go-register": "Register"
+}

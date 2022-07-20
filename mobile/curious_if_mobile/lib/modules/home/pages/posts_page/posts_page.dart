@@ -1,14 +1,16 @@
 import 'dart:developer';
 
-import 'package:curious_if_mobile/modules/home/pages/posts_page/widgets/popup_comments/popup_comments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
+import 'package:curious_if_mobile/modules/home/pages/posts_page/widgets/popup_comments/popup_comments.dart';
 
 import '../../../../core/core.dart';
 import '../../../../core/routes/verify_roles.dart';
 import '../../../../domain/login/model/user_model.dart';
 import '../../../../domain/post/model/post_model.dart';
 import 'posts_controller.dart';
+import 'widgets/popup_report/popup_report.dart';
 import 'widgets/post_widget/post_widget.dart';
 
 class PostsPage extends StatefulWidget {
@@ -36,7 +38,6 @@ class _PostsPageState extends State<PostsPage> {
 
   @override
   void dispose() {
-    _postsController.dispose();
     super.dispose();
   }
 
@@ -63,9 +64,44 @@ class _PostsPageState extends State<PostsPage> {
               if (index < _postsController.posts.length) {
                 return PostWidget(
                     post: _postsController.posts[index],
+                    onDenounce: () async {
+                      if (widget.user != null) {
+                        await Future.delayed(
+                          const Duration(seconds: 0),
+                          () => Navigator.canPop(context),
+                        );
+                        await showDialog(
+                          useRootNavigator: false,
+                          context: context,
+                          builder: (BuildContext dialogContext) {
+                            return PopupReport(
+                              onSaved: (content) async {
+                                bool isReported =
+                                    await _postsController.reportPost(
+                                        _postsController.posts[index],
+                                        content,
+                                        widget.user!.token);
+                                if (isReported) {
+                                  _postsController.showSnackBar(context,
+                                      "Denunciado com sucesso!", Colors.green);
+                                }
+                                Navigator.maybePop(context);
+                                return isReported;
+                              },
+                            );
+                          },
+                        );
+                      } else {
+                        _postsController.showSnackBar(
+                            context,
+                            "Você precisa estar logado para denunciar!",
+                            Colors.red);
+                      }
+                    },
                     onTapComment: () async {
                       dynamic response = await showDialog(
                         context: context,
+                        useRootNavigator: false,
                         builder: (BuildContext dialogContext) {
                           return PopupComments(
                             post: _postsController.posts[index],
@@ -100,6 +136,7 @@ class _PostsPageState extends State<PostsPage> {
                   post: PostModel.mock(),
                   loading: true,
                   onTapComment: () {},
+                  onDenounce: () async {},
                   onTapLike: (isLiked) async {
                     return null;
                   },

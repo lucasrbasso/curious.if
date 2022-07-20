@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/core.dart';
 import '../../../../../shared/button_form_input/button_form_input.dart';
 import '../../../../../shared/text_form_input/text_form_input.dart';
 import 'form_create_post_controller.dart';
@@ -64,7 +63,9 @@ class _FormCreatePostWidgetState extends State<FormCreatePostWidget> {
                 }
                 bool isSaved = await widget.onSaved(
                     {"name": controller.name, "message": controller.message});
-                print(isSaved);
+                if (isSaved) {
+                  _formKey.currentState?.reset();
+                }
                 isLoading = false;
                 if (mounted) {
                   setState(() {});

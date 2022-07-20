@@ -3,17 +3,19 @@ import 'package:http/http.dart' show Client;
 
 import '../../../core/core.dart';
 import '../../roles-permission/model/roles_permission_model.dart';
+import '../model/report_comment.dart';
+import '../model/report_post.dart';
 
-abstract class IManagementApi {
-  Future<String> getUsers(String token);
-  Future<String> putUsers(
-      String id, String token, List<Permission> permissions, List<Roles> roles);
-  Future<String> getListPostsUnauthorized(String token);
-  Future<String> patchPost(String id, String token, bool published);
+abstract class IReportsApi {
+  Future<String> reportPost(ReportPost report, String token);
+  Future<String> reportComment(ReportComment report, String token);
+  Future<String> getReports(String token);
+  Future<String> acceptReport(String idReport, String token);
+  Future<String> deleteReport(String idReport, String token);
   void dispose();
 }
 
-class ManagementApi implements IManagementApi {
+class ReportsApi implements IReportsApi {
   final Client client = Client();
   final String server = UtilsConst.server;
 
@@ -23,10 +25,10 @@ class ManagementApi implements IManagementApi {
   }
 
   @override
-  Future<String> getUsers(String token) async {
+  Future<String> getReports(String token) async {
     try {
       final response = await client.get(
-        Uri.parse("${server}api/users/"),
+        Uri.parse(server + "api/reports/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
@@ -45,20 +47,63 @@ class ManagementApi implements IManagementApi {
   }
 
   @override
-  Future<String> putUsers(String id, String token, List<Permission> permissions,
-      List<Roles> roles) async {
+  Future<String> acceptReport(String idReport, String token) async {
+    try {
+      final response = await client.delete(
+        Uri.parse(server + "api/reports/accept/$idReport"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return response.body;
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
+        throw json.decode(response.body);
+      } else {
+        throw "Erro na conexão da API (Status: ${response.statusCode})";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> deleteReport(String idReport, String token) async {
+    try {
+      final response = await client.delete(
+        Uri.parse(server + "api/reports/dismiss/$idReport"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return response.body;
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
+        throw json.decode(response.body);
+      } else {
+        throw "Erro na conexão da API (Status: ${response.statusCode})";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> reportPost(ReportPost report, String token) async {
     try {
       final response = await client
-          .put(
-            Uri.parse("${server}api/users/allowing/$id"),
+          .post(
+            Uri.parse(server + "api/reports/"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $token'
             },
-            body: json.encode(<String, dynamic>{
-              'permissions':
-                  permissions.map((e) => e.parseStringPermission).toList(),
-              'roles': roles.map((e) => e.parseStringRoles).toList()
+            body: jsonEncode(<String, String>{
+              "postId": report.postId,
+              "content": report.content,
+              "type": report.type
             }),
           )
           .timeout(const Duration(seconds: 10));
@@ -75,42 +120,20 @@ class ManagementApi implements IManagementApi {
   }
 
   @override
-  Future<String> getListPostsUnauthorized(String token) async {
-    try {
-      final response = await client.get(
-        Uri.parse("${server}api/posts/unauthorized-posts"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token'
-        },
-      ).timeout(const Duration(seconds: 10));
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        return response.body;
-      } else if (response.statusCode == 400 || response.statusCode == 401) {
-        throw json.decode(response.body);
-      } else {
-        throw "Erro na conexão da API (Status: ${response.statusCode})";
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<String> patchPost(String id, String token, bool published) async {
-    print(id);
-    print(published);
+  Future<String> reportComment(ReportComment report, String token) async {
     try {
       final response = await client
-          .put(
-            Uri.parse("${server}api/posts"),
+          .post(
+            Uri.parse(server + "api/reports/"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
               'Authorization': 'Bearer $token'
             },
-            body: json.encode(<String, dynamic>{
-              'id': id,
-              'published': published,
+            body: jsonEncode(<String, String>{
+              "postId": report.postId,
+              "commentId": report.commentId,
+              "content": report.content,
+              "type": report.type
             }),
           )
           .timeout(const Duration(seconds: 10));

@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:curious_if_mobile/domain/comment/usecase/comment_usecase.dart';
+import 'package:curious_if_mobile/domain/reports/model/report_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../../../core/core.dart';
 import '../../../../../../domain/comment/model/comment_model.dart';
+import '../../../../../../domain/reports/usecase/reports_usecase.dart';
 import 'popup_comments_state.dart';
 part 'popup_comments_controller.g.dart';
 
@@ -19,7 +21,12 @@ class PopupCommentsController extends _PopupCommentsControllerBase
 abstract class _PopupCommentsControllerBase with Store {
   late ICommentUseCase _commentUseCase;
 
+  final IReportsUseCase _reportUsecase = ReportsUseCase();
+
   late ReactionDisposer reactionDisposer;
+
+  @observable
+  bool isVisible = false;
 
   @observable
   PopupCommentsState state = PopupCommentsStateEmpty();
@@ -33,6 +40,9 @@ abstract class _PopupCommentsControllerBase with Store {
   int loadingShimmer = 5;
 
   @action
+  void modifyIsVisible(bool newIsVisible) => isVisible = newIsVisible;
+
+  @action
   void modifyShimmer(int length) => loadingShimmer = length;
 
   @action
@@ -41,12 +51,12 @@ abstract class _PopupCommentsControllerBase with Store {
       state = stateModify;
 
   @action
-  Future<void> getAllCommentsPost(String postId) async {
+  Future<void> getAllCommentsPost(String postId, String? userId) async {
     try {
       await _modifyPopupCommentsState(PopupCommentsStateLoading());
       await Future.delayed(const Duration(seconds: 2));
       List<CommentModel> comments =
-          await _commentUseCase.getAllCommentsPost(postId);
+          await _commentUseCase.getAllCommentsPost(postId, userId);
 
       this.comments.addAll(comments);
       await _modifyPopupCommentsState(PopupCommentsStateSuccess(
@@ -62,13 +72,52 @@ abstract class _PopupCommentsControllerBase with Store {
       String content, String postId, String token) async {
     try {
       await Future.delayed(const Duration(seconds: 2));
-      return false;
       CommentModel comment =
           await _commentUseCase.createComment(content, postId, token);
       print(comment);
       numberOfCommentsAddOrExclude++;
       comments.insert(0, comment);
+      print(comments);
       return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> reportComment(
+      CommentModel comment, String content, String token) async {
+    try {
+      ReportComment report = ReportComment(
+          commentId: comment.id, content: content, postId: comment.postId);
+      await Future.delayed(const Duration(seconds: 2));
+      await _reportUsecase.reportComment(report, token);
+      return true;
+    } catch (e) {
+      log(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool?> likeComment(
+      bool isLiked, CommentModel comment, String token) async {
+    try {
+      await _commentUseCase.setLikeComment(
+          isLiked: isLiked, id: comment.id, token: token);
+      return isLiked;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
+  @action
+  Future<bool> deleteComment(CommentModel comment, String token) async {
+    try {
+      await _commentUseCase.deleteComment(id: comment.id, token: token);
+
+      numberOfCommentsAddOrExclude--;
+      return comments.remove(comment);
     } catch (e) {
       log(e.toString());
       return false;

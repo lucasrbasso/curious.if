@@ -5,13 +5,19 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/core.dart';
 import '../../../../core/routes/verify_roles.dart';
 import '../../../../domain/login/model/user_model.dart';
+import '../../../../domain/post/model/post_model.dart';
 import 'button_icon_text.dart';
 
 class WidgetForm extends StatefulWidget {
   final UserModel user;
+  final void Function(List<PostModel>) addPost;
+
+  final void Function(List<String>) subtractPosts;
   const WidgetForm({
     Key? key,
     required this.user,
+    required this.addPost,
+    required this.subtractPosts,
   }) : super(key: key);
 
   @override
@@ -63,7 +69,16 @@ class _WidgetFormState extends State<WidgetForm> {
                         ButtonIconText(
                           icon: FontAwesomeIcons.triangleExclamation,
                           label: "Denuncias",
-                          onTap: () {},
+                          onTap: () async {
+                            var response = await Navigator.pushNamed(
+                                context, RouterClass.delation,
+                                arguments: {'user': widget.user});
+                            if (response is List<String>) {
+                              print(response);
+                              print('testePost');
+                              widget.subtractPosts(response);
+                            }
+                          },
                         ),
                         if (VerifyRoles.verifyAdmin(widget.user)) ...[
                           ButtonIconText(
@@ -79,10 +94,15 @@ class _WidgetFormState extends State<WidgetForm> {
                         ButtonIconText(
                           icon: FontAwesomeIcons.signsPost,
                           label: "Gerenciar\nPostagens",
-                          onTap: () {
-                            Navigator.pushNamed(
+                          onTap: () async {
+                            var response = await Navigator.pushNamed(
                                 context, RouterClass.manageNewPosts,
                                 arguments: {'user': widget.user});
+                            if (response is List<PostModel>) {
+                              print(response);
+                              print('testePost');
+                              widget.addPost(response);
+                            }
                           },
                         ),
                         ButtonIconText(
@@ -94,7 +114,16 @@ class _WidgetFormState extends State<WidgetForm> {
                       ButtonIconText(
                         icon: Icons.logout,
                         label: "Sair",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            RouterClass.home,
+                            (route) {
+                              print(route);
+                              return false;
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

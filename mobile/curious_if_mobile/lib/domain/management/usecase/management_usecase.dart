@@ -1,3 +1,4 @@
+import '../../post/model/post_model.dart';
 import '../../roles-permission/model/roles_permission_model.dart';
 import '../model/post_management_model.dart';
 import '../model/user_management_model.dart';
@@ -10,7 +11,7 @@ abstract class IManagementUsecase {
       String id, String token, List<Permission> permissions, List<Roles> roles);
 
   Future<List<PostManagementModel>> getListPostsUnauthorized(String token);
-  Future<String> patchPost(String id, String token, bool published);
+  Future<PostModel> patchPost(String id, String token, bool published);
   void dispose();
 }
 
@@ -57,10 +58,11 @@ class ManagementUsecase implements IManagementUsecase {
   }
 
   @override
-  Future<String> patchPost(String id, String token, bool published) async {
+  Future<PostModel> patchPost(String id, String token, bool published) async {
     try {
-      String response = await _repository.patchPost(id, token, published);
-      return response;
+      print("Aaaaaam?");
+      PostModel post = await _repository.patchPost(id, token, published);
+      return post;
     } catch (e) {
       rethrow;
     }

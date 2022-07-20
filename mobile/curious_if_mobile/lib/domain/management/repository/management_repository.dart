@@ -1,3 +1,5 @@
+import 'package:curious_if_mobile/domain/post/model/post_model.dart';
+
 import '../../roles-permission/model/roles_permission_model.dart';
 import '../datasource/management_api.dart';
 import '../model/post_management_model.dart';
@@ -8,7 +10,7 @@ abstract class IManagementRepository {
   Future<String> putUsers(
       String id, String token, List<Permission> permissions, List<Roles> roles);
   Future<List<PostManagementModel>> getListPostsUnauthorized(String token);
-  Future<String> patchPost(String id, String token, bool published);
+  Future<PostModel> patchPost(String id, String token, bool published);
 
   void dispose();
 }
@@ -57,10 +59,11 @@ class ManagementRepository implements IManagementRepository {
   }
 
   @override
-  Future<String> patchPost(String id, String token, bool published) async {
+  Future<PostModel> patchPost(String id, String token, bool published) async {
     try {
       String response = await _datasource.patchPost(id, token, published);
-      return response;
+      PostModel post = PostModel.fromJson(response);
+      return post;
     } catch (e) {
       throw handleErrorReturn(e);
     }

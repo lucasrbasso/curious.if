@@ -26,7 +26,7 @@ class PostCommentWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Spotted#0001",
+              "Spotted#${post.numberPost.toString().padLeft(4, '0')}",
               style: AppTheme.textStyles.titlePost,
             ),
             const SizedBox(height: 2),

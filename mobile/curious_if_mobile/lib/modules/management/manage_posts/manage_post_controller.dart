@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:curious_if_mobile/domain/post/model/post_model.dart';
 import 'package:curious_if_mobile/modules/management/manage_posts/widgets/post_manage_widget/post_manage_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -26,6 +27,8 @@ abstract class _ManagePostControllerBase with Store {
 
   @observable
   ObservableList<PostManagementModel> posts = ObservableList.of([]);
+
+  List<PostModel> postsHome = [];
 
   @observable
   int loadingShimmer = 5;
@@ -61,7 +64,8 @@ abstract class _ManagePostControllerBase with Store {
   Future<void> onPublishEdit(String id, String token,
       Function onAnimationDeletion, bool isPublished) async {
     try {
-      await _managementUsecase.patchPost(id, token, isPublished);
+      await patchPostUnauthorized(
+          token: token, id: id, isPublished: isPublished);
       await onAnimationDeletion();
     } catch (e) {
       log(e.toString());
@@ -72,7 +76,8 @@ abstract class _ManagePostControllerBase with Store {
   Future<bool> confirmDismiss(String id, String token,
       Function onAnimationDeletion, bool isPublished) async {
     try {
-      await _managementUsecase.patchPost(id, token, isPublished);
+      await patchPostUnauthorized(
+          token: token, id: id, isPublished: isPublished);
       return true;
     } catch (e) {
       return false;
@@ -116,13 +121,15 @@ abstract class _ManagePostControllerBase with Store {
   @action
   Future<void> patchPostUnauthorized({
     required String token,
-    required PostManagementModel post,
+    required String id,
     required bool isPublished,
   }) async {
     try {
-      String response =
-          await _managementUsecase.patchPost(post.id, token, isPublished);
-      log(response);
+      PostModel postResponse =
+          await _managementUsecase.patchPost(id, token, isPublished);
+      if (isPublished) {
+        postsHome.insert(0, postResponse);
+      }
     } catch (e) {
       log(e.toString());
     }

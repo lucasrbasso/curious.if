@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../../../../../core/core.dart';
 import '../../../../../../../shared/text_form_input/text_form_input.dart';
 
-class CreateCommentWidget extends StatefulWidget {
+class CreateReportWidget extends StatefulWidget {
   final Future<bool> Function(String) onSaved;
 
-  const CreateCommentWidget({Key? key, required this.onSaved})
-      : super(key: key);
+  const CreateReportWidget({Key? key, required this.onSaved}) : super(key: key);
 
   @override
-  State<CreateCommentWidget> createState() => _CreateCommentWidgetState();
+  State<CreateReportWidget> createState() => _CreateReportWidgetState();
 }
 
-class _CreateCommentWidgetState extends State<CreateCommentWidget> {
+class _CreateReportWidgetState extends State<CreateReportWidget> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   String error = '';
@@ -39,7 +38,7 @@ class _CreateCommentWidgetState extends State<CreateCommentWidget> {
                 setState(() {});
                 bool result = await widget.onSaved(value ?? '');
                 if (!result) {
-                  error = "Erro ao enviar a mensagem";
+                  error = "Erro ao enviar a denuncia";
                 } else {
                   _formKey.currentState?.reset();
                 }
@@ -50,14 +49,14 @@ class _CreateCommentWidgetState extends State<CreateCommentWidget> {
               contentPadding: EdgeInsets.only(left: 12, bottom: 4, top: 12),
               validate: (value) {
                 if ((value ?? "").trim().isEmpty) {
-                  return 'Por favor uma mensagem válida';
+                  return 'Por favor uma denuncia válida';
                 }
                 return null;
               },
               text: '',
-              hintText: 'Escreva um comentário...',
-              maxLines: 4,
-              minLines: 1,
+              hintText: 'Escreva uma denuncia...',
+              maxLines: 10,
+              minLines: 5,
               suffixIcon: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

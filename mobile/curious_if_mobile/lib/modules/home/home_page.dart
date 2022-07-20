@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 
 import '../../core/core.dart';
 import '../../domain/login/model/user_model.dart';
+import '../../domain/post/model/post_model.dart';
 import 'pages/explorer_page/explorer_page.dart';
+import 'pages/posts_page/posts_controller.dart';
 import 'pages/posts_page/posts_page.dart';
 import 'pages/search_page/search_page.dart';
 import 'widgets/app_bar_home/app_bar_home.dart';
@@ -24,6 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int indexPage = 0;
   late List pages;
+  late void Function(List<PostModel>) funcNewPosts;
   @override
   void initState() {
     pages = [
@@ -34,17 +37,29 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  void controlRoutes() {
+  void controlRoutes() async {
     Map<String, dynamic> arguments = {"user": widget.user};
-    if (indexPage == 3) {
-      Navigator.pushNamed(context, RouterClass.profile, arguments: arguments);
-    } else if (indexPage == 4) {
+    int index = indexPage;
+    indexPage = 0;
+    setState(() {});
+    if (index == 3) {
+      var posts = await Navigator.pushNamed(context, RouterClass.profile,
+          arguments: arguments);
+      if ((posts is List) && posts[0] is List<PostModel>) {
+        PostsController postsController = PostsController();
+        postsController.insertPosts(posts[0]);
+        print(posts);
+      }
+      if ((posts is List) && posts[1] is List<String>) {
+        PostsController postsController = PostsController();
+        postsController.removePosts(posts[1]);
+        print(posts);
+      }
+    } else if (index == 4) {
       print('CreatePostPage');
       Navigator.pushNamed(context, RouterClass.createPost,
           arguments: arguments);
     }
-    indexPage = 0;
-    setState(() {});
   }
 
   @override
