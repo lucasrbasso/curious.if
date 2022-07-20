@@ -42,6 +42,7 @@ const postSelectConfig = {
   to: true,
   published: true,
   numberOfLikes: true,
+  postNumber: true,
 };
 
 @Injectable()
@@ -225,6 +226,7 @@ export class PostService {
         },
         select: {
           ...postSelectConfig,
+          postNumber: true,
         },
       });
     } catch (err: any) {

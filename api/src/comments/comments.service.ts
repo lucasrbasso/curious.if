@@ -75,6 +75,9 @@ export class CommentsService {
         where: {
           postId,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
         select: {
           ...commentsSelectConfig,
           author: true,
