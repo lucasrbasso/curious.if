@@ -42,6 +42,7 @@ const postSelectConfig = {
   to: true,
   published: true,
   numberOfLikes: true,
+  postNumber: true,
 };
 
 @Injectable()
@@ -211,6 +212,9 @@ export class PostService {
     });
 
     try {
+      const postNumber =
+        lastedPost.length > 0 ? lastedPost[0].postNumber + 1 : 1;
+
       return await this.prisma.post.update({
         where: {
           id,
@@ -218,10 +222,11 @@ export class PostService {
         data: {
           published,
           isValidated: true,
-          postNumber: published ? lastedPost[0].postNumber + 1 : -1,
+          postNumber: published ? postNumber : -1,
         },
         select: {
           ...postSelectConfig,
+          postNumber: true,
         },
       });
     } catch (err: any) {
