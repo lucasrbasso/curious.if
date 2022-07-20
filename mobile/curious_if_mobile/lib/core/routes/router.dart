@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../domain/login/model/user_model.dart';
 import '../../modules/account_page/account_page.dart';
 import '../../modules/management/manage_posts/manage_post_page.dart';
+import '../../modules/management/manage_reports/manage_reports_page.dart';
 import '../../modules/management/menage_roles_and_permissions/manage_user_page.dart';
 import '../../modules/register/login/login_page.dart';
 import '../../modules/register/sign_up/sign_up_page.dart';
@@ -149,7 +150,7 @@ class RouterClass {
           builder: (_) => VerifyRoles.verifyRoleAndUser(
             user,
             VerifyRoles.verifyAdmin(user) || VerifyRoles.verifyMod(user),
-            Container(),
+            user == null ? Container() : ManageReportsPage(user: user),
           ),
         );
 
