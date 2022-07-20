@@ -121,7 +121,6 @@ class CommentApi implements ICommentApi {
   @override
   Future<String> getAllCommentsPost(String postId, String? userId) async {
     try {
-      print(postId);
       final response = await client.get(
         Uri.parse(server + "api/comments/post/$postId"),
         headers: <String, String>{
@@ -129,8 +128,6 @@ class CommentApi implements ICommentApi {
           'user_id': userId ?? ''
         },
       ).timeout(const Duration(seconds: 10));
-
-      print(response.body);
       if (response.statusCode == 201 || response.statusCode == 200) {
         return response.body;
       } else if (response.statusCode == 400 || response.statusCode == 401) {
